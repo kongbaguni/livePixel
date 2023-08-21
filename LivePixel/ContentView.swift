@@ -6,16 +6,18 @@
 //
 
 import SwiftUI
+import FirebaseCore
 
 struct ContentView: View {
+    init() {
+        FirebaseApp.configure()
+    }
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+            SignInView()
         }
         .padding()
+       
     }
 }
 

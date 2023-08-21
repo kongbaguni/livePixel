@@ -7,18 +7,42 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8D1E60AD2A932F4200952196 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1E60AC2A932F4200952196 /* AuthManager.swift */; };
+		8D1E60B02A932FC300952196 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 8D1E60AF2A932FC300952196 /* GoogleSignIn */; };
+		8D1E60B22A932FC300952196 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 8D1E60B12A932FC300952196 /* GoogleSignInSwift */; };
+		8D1E60B42A93317800952196 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1E60B32A93317700952196 /* UIApplication+Extensions.swift */; };
+		8D1E60B62A93342400952196 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1E60B52A93342400952196 /* SignInView.swift */; };
 		8D5F12552A93209500ACDAC4 /* LivePixelApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5F12542A93209500ACDAC4 /* LivePixelApp.swift */; };
 		8D5F12572A93209500ACDAC4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5F12562A93209500ACDAC4 /* ContentView.swift */; };
 		8D5F12592A93209900ACDAC4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D5F12582A93209900ACDAC4 /* Assets.xcassets */; };
 		8D5F125C2A93209900ACDAC4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D5F125B2A93209900ACDAC4 /* Preview Assets.xcassets */; };
+		8D5F12652A93240100ACDAC4 /* CanvasModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5F12642A93240100ACDAC4 /* CanvasModel.swift */; };
+		8D5F12672A93244B00ACDAC4 /* DoteModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5F12662A93244B00ACDAC4 /* DoteModel.swift */; };
+		8D5F126A2A9324E200ACDAC4 /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5F12692A9324E200ACDAC4 /* Stack.swift */; };
+		8D5F126C2A93264A00ACDAC4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8D5F126B2A93264A00ACDAC4 /* GoogleService-Info.plist */; };
+		8D5F126F2A9328C200ACDAC4 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 8D5F126E2A9328C200ACDAC4 /* FirebaseAnalytics */; };
+		8D5F12712A9328C200ACDAC4 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 8D5F12702A9328C200ACDAC4 /* FirebaseAuth */; };
+		8D5F12732A9328C200ACDAC4 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 8D5F12722A9328C200ACDAC4 /* FirebaseCrashlytics */; };
+		8D5F12752A9328C200ACDAC4 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 8D5F12742A9328C200ACDAC4 /* FirebaseDatabase */; };
+		8D5F12772A9328C200ACDAC4 /* FirebaseDatabaseSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 8D5F12762A9328C200ACDAC4 /* FirebaseDatabaseSwift */; };
+		8D5F12792A9328C200ACDAC4 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 8D5F12782A9328C200ACDAC4 /* FirebaseStorage */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8D1E60AC2A932F4200952196 /* AuthManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
+		8D1E60B32A93317700952196 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
+		8D1E60B52A93342400952196 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
+		8D1E60B82A9338A300952196 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8D5F12512A93209500ACDAC4 /* LivePixel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LivePixel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D5F12542A93209500ACDAC4 /* LivePixelApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LivePixelApp.swift; sourceTree = "<group>"; };
 		8D5F12562A93209500ACDAC4 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		8D5F12582A93209900ACDAC4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8D5F125B2A93209900ACDAC4 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		8D5F12622A9323C800ACDAC4 /* LivePixel.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LivePixel.entitlements; sourceTree = "<group>"; };
+		8D5F12642A93240100ACDAC4 /* CanvasModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasModel.swift; sourceTree = "<group>"; };
+		8D5F12662A93244B00ACDAC4 /* DoteModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoteModel.swift; sourceTree = "<group>"; };
+		8D5F12692A9324E200ACDAC4 /* Stack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stack.swift; sourceTree = "<group>"; };
+		8D5F126B2A93264A00ACDAC4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -26,6 +50,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8D5F12772A9328C200ACDAC4 /* FirebaseDatabaseSwift in Frameworks */,
+				8D5F12732A9328C200ACDAC4 /* FirebaseCrashlytics in Frameworks */,
+				8D5F126F2A9328C200ACDAC4 /* FirebaseAnalytics in Frameworks */,
+				8D1E60B22A932FC300952196 /* GoogleSignInSwift in Frameworks */,
+				8D5F12752A9328C200ACDAC4 /* FirebaseDatabase in Frameworks */,
+				8D5F12712A9328C200ACDAC4 /* FirebaseAuth in Frameworks */,
+				8D5F12792A9328C200ACDAC4 /* FirebaseStorage in Frameworks */,
+				8D1E60B02A932FC300952196 /* GoogleSignIn in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -51,10 +83,18 @@
 		8D5F12532A93209500ACDAC4 /* LivePixel */ = {
 			isa = PBXGroup;
 			children = (
+				8D1E60B82A9338A300952196 /* Info.plist */,
+				8D5F12682A93249C00ACDAC4 /* Extensions */,
+				8D5F12632A9323EC00ACDAC4 /* Models */,
+				8D5F12622A9323C800ACDAC4 /* LivePixel.entitlements */,
 				8D5F12542A93209500ACDAC4 /* LivePixelApp.swift */,
 				8D5F12562A93209500ACDAC4 /* ContentView.swift */,
+				8D1E60B52A93342400952196 /* SignInView.swift */,
 				8D5F12582A93209900ACDAC4 /* Assets.xcassets */,
+				8D5F126B2A93264A00ACDAC4 /* GoogleService-Info.plist */,
 				8D5F125A2A93209900ACDAC4 /* Preview Content */,
+				8D1E60AC2A932F4200952196 /* AuthManager.swift */,
+				8D5F12692A9324E200ACDAC4 /* Stack.swift */,
 			);
 			path = LivePixel;
 			sourceTree = "<group>";
@@ -67,6 +107,23 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		8D5F12632A9323EC00ACDAC4 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				8D5F12642A93240100ACDAC4 /* CanvasModel.swift */,
+				8D5F12662A93244B00ACDAC4 /* DoteModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		8D5F12682A93249C00ACDAC4 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				8D1E60B32A93317700952196 /* UIApplication+Extensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -77,12 +134,23 @@
 				8D5F124D2A93209500ACDAC4 /* Sources */,
 				8D5F124E2A93209500ACDAC4 /* Frameworks */,
 				8D5F124F2A93209500ACDAC4 /* Resources */,
+				8D1E60B72A93363700952196 /* ShellScript */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = LivePixel;
+			packageProductDependencies = (
+				8D5F126E2A9328C200ACDAC4 /* FirebaseAnalytics */,
+				8D5F12702A9328C200ACDAC4 /* FirebaseAuth */,
+				8D5F12722A9328C200ACDAC4 /* FirebaseCrashlytics */,
+				8D5F12742A9328C200ACDAC4 /* FirebaseDatabase */,
+				8D5F12762A9328C200ACDAC4 /* FirebaseDatabaseSwift */,
+				8D5F12782A9328C200ACDAC4 /* FirebaseStorage */,
+				8D1E60AF2A932FC300952196 /* GoogleSignIn */,
+				8D1E60B12A932FC300952196 /* GoogleSignInSwift */,
+			);
 			productName = LivePixel;
 			productReference = 8D5F12512A93209500ACDAC4 /* LivePixel.app */;
 			productType = "com.apple.product-type.application";
@@ -111,6 +179,10 @@
 				Base,
 			);
 			mainGroup = 8D5F12482A93209500ACDAC4;
+			packageReferences = (
+				8D5F126D2A9328C100ACDAC4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				8D1E60AE2A932FC300952196 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+			);
 			productRefGroup = 8D5F12522A93209500ACDAC4 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -127,18 +199,47 @@
 			files = (
 				8D5F125C2A93209900ACDAC4 /* Preview Assets.xcassets in Resources */,
 				8D5F12592A93209900ACDAC4 /* Assets.xcassets in Resources */,
+				8D5F126C2A93264A00ACDAC4 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		8D1E60B72A93363700952196 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
+				"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		8D5F124D2A93209500ACDAC4 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8D1E60B42A93317800952196 /* UIApplication+Extensions.swift in Sources */,
 				8D5F12572A93209500ACDAC4 /* ContentView.swift in Sources */,
+				8D1E60AD2A932F4200952196 /* AuthManager.swift in Sources */,
+				8D5F126A2A9324E200ACDAC4 /* Stack.swift in Sources */,
 				8D5F12552A93209500ACDAC4 /* LivePixelApp.swift in Sources */,
+				8D5F12652A93240100ACDAC4 /* CanvasModel.swift in Sources */,
+				8D1E60B62A93342400952196 /* SignInView.swift in Sources */,
+				8D5F12672A93244B00ACDAC4 /* DoteModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -195,7 +296,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -249,7 +350,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -264,12 +365,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = LivePixel/LivePixel.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"LivePixel/Preview Content\"";
 				DEVELOPMENT_TEAM = QU9EPTU238;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = LivePixel/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -293,12 +397,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = LivePixel/LivePixel.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"LivePixel/Preview Content\"";
 				DEVELOPMENT_TEAM = QU9EPTU238;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = LivePixel/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -339,6 +445,68 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		8D1E60AE2A932FC300952196 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+		8D5F126D2A9328C100ACDAC4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		8D1E60AF2A932FC300952196 /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8D1E60AE2A932FC300952196 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+		8D1E60B12A932FC300952196 /* GoogleSignInSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8D1E60AE2A932FC300952196 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignInSwift;
+		};
+		8D5F126E2A9328C200ACDAC4 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8D5F126D2A9328C100ACDAC4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		8D5F12702A9328C200ACDAC4 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8D5F126D2A9328C100ACDAC4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		8D5F12722A9328C200ACDAC4 /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8D5F126D2A9328C100ACDAC4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
+		8D5F12742A9328C200ACDAC4 /* FirebaseDatabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8D5F126D2A9328C100ACDAC4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabase;
+		};
+		8D5F12762A9328C200ACDAC4 /* FirebaseDatabaseSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8D5F126D2A9328C100ACDAC4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabaseSwift;
+		};
+		8D5F12782A9328C200ACDAC4 /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8D5F126D2A9328C100ACDAC4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 8D5F12492A93209500ACDAC4 /* Project object */;
 }

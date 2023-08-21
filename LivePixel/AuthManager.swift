@@ -20,7 +20,10 @@ extension Notification.Name {
 
 class AuthManager : NSObject {
     static let shared = AuthManager()
-    let auth = Auth.auth()
+    var auth:Auth {
+        Auth.auth()
+    }
+    
     var appleReAuth = false
     var userId:String? {
         return auth.currentUser?.uid

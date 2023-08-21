@@ -14,8 +14,6 @@ struct SignInView: View {
     }
     
     private func refreshSigninName() {
-        AuthManager.shared.isSignined
-        
         displayName = AuthManager.shared.auth.currentUser?.displayName
     }
     
@@ -32,6 +30,7 @@ struct SignInView: View {
                 Button {
                     AuthManager.shared.startSignInWithAppleFlow { loginSucess, error in
                         print(loginSucess)
+                        refreshSigninName()
                     }
                 } label: {
                     Text("signin with Apple")
@@ -40,7 +39,7 @@ struct SignInView: View {
                 Button {
                     AuthManager.shared.startSignInWithGoogleId { loginSucess, error in
                         print(loginSucess)
-                        
+                        refreshSigninName()
                     }
                 } label: {
                     Text("signin with Google")

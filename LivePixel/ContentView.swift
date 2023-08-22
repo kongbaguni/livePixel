@@ -14,7 +14,10 @@ struct ContentView: View {
     }
     var body: some View {
         VStack {
-            SignInView()
+            HStack {
+                SignInView()
+                    .frame(width:300, height: 300)
+            }
         }
         .padding()
        

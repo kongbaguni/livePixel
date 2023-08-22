@@ -6,40 +6,125 @@
 //
 
 import SwiftUI
+import AlamofireImage
 
 struct SignInView: View {
-    var previewMode = false
-    @State var displayName:String? = nil
-    
-    private func refreshSigninName() {
-        if previewMode {
-            return
+    @State var isSignIn:Bool = false
+    @State var displayName:Text = Text("anomymouse signin")
+    @State var profileImageURL:URL? = nil
+    @State var isAnomymouse:Bool = false
+    @State var alertMsg:String = "" {
+        willSet {
+            isAlert = true
         }
-        displayName = AuthManager.shared.auth.currentUser?.email
+    }
+    
+    @State var isAlert:Bool = false
+    private func refreshSigninName() {
+        #if targetEnvironment(simulator)
+        #else
+        isSignIn = AuthManager.shared.auth.currentUser != nil
+        isAnomymouse = AuthManager.shared.auth.currentUser?.isAnonymous ?? false
+        
+        if isAnomymouse {
+            displayName = Text("anomymouse")
+        }
+        if let email = AuthManager.shared.auth.currentUser?.email {
+            displayName = Text(email)
+        }
+        profileImageURL = AuthManager.shared.auth.currentUser?.photoURL
+        
+        #endif
     }
     
     var body: some View {
         VStack {
-            if let name = displayName {
-                Text(name)
+            if isSignIn {
+                NetImageView(url: profileImageURL?.absoluteString, placeholder: Image(systemName: "person"))
+                displayName
                 Button {
-                    AuthManager.shared.signout()
+                    if isAnomymouse {
+                        AuthManager.shared.leave { error in
+                            refreshSigninName()
+                        }
+                    } else {
+                        AuthManager.shared.signout()
+                    }
                 } label: {
                     Text("sign out")
+                }
+                if isAnomymouse {
+                    AuthorizationButton(provider: .apple, sizeType: .large, authType: .signin) {
+                        refreshSigninName()
+                        AuthManager.shared.upgradeAnonymousWithAppleId { isSucess, error in
+                            if let err = error {
+                                alertMsg = err.localizedDescription
+                            }
+                            else {
+                                refreshSigninName()
+                            }
+                        }
+                    }
+                    AuthorizationButton(provider: .google, sizeType: .large, authType: .signin) {
+                        AuthManager.shared.upgradeAnonymousWithGoogleId { isSucess, error in
+                            if let err = error {
+                                alertMsg = err.localizedDescription
+                            }
+                            else {
+                                refreshSigninName()
+                            }
+                        }
+                    }
+                }
+                else {
+                    Button {                        
+                        AuthManager.shared.leave { error in
+                            if let err = error {
+                                alertMsg = err.localizedDescription
+                            }
+                            else {
+                                refreshSigninName()
+                            }
+                        }
+                    } label: {
+                        Text("delete account")
+                    }
                 }
             } else {
                 AuthorizationButton(provider: .apple, sizeType: .large, authType: .signin) {
                     refreshSigninName()
                     AuthManager.shared.startSignInWithAppleFlow { loginSucess, error in
-                        refreshSigninName()
+                        if let err = error {
+                            alertMsg = err.localizedDescription
+                        }
+                        else {
+                            refreshSigninName()
+                        }
                     }
 
                 }
                 AuthorizationButton(provider: .google, sizeType: .large, authType: .signin) {
                     AuthManager.shared.startSignInWithGoogleId { loginSucess, error in
-                        refreshSigninName()
+                        if let err = error {
+                            alertMsg = err.localizedDescription
+                        }
+                        else {
+                            refreshSigninName()
+                        }
                     }
                     
+                }
+                Button {
+                    AuthManager.shared.startSignInAnonymously { loginSucess, error in
+                        if let err = error {
+                            alertMsg = err.localizedDescription
+                        }
+                        else {
+                            refreshSigninName()
+                        }
+                    }
+                } label: {
+                    Text("anomymouse signin")
                 }
             }
         }
@@ -58,12 +143,18 @@ struct SignInView: View {
         .onAppear {
             refreshSigninName()
         }
+        .alert(isPresented: $isAlert) {
+            .init(title: Text("alert"), message: Text(alertMsg))
+        }
         
     }
 }
 
 struct SignInView_Previews: PreviewProvider {
     static var previews: some View {
-        SignInView(previewMode:true)
+        SignInView()
+        SignInView(
+            isSignIn: true,
+            displayName: Text("kongbaguni@gmail.com"), profileImageURL: URL(string: "https://img.freepik.com/premium-photo/cute-cat-cartoon-vector-icon-illustration_780593-3020.jpg"))
     }
 }

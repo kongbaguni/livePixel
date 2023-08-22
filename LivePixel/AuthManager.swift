@@ -23,12 +23,16 @@ class AuthManager : NSObject {
     let auth:Auth = Auth.auth()
     
     var appleReAuth = false
+
+    var email:String? {
+        auth.currentUser?.email
+    }
     var userId:String? {
-        return auth.currentUser?.uid
+        auth.currentUser?.uid
     }
         
     var isSignined:Bool {
-        return auth.currentUser != nil
+        auth.currentUser != nil
     }
     
     // Adapted from https://auth0.com/docs/api-auth/tutorials/nonce#generate-a-cryptographically-random-nonce
@@ -112,9 +116,6 @@ class AuthManager : NSObject {
             
             let credential = GoogleAuthProvider.credential(withIDToken: idToken.tokenString,
                                                            accessToken: accessToken.tokenString)
-            
-            
-            print(credential)
             Auth.auth().signIn(with: credential) { result, error in
                 if let err = error {
                     print(err.localizedDescription)
@@ -167,8 +168,12 @@ class AuthManager : NSObject {
     }
 
     //MARK: - 탈퇴하기
-    func leave(progress:@escaping(_ progress:(title:Text,completed:Int,total:Int))->Void, complete:@escaping(_ error:Error?)->Void) {        
+    func leave(complete:@escaping(_ error:Error?)->Void) {
         func reauth(complete:@escaping(_ isSucess:Bool, _ error:Error?)->Void) {
+            if auth.currentUser?.isAnonymous == true {
+                complete(true, nil)
+                return
+            }
             switch auth.currentUser?.providerData.first?.providerID {
             case "google.com":
                 print("구글 이다")
@@ -201,13 +206,14 @@ class AuthManager : NSObject {
     
     func upgradeAnonymousWithGoogleId(complete:@escaping(_ isSucess:Bool, _ error:Error?)->Void) {
         guard let clientID = FirebaseApp.app()?.options.clientID,
-              let vc = rootViewController
+              let vc = UIApplication.shared.lastViewController
         else { return }
         
         // Create Google Sign In configuration object.
         let config = GIDConfiguration(clientID: clientID)
             
-        // Start the sign in flow!
+        GIDSignIn.sharedInstance.configuration = config
+
         GIDSignIn.sharedInstance.signIn(withPresenting: vc) { [unowned self] result, error  in
             guard
                 let accessToken = result?.user.accessToken.tokenString,
@@ -237,7 +243,6 @@ extension AuthManager : ASAuthorizationControllerPresentationContextProviding {
 }
 
 extension AuthManager: ASAuthorizationControllerDelegate {
-    
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
         if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
             guard let nonce = currentNonce else {
@@ -283,6 +288,7 @@ extension AuthManager: ASAuthorizationControllerDelegate {
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
         // Handle error.
         print("Sign in with Apple errored: \(error)")
+        didComplete(false,error)
     }
     
 }

@@ -1,0 +1,15 @@
+/* 
+  Localizable.strings
+  LivePixel
+
+  Created by Changyeol Seo on 2023/08/22.
+  
+*/
+"anomymouse signin" = "익명 로그인";
+"anomymouse" = "익명";
+"Sign in with Apple" = "애플아이디로 로그인";
+"Sign in with Google" = "구글아이디로 로그인";
+"sign out" = "로그아웃";
+"delete account" = "계정 삭제";
+"alert" = "알림";
+"This credential is already associated with a different user account." = "이 자격 증명은 이미 다른 사용자 계정과 연결되어 있습니다.";

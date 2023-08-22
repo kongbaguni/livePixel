@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct SignInView: View {
+    var previewMode = false
     @State var displayName:String? = nil
     
     private func refreshSigninName() {
-        displayName = AuthManager.shared.auth.currentUser?.email ??
-        AuthManager.shared.userId
-        print("-_--------")
-        print(AuthManager.shared.auth.currentUser?.email)
-        
+        if previewMode {
+            return
+        }
+        displayName = AuthManager.shared.auth.currentUser?.email
     }
     
     var body: some View {
@@ -28,24 +28,19 @@ struct SignInView: View {
                     Text("sign out")
                 }
             } else {
-                Button {
+                AuthorizationButton(provider: .apple, sizeType: .large, authType: .signin) {
+                    refreshSigninName()
                     AuthManager.shared.startSignInWithAppleFlow { loginSucess, error in
-                        print(loginSucess)
                         refreshSigninName()
                     }
-                } label: {
-                    Text("signin with Apple")
-                }
-                
-                Button {
-                    AuthManager.shared.startSignInWithGoogleId { loginSucess, error in
-                        print(loginSucess)
-                        refreshSigninName()
-                    }
-                } label: {
-                    Text("signin with Google")
-                }
 
+                }
+                AuthorizationButton(provider: .google, sizeType: .large, authType: .signin) {
+                    AuthManager.shared.startSignInWithGoogleId { loginSucess, error in
+                        refreshSigninName()
+                    }
+                    
+                }
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: .authDidSucessed)) { noti in
@@ -63,6 +58,6 @@ struct SignInView: View {
 
 struct SignInView_Previews: PreviewProvider {
     static var previews: some View {
-        SignInView()
+        SignInView(previewMode:true)
     }
 }

@@ -9,12 +9,13 @@ import SwiftUI
 
 struct SignInView: View {
     @State var displayName:String? = nil
-    init() {
-        refreshSigninName()
-    }
     
     private func refreshSigninName() {
-        displayName = AuthManager.shared.auth.currentUser?.displayName
+        displayName = AuthManager.shared.auth.currentUser?.email ??
+        AuthManager.shared.userId
+        print("-_--------")
+        print(AuthManager.shared.auth.currentUser?.email)
+        
     }
     
     var body: some View {
@@ -51,6 +52,9 @@ struct SignInView: View {
             refreshSigninName()
         }
         .onReceive(NotificationCenter.default.publisher(for: .signoutDidSucessed)) { noti in
+            refreshSigninName()
+        }
+        .onAppear {
             refreshSigninName()
         }
         

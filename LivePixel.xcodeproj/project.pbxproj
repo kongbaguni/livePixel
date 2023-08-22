@@ -14,6 +14,7 @@
 		1B47E1472A948319005C036F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1B47E1492A948319005C036F /* Localizable.strings */; };
 		1B47E14B2A948326005C036F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1B47E14D2A948326005C036F /* InfoPlist.strings */; };
 		1B47E1502A948BC8005C036F /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B47E14F2A948BC8005C036F /* Toast.swift */; };
+		1B47E1532A9499A5005C036F /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B47E1522A9499A5005C036F /* RoundedButton.swift */; };
 		8D1E60AD2A932F4200952196 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1E60AC2A932F4200952196 /* AuthManager.swift */; };
 		8D1E60B02A932FC300952196 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 8D1E60AF2A932FC300952196 /* GoogleSignIn */; };
 		8D1E60B22A932FC300952196 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 8D1E60B12A932FC300952196 /* GoogleSignInSwift */; };
@@ -44,6 +45,7 @@
 		1B47E14C2A948326005C036F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1B47E14E2A94832A005C036F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1B47E14F2A948BC8005C036F /* Toast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
+		1B47E1522A9499A5005C036F /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		8D1E60AC2A932F4200952196 /* AuthManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		8D1E60B32A93317700952196 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
 		8D1E60B52A93342400952196 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
@@ -80,6 +82,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1B47E1512A9498F5005C036F /* View */ = {
+			isa = PBXGroup;
+			children = (
+				1B47E13C2A944529005C036F /* AuthorizationButton.swift */,
+				8D1E60B52A93342400952196 /* SignInView.swift */,
+				8D5F12562A93209500ACDAC4 /* ContentView.swift */,
+				1B47E1432A946F9A005C036F /* NetImageView.swift */,
+				1B47E1522A9499A5005C036F /* RoundedButton.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		8D5F12482A93209500ACDAC4 = {
 			isa = PBXGroup;
 			children = (
@@ -99,14 +113,12 @@
 		8D5F12532A93209500ACDAC4 /* LivePixel */ = {
 			isa = PBXGroup;
 			children = (
+				1B47E1512A9498F5005C036F /* View */,
 				8D1E60B82A9338A300952196 /* Info.plist */,
 				8D5F12632A9323EC00ACDAC4 /* Models */,
 				8D5F12622A9323C800ACDAC4 /* LivePixel.entitlements */,
 				8D5F12542A93209500ACDAC4 /* LivePixelApp.swift */,
 				1B47E14F2A948BC8005C036F /* Toast.swift */,
-				8D5F12562A93209500ACDAC4 /* ContentView.swift */,
-				1B47E13C2A944529005C036F /* AuthorizationButton.swift */,
-				8D1E60B52A93342400952196 /* SignInView.swift */,
 				8D5F12582A93209900ACDAC4 /* Assets.xcassets */,
 				1B47E13E2A944938005C036F /* Colors.xcassets */,
 				8D5F126B2A93264A00ACDAC4 /* GoogleService-Info.plist */,
@@ -115,7 +127,6 @@
 				8D5F12692A9324E200ACDAC4 /* Stack.swift */,
 				8D5F12682A93249C00ACDAC4 /* Extensions */,
 				1B47E14D2A948326005C036F /* InfoPlist.strings */,
-				1B47E1432A946F9A005C036F /* NetImageView.swift */,
 				1B47E1492A948319005C036F /* Localizable.strings */,
 			);
 			path = LivePixel;
@@ -267,6 +278,7 @@
 				8D5F12552A93209500ACDAC4 /* LivePixelApp.swift in Sources */,
 				8D5F12652A93240100ACDAC4 /* CanvasModel.swift in Sources */,
 				1B47E1442A946F9A005C036F /* NetImageView.swift in Sources */,
+				1B47E1532A9499A5005C036F /* RoundedButton.swift in Sources */,
 				8D1E60B62A93342400952196 /* SignInView.swift in Sources */,
 				1B47E1502A948BC8005C036F /* Toast.swift in Sources */,
 				1B47E13D2A944529005C036F /* AuthorizationButton.swift in Sources */,

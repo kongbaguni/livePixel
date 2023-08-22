@@ -17,6 +17,7 @@ struct NetImageView: View {
         ZStack {
             if let msg = errorMsg {
                 Text(msg)
+                    .foregroundColor(.primary)
             }
             placeholder
                 .resizable()

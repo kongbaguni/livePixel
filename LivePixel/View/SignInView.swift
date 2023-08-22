@@ -42,52 +42,53 @@ struct SignInView: View {
             if isSignIn {
                 NetImageView(url: profileImageURL?.absoluteString, placeholder: Image(systemName: "person"))
                 displayName
-                Button {
+                HStack {
+                    RoundedButton(title: Text("sign out")) {
+                        if isAnomymouse {
+                            AuthManager.shared.leave { error in
+                                refreshSigninName()
+                            }
+                        } else {
+                            AuthManager.shared.signout()
+                        }
+                    }
+                    
                     if isAnomymouse {
-                        AuthManager.shared.leave { error in
-                            refreshSigninName()
-                        }
-                    } else {
-                        AuthManager.shared.signout()
-                    }
-                } label: {
-                    Text("sign out")
-                }
-                if isAnomymouse {
-                    AuthorizationButton(provider: .apple, sizeType: .large, authType: .signin) {
-                        refreshSigninName()
-                        AuthManager.shared.upgradeAnonymousWithAppleId { isSucess, error in
-                            if let err = error {
-                                alertMsg = err.localizedDescription
-                            }
-                            else {
+                        VStack {
+                            AuthorizationButton(provider: .apple, sizeType: .large, authType: .signin) {
                                 refreshSigninName()
+                                AuthManager.shared.upgradeAnonymousWithAppleId { isSucess, error in
+                                    if let err = error {
+                                        alertMsg = err.localizedDescription
+                                    }
+                                    else {
+                                        refreshSigninName()
+                                    }
+                                }
                             }
-                        }
-                    }
-                    AuthorizationButton(provider: .google, sizeType: .large, authType: .signin) {
-                        AuthManager.shared.upgradeAnonymousWithGoogleId { isSucess, error in
-                            if let err = error {
-                                alertMsg = err.localizedDescription
-                            }
-                            else {
-                                refreshSigninName()
+                            AuthorizationButton(provider: .google, sizeType: .large, authType: .signin) {
+                                AuthManager.shared.upgradeAnonymousWithGoogleId { isSucess, error in
+                                    if let err = error {
+                                        alertMsg = err.localizedDescription
+                                    }
+                                    else {
+                                        refreshSigninName()
+                                    }
+                                }
                             }
                         }
                     }
-                }
-                else {
-                    Button {                        
-                        AuthManager.shared.leave { error in
-                            if let err = error {
-                                alertMsg = err.localizedDescription
-                            }
-                            else {
-                                refreshSigninName()
+                    else {
+                        RoundedButton(title: Text("delete account"), style: .deleteStyle) {
+                            AuthManager.shared.leave { error in
+                                if let err = error {
+                                    alertMsg = err.localizedDescription
+                                }
+                                else {
+                                    refreshSigninName()
+                                }
                             }
                         }
-                    } label: {
-                        Text("delete account")
                     }
                 }
             } else {
@@ -114,7 +115,7 @@ struct SignInView: View {
                     }
                     
                 }
-                Button {
+                RoundedButton(title: Text("anomymouse signin")) {
                     AuthManager.shared.startSignInAnonymously { loginSucess, error in
                         if let err = error {
                             alertMsg = err.localizedDescription
@@ -123,8 +124,6 @@ struct SignInView: View {
                             refreshSigninName()
                         }
                     }
-                } label: {
-                    Text("anomymouse signin")
                 }
             }
         }

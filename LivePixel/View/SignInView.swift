@@ -13,19 +13,21 @@ struct SignInView: View {
     @State var displayName:Text = Text("anomymouse signin")
     @State var profileImageURL:URL? = nil
     @State var isAnomymouse:Bool = false
-    @State var alertMsg:String = "" {
+    @State var alertMsg:Text = Text("") {
         willSet {
             isAlert = true
         }
     }
     
     @State var isAlert:Bool = false
+    @State var alertAction:(()->Void)? = nil
     private func refreshSigninName() {
         #if targetEnvironment(simulator)
         #else
         isSignIn = AuthManager.shared.auth.currentUser != nil
         isAnomymouse = AuthManager.shared.auth.currentUser?.isAnonymous ?? false
         
+        print("uid : \(AuthManager.shared.auth.currentUser?.uid ?? "none")")
         if isAnomymouse {
             displayName = Text("anomymouse")
         }
@@ -37,19 +39,33 @@ struct SignInView: View {
         #endif
     }
     
+    private var deleteAccountButton : some View {
+        RoundedButton(title: Text("delete account"), style: .deleteStyle) {
+            if AuthManager.shared.auth.currentUser?.isAnonymous == true {
+                alertMsg = Text("delete anonymous account alert msg")
+            } else {
+                alertMsg = Text("delete account alert msg")
+            }
+            alertAction = {
+                AuthManager.shared.leave { error in
+                    refreshSigninName()
+                }
+            }
+        }
+    }
+    
     var body: some View {
         VStack {
             if isSignIn {
                 NetImageView(url: profileImageURL?.absoluteString, placeholder: Image(systemName: "person"))
                 displayName
                 HStack {
-                    RoundedButton(title: Text("sign out")) {
-                        if isAnomymouse {
-                            AuthManager.shared.leave { error in
-                                refreshSigninName()
-                            }
-                        } else {
-                            AuthManager.shared.signout()
+                    if isAnomymouse {
+                        deleteAccountButton
+                    }
+                    else {
+                        RoundedButton(title: Text("sign out")) {
+                                AuthManager.shared.signout()
                         }
                     }
                     
@@ -59,7 +75,7 @@ struct SignInView: View {
                                 refreshSigninName()
                                 AuthManager.shared.upgradeAnonymousWithAppleId { isSucess, error in
                                     if let err = error {
-                                        alertMsg = err.localizedDescription
+                                        alertMsg = Text(err.localizedDescription)
                                     }
                                     else {
                                         refreshSigninName()
@@ -69,7 +85,7 @@ struct SignInView: View {
                             AuthorizationButton(provider: .google, sizeType: .large, authType: .signin) {
                                 AuthManager.shared.upgradeAnonymousWithGoogleId { isSucess, error in
                                     if let err = error {
-                                        alertMsg = err.localizedDescription
+                                        alertMsg = Text(err.localizedDescription)
                                     }
                                     else {
                                         refreshSigninName()
@@ -79,16 +95,7 @@ struct SignInView: View {
                         }
                     }
                     else {
-                        RoundedButton(title: Text("delete account"), style: .deleteStyle) {
-                            AuthManager.shared.leave { error in
-                                if let err = error {
-                                    alertMsg = err.localizedDescription
-                                }
-                                else {
-                                    refreshSigninName()
-                                }
-                            }
-                        }
+                        deleteAccountButton
                     }
                 }
             } else {
@@ -96,7 +103,7 @@ struct SignInView: View {
                     refreshSigninName()
                     AuthManager.shared.startSignInWithAppleFlow { loginSucess, error in
                         if let err = error {
-                            alertMsg = err.localizedDescription
+                            alertMsg = Text(err.localizedDescription)
                         }
                         else {
                             refreshSigninName()
@@ -107,7 +114,7 @@ struct SignInView: View {
                 AuthorizationButton(provider: .google, sizeType: .large, authType: .signin) {
                     AuthManager.shared.startSignInWithGoogleId { loginSucess, error in
                         if let err = error {
-                            alertMsg = err.localizedDescription
+                            alertMsg = Text(err.localizedDescription)
                         }
                         else {
                             refreshSigninName()
@@ -118,7 +125,7 @@ struct SignInView: View {
                 RoundedButton(title: Text("anomymouse signin")) {
                     AuthManager.shared.startSignInAnonymously { loginSucess, error in
                         if let err = error {
-                            alertMsg = err.localizedDescription
+                            alertMsg = Text(err.localizedDescription)
                         }
                         else {
                             refreshSigninName()
@@ -143,7 +150,14 @@ struct SignInView: View {
             refreshSigninName()
         }
         .alert(isPresented: $isAlert) {
-            .init(title: Text("alert"), message: Text(alertMsg))
+            if let action = alertAction {
+                return .init(
+                    title: Text("alert"),
+                    message: alertMsg,
+                    primaryButton: .default(Text("confirm"), action: action), secondaryButton: .cancel())
+            } else {
+                return .init(title: Text("alert"), message: alertMsg)
+            }
         }
         
     }

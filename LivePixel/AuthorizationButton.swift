@@ -101,8 +101,6 @@ struct AuthorizationButton : View {
         .overlay(
             RoundedRectangle(cornerRadius: 30).stroke(Color.primary, lineWidth:1)
         )
-        .padding(.leading, 10)
-        .padding(.trailing, 10)
     }
 }
 struct AuthorizationButton_Preview: PreviewProvider {

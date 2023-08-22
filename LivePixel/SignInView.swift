@@ -43,6 +43,12 @@ struct SignInView: View {
                 }
             }
         }
+        .padding(10)
+        .overlay {
+            RoundedRectangle(cornerRadius: 10)
+                .stroke(lineWidth:2)
+        }
+        .padding(10)
         .onReceive(NotificationCenter.default.publisher(for: .authDidSucessed)) { noti in
             refreshSigninName()
         }

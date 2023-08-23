@@ -22,9 +22,13 @@ struct SignInView: View {
     
     @State var isAlert:Bool = false
     @State var alertAction:(()->Void)? = nil
+    @State var profile:ProfileModel? = nil
     private func refreshSigninName() {
         #if targetEnvironment(simulator)
         #else
+        ProfileModel.current?.getInfo(complete: { model, error in
+            profile = model
+        })
         isSignIn = AuthManager.shared.auth.currentUser != nil
         isAnomymouse = AuthManager.shared.auth.currentUser?.isAnonymous ?? false
         
@@ -114,7 +118,7 @@ struct SignInView: View {
     var body: some View {
         VStack {
             if isSignIn {
-                ProfileView(profile: .current)
+                ProfileView(profile: self.profile ?? .current)
                 HStack {
                     if isAnomymouse {
                         deleteAccountButton
@@ -187,6 +191,7 @@ struct SignInView_Previews: PreviewProvider {
         SignInView(
             id: "test",
             isSignIn: true,
-            displayName: Text("kongbaguni@gmail.com"), profileImageURL: URL(string: "https://img.freepik.com/premium-photo/cute-cat-cartoon-vector-icon-illustration_780593-3020.jpg"))
+            displayName: Text("kongbaguni@gmail.com"),
+            profileImageURL: URL(string: "https://img.freepik.com/premium-photo/cute-cat-cartoon-vector-icon-illustration_780593-3020.jpg"))
     }
 }

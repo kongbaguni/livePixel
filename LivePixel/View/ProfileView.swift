@@ -13,9 +13,18 @@ struct ProfileView: View {
     @State var nickname:String = "없다"
     var body: some View {
         VStack(alignment:.leading) {
-            NetImageView(
-                url: profile?.profileURL,
-                placeholder: Image(systemName: "person.fill"))
+            ZStack(alignment:.topTrailing) {
+                NetImageView(
+                    url: profile?.profileURL,
+                    placeholder: Image(systemName: "person.fill"))
+                if profile?.isMe == true {
+                    NavigationLink {
+                        ProfileEditView(profile: profile)
+                    } label: {
+                        Image(systemName: "pencil")
+                    }
+                }
+            }
             Text(profile?.nickname ?? profile?.id ?? nickname)
                 .font(.headline)
                 .foregroundColor(.primary)
@@ -24,13 +33,6 @@ struct ProfileView: View {
                     .font(.body)
                     .lineLimit(2)
                     .foregroundColor(.secondary)
-            }
-            if profile?.isMe == true {
-                NavigationLink {
-                    ProfileEditView(profile: profile)                    
-                } label: {
-                    Image(systemName: "pencil")
-                }
             }
 
         }
@@ -59,6 +61,7 @@ struct ProfileView: View {
 
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
+        ProfileView(profile: .init(id: "test"))
         ProfileView(profile: .init(
             id:"test@gmail.com",
             nickname: nil,//"고영희",

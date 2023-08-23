@@ -22,7 +22,12 @@ struct ContentView: View {
                     .navigationTitle(Text("canvas"))
                     .toolbar {
                         NavigationLink {
+#if !targetEnvironment(simulator)
+                            SignInView(isSignIn: AuthManager.shared.isSignined)
+                            #else
                             SignInView()
+                            #endif
+                            
                         } label: {
                             Group {
 #if !targetEnvironment(simulator)

@@ -8,10 +8,14 @@
 import SwiftUI
 
 struct ProfileEditView: View {
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+
     @State var profile:ProfileModel?
 
     @State var nickname:String = ""
     @State var introduce:String = ""
+    @State var isAlert:Bool = false
+    @State var alertMsg:Text = Text("")
     func makeButton(title:Text,placeHolder:String,value:Binding<String>,prompt:Text?)-> some View {
         HStack {
             title
@@ -36,6 +40,9 @@ struct ProfileEditView: View {
 #endif
         }
         .navigationTitle(Text("edit profile"))
+        .alert(isPresented: $isAlert) {
+            .init(title: Text("alert"), message: alertMsg)
+        }
     }
     
     func load() {
@@ -46,7 +53,13 @@ struct ProfileEditView: View {
         profile?.nickname = nickname
         profile?.introduce = introduce
         profile?.update{ error in
-            
+            if let err = error {
+                alertMsg = Text(err.localizedDescription)
+                isAlert = true
+            }
+            else {
+                presentationMode.wrappedValue.dismiss()
+            }
         }
     }
 }

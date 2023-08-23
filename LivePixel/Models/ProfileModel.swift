@@ -105,12 +105,14 @@ extension ProfileModel {
         guard let value = dicValue else {
             return
         }
-        collection.document(id).updateData(value) { error in
-            if error != nil {
-                collection.document(id).setData(value) { error in
-                    
+        collection.document(id).updateData(value) { errorA in
+            if errorA != nil {
+                collection.document(id).setData(value) { errorB in
+                    complete(errorB)
                 }
+                return
             }
+            complete(errorA)
         }
     }
 }

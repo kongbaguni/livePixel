@@ -274,6 +274,7 @@ extension AuthManager: ASAuthorizationControllerDelegate {
                     }
                     print("login sucess")
                     didComplete(true, nil)
+                    NotificationCenter.default.post(name: .authDidSucessed, object: nil)
                     print(authResult?.user.email ?? "없다")
                 }
             } else {

@@ -16,3 +16,9 @@
 "delete anonymous account alert msg" = "계정을 삭제합니다.";
 "delete account alert msg" = "계정을 삭제합니다.";
 "confirm" = "확인";
+"signin" = "로그인";
+"profile" = "프로필";
+"nickname" = "닉네임";
+"edit profile" = "프로필 편집";
+"introduce" = "자기소개";
+"input introduce" = "자기소개 입력";

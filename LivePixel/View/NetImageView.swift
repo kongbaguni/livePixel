@@ -21,7 +21,8 @@ struct NetImageView: View {
             }
             placeholder
                 .resizable()
-                .scaledToFit()
+                .scaledToFit()                
+                .foregroundColor(.gray)
                 .blur(radius: errorMsg != nil ? 10 : 0)
                 .opacity(errorMsg != nil ? 0.3 : 1.0)
         }
@@ -46,5 +47,7 @@ struct NetImageView_Previews: PreviewProvider {
     static var previews: some View {
         NetImageView(
             url:"https://img.freepik.com/premium-photo/cute-cat-cartoon-vector-icon-illustration_780593-3020.jpg")
+        NetImageView(
+            url:nil)
     }
 }

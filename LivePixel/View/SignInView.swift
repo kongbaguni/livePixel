@@ -9,6 +9,7 @@ import SwiftUI
 import AlamofireImage
 
 struct SignInView: View {
+    @State var id:String = ""
     @State var isSignIn:Bool = false
     @State var displayName:Text = Text("anomymouse signin")
     @State var profileImageURL:URL? = nil
@@ -36,6 +37,7 @@ struct SignInView: View {
         }
         profileImageURL = AuthManager.shared.auth.currentUser?.photoURL
         
+        id = AuthManager.shared.userId ?? ""
         #endif
     }
     
@@ -54,11 +56,65 @@ struct SignInView: View {
         }
     }
     
+    private var appleSignIn : some View {
+        AuthorizationButton(provider: .apple, sizeType: .small, authType: .signin) {
+            refreshSigninName()
+            AuthManager.shared.startSignInWithAppleFlow { isSucess, error in
+                if let err = error {
+                    alertMsg = Text(err.localizedDescription)
+                }
+                else {
+                    refreshSigninName()
+                }
+            }
+        }
+    }
+    
+    private var appleUpgrade : some View {
+        AuthorizationButton(provider: .apple, sizeType: .small, authType: .signin) {
+            refreshSigninName()
+            AuthManager.shared.upgradeAnonymousWithAppleId { isSucess, error in
+                if let err = error {
+                    alertMsg = Text(err.localizedDescription)
+                }
+                else {
+                    refreshSigninName()
+                }
+            }
+        }
+
+    }
+    
+    private var googleSignIn : some View {
+        AuthorizationButton(provider: .google, sizeType: .small, authType: .signin) {
+            AuthManager.shared.startSignInWithGoogleId { loginSucess, error in
+                if let err = error {
+                    alertMsg = Text(err.localizedDescription)
+                }
+                else {
+                    refreshSigninName()
+                }
+            }
+        }
+    }
+    
+    private var googleUpgrade : some View {
+        AuthorizationButton(provider: .google, sizeType: .small, authType: .signin) {
+            AuthManager.shared.upgradeAnonymousWithGoogleId { isSucess, error in
+                if let err = error {
+                    alertMsg = Text(err.localizedDescription)
+                }
+                else {
+                    refreshSigninName()
+                }
+            }
+        }
+    }
+    
     var body: some View {
         VStack {
             if isSignIn {
-                NetImageView(url: profileImageURL?.absoluteString, placeholder: Image(systemName: "person"))
-                displayName
+                ProfileView(profile: .current)
                 HStack {
                     if isAnomymouse {
                         deleteAccountButton
@@ -70,57 +126,18 @@ struct SignInView: View {
                     }
                     
                     if isAnomymouse {
-                        VStack {
-                            AuthorizationButton(provider: .apple, sizeType: .large, authType: .signin) {
-                                refreshSigninName()
-                                AuthManager.shared.upgradeAnonymousWithAppleId { isSucess, error in
-                                    if let err = error {
-                                        alertMsg = Text(err.localizedDescription)
-                                    }
-                                    else {
-                                        refreshSigninName()
-                                    }
-                                }
-                            }
-                            AuthorizationButton(provider: .google, sizeType: .large, authType: .signin) {
-                                AuthManager.shared.upgradeAnonymousWithGoogleId { isSucess, error in
-                                    if let err = error {
-                                        alertMsg = Text(err.localizedDescription)
-                                    }
-                                    else {
-                                        refreshSigninName()
-                                    }
-                                }
-                            }
-                        }
+                        appleUpgrade
+                        googleUpgrade
                     }
                     else {
                         deleteAccountButton
                     }
                 }
             } else {
-                AuthorizationButton(provider: .apple, sizeType: .large, authType: .signin) {
-                    refreshSigninName()
-                    AuthManager.shared.startSignInWithAppleFlow { loginSucess, error in
-                        if let err = error {
-                            alertMsg = Text(err.localizedDescription)
-                        }
-                        else {
-                            refreshSigninName()
-                        }
-                    }
-
-                }
-                AuthorizationButton(provider: .google, sizeType: .large, authType: .signin) {
-                    AuthManager.shared.startSignInWithGoogleId { loginSucess, error in
-                        if let err = error {
-                            alertMsg = Text(err.localizedDescription)
-                        }
-                        else {
-                            refreshSigninName()
-                        }
-                    }
-                    
+                Text("signin")
+                HStack {
+                    appleSignIn
+                    googleSignIn
                 }
                 RoundedButton(title: Text("anomymouse signin")) {
                     AuthManager.shared.startSignInAnonymously { loginSucess, error in
@@ -134,6 +151,7 @@ struct SignInView: View {
                 }
             }
         }
+        .navigationTitle(isSignIn ? Text("profile") : Text("signin"))
         .padding(10)
         .overlay {
             RoundedRectangle(cornerRadius: 10)
@@ -167,6 +185,7 @@ struct SignInView_Previews: PreviewProvider {
     static var previews: some View {
         SignInView()
         SignInView(
+            id: "test",
             isSignIn: true,
             displayName: Text("kongbaguni@gmail.com"), profileImageURL: URL(string: "https://img.freepik.com/premium-photo/cute-cat-cartoon-vector-icon-illustration_780593-3020.jpg"))
     }

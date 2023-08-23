@@ -6,3 +6,4 @@
   
 */
 "CFBundleName" = "라이브픽셀";
+"NSPhotoLibraryUsageDescription" = "프로필 이미지 업로드를 위해 사용합니다.";

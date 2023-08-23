@@ -6,3 +6,4 @@
   
 */
 "CFBundleName" = "Live Pixel";
+"NSPhotoLibraryUsageDescription" = "Used for uploading profile images.";

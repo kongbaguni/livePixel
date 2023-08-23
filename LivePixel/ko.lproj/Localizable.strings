@@ -9,6 +9,7 @@
 "anomymouse" = "익명";
 "Sign in with Apple" = "애플아이디로 로그인";
 "Sign in with Google" = "구글아이디로 로그인";
+"Sign in anonymous" = "익명으로 로그인";
 "sign out" = "로그아웃";
 "delete account" = "계정 삭제";
 "alert" = "알림";
@@ -22,3 +23,4 @@
 "edit profile" = "프로필 편집";
 "introduce" = "자기소개";
 "input introduce" = "자기소개 입력";
+"profile image" = "프로필 이미지";

@@ -19,6 +19,8 @@
 		1B8EC3392A959B0200A723D4 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8EC3382A959B0200A723D4 /* ProfileView.swift */; };
 		1B8EC33B2A95B3C700A723D4 /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8EC33A2A95B3C700A723D4 /* CanvasView.swift */; };
 		1B8EC33D2A95CAF600A723D4 /* ProfileEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8EC33C2A95CAF600A723D4 /* ProfileEditView.swift */; };
+		1BE7608C2A95F32800C954E2 /* PhotoPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE7608B2A95F32800C954E2 /* PhotoPicker.swift */; };
+		1BE7608E2A95F4FC00C954E2 /* FirebaseStorageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE7608D2A95F4FC00C954E2 /* FirebaseStorageHelper.swift */; };
 		1BF7689C2A95937E0095A09C /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 1BF7689B2A95937E0095A09C /* FirebaseAnalytics */; };
 		1BF7689E2A95937E0095A09C /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = 1BF7689D2A95937E0095A09C /* FirebaseAnalyticsOnDeviceConversion */; };
 		1BF768A02A95937E0095A09C /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 1BF7689F2A95937E0095A09C /* FirebaseAnalyticsSwift */; };
@@ -75,6 +77,8 @@
 		1B8EC3382A959B0200A723D4 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		1B8EC33A2A95B3C700A723D4 /* CanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
 		1B8EC33C2A95CAF600A723D4 /* ProfileEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditView.swift; sourceTree = "<group>"; };
+		1BE7608B2A95F32800C954E2 /* PhotoPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoPicker.swift; sourceTree = "<group>"; };
+		1BE7608D2A95F4FC00C954E2 /* FirebaseStorageHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseStorageHelper.swift; sourceTree = "<group>"; };
 		8D1E60AC2A932F4200952196 /* AuthManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		8D1E60B32A93317700952196 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
 		8D1E60B52A93342400952196 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
@@ -143,6 +147,7 @@
 				1B8EC3382A959B0200A723D4 /* ProfileView.swift */,
 				1B8EC33C2A95CAF600A723D4 /* ProfileEditView.swift */,
 				1B8EC33A2A95B3C700A723D4 /* CanvasView.swift */,
+				1BE7608B2A95F32800C954E2 /* PhotoPicker.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -166,6 +171,7 @@
 		8D5F12532A93209500ACDAC4 /* LivePixel */ = {
 			isa = PBXGroup;
 			children = (
+				1BE7608D2A95F4FC00C954E2 /* FirebaseStorageHelper.swift */,
 				1B47E1512A9498F5005C036F /* View */,
 				8D1E60B82A9338A300952196 /* Info.plist */,
 				8D5F12632A9323EC00ACDAC4 /* Models */,
@@ -350,6 +356,7 @@
 				8D1E60B42A93317800952196 /* UIApplication+Extensions.swift in Sources */,
 				1B8EC33D2A95CAF600A723D4 /* ProfileEditView.swift in Sources */,
 				1B8EC33B2A95B3C700A723D4 /* CanvasView.swift in Sources */,
+				1BE7608E2A95F4FC00C954E2 /* FirebaseStorageHelper.swift in Sources */,
 				8D5F12572A93209500ACDAC4 /* ContentView.swift in Sources */,
 				8D1E60AD2A932F4200952196 /* AuthManager.swift in Sources */,
 				8D5F126A2A9324E200ACDAC4 /* Stack.swift in Sources */,
@@ -358,6 +365,7 @@
 				1B47E1442A946F9A005C036F /* NetImageView.swift in Sources */,
 				1B47E1532A9499A5005C036F /* RoundedButton.swift in Sources */,
 				8D1E60B62A93342400952196 /* SignInView.swift in Sources */,
+				1BE7608C2A95F32800C954E2 /* PhotoPicker.swift in Sources */,
 				1B47E1502A948BC8005C036F /* Toast.swift in Sources */,
 				1B47E13D2A944529005C036F /* AuthorizationButton.swift in Sources */,
 				1B8EC3392A959B0200A723D4 /* ProfileView.swift in Sources */,
@@ -518,6 +526,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LivePixel/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.graphics-design";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "upload photo";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -551,6 +560,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LivePixel/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.graphics-design";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "upload photo";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

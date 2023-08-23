@@ -14,6 +14,7 @@ struct AuthorizationButton : View {
     enum ProviderType {
         case apple
         case google
+        case anonymous
     }
 
     enum ButtonSize {
@@ -32,12 +33,18 @@ struct AuthorizationButton : View {
     let action:()->Void
 
     private var headImage : some View {
-        switch provider {
-        case .apple:
-            return Image("signin_logo_apple").resizable().frame(width: 30, height: 30, alignment: .center)
-        case .google:
-            return Image("signin_logo_google").resizable().frame(width: 30, height: 30, alignment: .center)
+        var image:Image {
+            switch provider {
+            case .apple:
+                return Image("signin_logo_apple")
+            case .google:
+                return Image("signin_logo_google")
+            default:
+                break
+            }
+            return Image(systemName: "person.fill")
         }
+        return image.resizable().frame(width: 30, height: 30, alignment: .center)
     }
 
     private var text:Text {
@@ -56,6 +63,14 @@ struct AuthorizationButton : View {
             case .signup:
                 return Text("Sign up with Google")
             }
+        case .anonymous:
+            switch authType {
+            case .signin:
+                return Text("Sign in anonymous")
+            case .signup:
+                return Text("Sign up anonymous")
+            }
+
         }
     }
     
@@ -65,6 +80,8 @@ struct AuthorizationButton : View {
             return Color("signinBtnBackgroundApple")
         case .google:
             return Color("signinBtnBackgroundGoogle")
+        case .anonymous:
+            return Color("signinBtnBackgroundApple")
         }
     }
     
@@ -105,6 +122,10 @@ struct AuthorizationButton : View {
 }
 struct AuthorizationButton_Preview: PreviewProvider {
     static var previews: some View {
+        
+        AuthorizationButton(provider: .anonymous, sizeType: .small, authType: .signin) {
+            
+        }
         AuthorizationButton(provider: .apple, sizeType: .large, authType: .signin) {
             
         }

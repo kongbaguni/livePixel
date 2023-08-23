@@ -10,7 +10,12 @@ import SwiftUI
 struct ProfileView: View {
     @State var profile:ProfileModel?
     
-    @State var nickname:String = "없다"
+    func sync() {
+        profile?.getInfo(complete: { model, error in
+            self.profile = model
+        })
+    }
+    
     var body: some View {
         VStack(alignment:.leading) {
             ZStack(alignment:.topTrailing) {
@@ -25,23 +30,23 @@ struct ProfileView: View {
                     }
                 }
             }
-            Text(profile?.nickname ?? profile?.id ?? nickname)
+            Text(profile?.nickname ?? profile?.id ?? "없다")
                 .font(.headline)
                 .foregroundColor(.primary)
             if let intro = profile?.introduce {
                 Text(intro)
                     .font(.body)
-                    .lineLimit(2)
                     .foregroundColor(.secondary)
             }
 
         }
-        .frame(width: 100)
+//        .frame(width: 100)
         .onAppear {
 #if !targetEnvironment(simulator)
             profile?.getInfo(complete: { model, error in
                 if let model = model {
                     profile = model
+                    print(model.profileURL ?? "프로파일 이미지 없다")
                 }
             })
 #endif
@@ -64,8 +69,8 @@ struct ProfileView_Previews: PreviewProvider {
         ProfileView(profile: .init(id: "test"))
         ProfileView(profile: .init(
             id:"test@gmail.com",
-            nickname: nil,//"고영희",
-            introduce: nil,// "안녕하세요 나는 고영희입니다.\n안녕\n1\n2\n3?",
+            nickname: "고영희",
+            introduce: "안녕하세요 나는 고영희입니다.\n안녕\n1\n2\n3?",
             profileURL: "https://img.freepik.com/premium-photo/a-drawing-of-a-cat-with-a-pink-background-and-the-word-cat-on-it_860805-3820.jpg"
         ))
     }

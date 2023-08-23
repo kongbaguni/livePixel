@@ -61,7 +61,7 @@ struct SignInView: View {
     }
     
     private var appleSignIn : some View {
-        AuthorizationButton(provider: .apple, sizeType: .small, authType: .signin) {
+        AuthorizationButton(provider: .apple, sizeType: .large, authType: .signin) {
             refreshSigninName()
             AuthManager.shared.startSignInWithAppleFlow { isSucess, error in
                 if let err = error {
@@ -90,7 +90,7 @@ struct SignInView: View {
     }
     
     private var googleSignIn : some View {
-        AuthorizationButton(provider: .google, sizeType: .small, authType: .signin) {
+        AuthorizationButton(provider: .google, sizeType: .large, authType: .signin) {
             AuthManager.shared.startSignInWithGoogleId { loginSucess, error in
                 if let err = error {
                     alertMsg = Text(err.localizedDescription)
@@ -114,11 +114,24 @@ struct SignInView: View {
             }
         }
     }
-    
+    private var anonymousSignin : some View {
+        AuthorizationButton(provider: .anonymous, sizeType: .large, authType: .signin) {
+            AuthManager.shared.startSignInAnonymously { loginSucess, error in
+                if let err = error {
+                    alertMsg = Text(err.localizedDescription)
+                }
+                else {
+                    refreshSigninName()
+                }
+            }
+        }
+    }
     var body: some View {
         VStack {
             if isSignIn {
-                ProfileView(profile: self.profile ?? .current)
+                if let profile = profile {
+                    ProfileView(profile: profile)
+                }
                 HStack {
                     if isAnomymouse {
                         deleteAccountButton
@@ -139,19 +152,10 @@ struct SignInView: View {
                 }
             } else {
                 Text("signin")
-                HStack {
+                VStack {
                     appleSignIn
                     googleSignIn
-                }
-                RoundedButton(title: Text("anomymouse signin")) {
-                    AuthManager.shared.startSignInAnonymously { loginSucess, error in
-                        if let err = error {
-                            alertMsg = Text(err.localizedDescription)
-                        }
-                        else {
-                            refreshSigninName()
-                        }
-                    }
+                    anonymousSignin
                 }
             }
         }

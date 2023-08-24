@@ -12,7 +12,9 @@ import AlamofireImage
 struct ProfileEditView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
 
-    @State var profile:ProfileModel?
+    var profile:ProfileModel? {
+        return ProfileModel.current
+    }
 
     @State var nickname:String = ""
     @State var introduce:String = ""
@@ -99,16 +101,21 @@ struct ProfileEditView: View {
             }
             return
         }
-        profile?.nickname = nickname
-        profile?.introduce = introduce
-        profile?.profileURL = profileUrl
-        profile?.update{ error in
-            if let err = error {
-                alertMsg = Text(err.localizedDescription)
-                isAlert = true
-            }
-            else {
-                presentationMode.wrappedValue.dismiss()
+        let data = [
+            "nickname" : nickname,
+            "introduce" : introduce,
+            "profileURL" : profileUrl ?? ""
+        ]
+        if profile?.updateData(data: data) == nil {
+            FirestoreHelper.profileUpload(id: id) { error in
+                if let err = error {
+                    alertMsg = Text(err.localizedDescription)
+                    isAlert = true
+                }
+                else {
+                    presentationMode.wrappedValue.dismiss()
+                }
+
             }
         }
     }
@@ -116,6 +123,6 @@ struct ProfileEditView: View {
 
 struct ProfileEditView_Previews: PreviewProvider {
     static var previews: some View {
-        ProfileEditView(profile: .init(id: "test"))
+        ProfileEditView()
     }
 }

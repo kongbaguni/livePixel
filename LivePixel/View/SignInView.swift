@@ -9,8 +9,18 @@ import SwiftUI
 import AlamofireImage
 
 struct SignInView: View {
-    @State var id:String = ""
+    @State var id:String = "" {
+        didSet {
+            if id.isEmpty == false {
+                FirestoreHelper.getProfile(id: id) { error in
+                    
+                }
+            }
+        }
+    }
+    
     @State var isSignIn:Bool = false
+    
     @State var displayName:Text = Text("anomymouse signin")
     @State var profileImageURL:URL? = nil
     @State var isAnomymouse:Bool = false
@@ -22,13 +32,15 @@ struct SignInView: View {
     
     @State var isAlert:Bool = false
     @State var alertAction:(()->Void)? = nil
-    @State var profile:ProfileModel? = nil
+    var profile:ProfileModel? {
+        return ProfileModel.current
+    }
     private func refreshSigninName() {
         #if targetEnvironment(simulator)
         #else
-        ProfileModel.current?.getInfo(complete: { model, error in
-            profile = model
-        })
+//        ProfileModel.current?.getInfo(complete: { model, error in
+//            profile = model
+//        })
         isSignIn = AuthManager.shared.auth.currentUser != nil
         isAnomymouse = AuthManager.shared.auth.currentUser?.isAnonymous ?? false
         
@@ -129,9 +141,9 @@ struct SignInView: View {
     var body: some View {
         VStack {
             if isSignIn {
-                if let profile = profile {
-                    ProfileView(profile: profile)
-                }
+                
+                ProfileView(id: id)
+                
                 HStack {
                     if isAnomymouse {
                         deleteAccountButton

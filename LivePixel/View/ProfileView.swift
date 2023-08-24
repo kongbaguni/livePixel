@@ -6,16 +6,13 @@
 //
 
 import SwiftUI
-
+import RealmSwift
 struct ProfileView: View {
-    @State var profile:ProfileModel?
-    
-    func sync() {
-        profile?.getInfo(complete: { model, error in
-            self.profile = model
-        })
+    let id:String
+    var profile:ProfileModel? {
+        return try? Realm().object(ofType: ProfileModel.self, forPrimaryKey: id)
     }
-    
+        
     var body: some View {
         VStack(alignment:.leading) {
             ZStack(alignment:.topTrailing) {
@@ -24,13 +21,13 @@ struct ProfileView: View {
                     placeholder: Image(systemName: "person.fill"))
                 if profile?.isMe == true {
                     NavigationLink {
-                        ProfileEditView(profile: profile)
+                        ProfileEditView()
                     } label: {
                         Image(systemName: "pencil")
                     }
                 }
             }
-            Text(profile?.nickname ?? profile?.id ?? "없다")
+            Text(profile?.nickname ?? profile?.id ?? "")
                 .font(.headline)
                 .foregroundColor(.primary)
             if let intro = profile?.introduce {
@@ -39,17 +36,6 @@ struct ProfileView: View {
                     .foregroundColor(.secondary)
             }
 
-        }
-//        .frame(width: 100)
-        .onAppear {
-#if !targetEnvironment(simulator)
-            profile?.getInfo(complete: { model, error in
-                if let model = model {
-                    profile = model
-                    print(model.profileURL ?? "프로파일 이미지 없다")
-                }
-            })
-#endif
         }
         .padding(10)
         .background(Color("dim"))
@@ -66,12 +52,6 @@ struct ProfileView: View {
 
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        ProfileView(profile: .init(id: "test"))
-        ProfileView(profile: .init(
-            id:"test@gmail.com",
-            nickname: "고영희",
-            introduce: "안녕하세요 나는 고영희입니다.\n안녕\n1\n2\n3?",
-            profileURL: "https://img.freepik.com/premium-photo/a-drawing-of-a-cat-with-a-pink-background-and-the-word-cat-on-it_860805-3820.jpg"
-        ))
+        ProfileView(id:"test")
     }
 }

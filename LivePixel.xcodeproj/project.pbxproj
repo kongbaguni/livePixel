@@ -21,6 +21,10 @@
 		1B8EC33D2A95CAF600A723D4 /* ProfileEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8EC33C2A95CAF600A723D4 /* ProfileEditView.swift */; };
 		1BE7608C2A95F32800C954E2 /* PhotoPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE7608B2A95F32800C954E2 /* PhotoPicker.swift */; };
 		1BE7608E2A95F4FC00C954E2 /* FirebaseStorageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE7608D2A95F4FC00C954E2 /* FirebaseStorageHelper.swift */; };
+		1BE760912A96D76700C954E2 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 1BE760902A96D76700C954E2 /* Realm */; };
+		1BE760932A96D76700C954E2 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 1BE760922A96D76700C954E2 /* RealmSwift */; };
+		1BE760952A96DC1B00C954E2 /* Realm.Object+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE760942A96DC1B00C954E2 /* Realm.Object+Extensions.swift */; };
+		1BE760982A96E29B00C954E2 /* FirestoreHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE760972A96E29B00C954E2 /* FirestoreHelper.swift */; };
 		1BF7689C2A95937E0095A09C /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 1BF7689B2A95937E0095A09C /* FirebaseAnalytics */; };
 		1BF7689E2A95937E0095A09C /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = 1BF7689D2A95937E0095A09C /* FirebaseAnalyticsOnDeviceConversion */; };
 		1BF768A02A95937E0095A09C /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 1BF7689F2A95937E0095A09C /* FirebaseAnalyticsSwift */; };
@@ -79,6 +83,8 @@
 		1B8EC33C2A95CAF600A723D4 /* ProfileEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditView.swift; sourceTree = "<group>"; };
 		1BE7608B2A95F32800C954E2 /* PhotoPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoPicker.swift; sourceTree = "<group>"; };
 		1BE7608D2A95F4FC00C954E2 /* FirebaseStorageHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseStorageHelper.swift; sourceTree = "<group>"; };
+		1BE760942A96DC1B00C954E2 /* Realm.Object+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Realm.Object+Extensions.swift"; sourceTree = "<group>"; };
+		1BE760972A96E29B00C954E2 /* FirestoreHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreHelper.swift; sourceTree = "<group>"; };
 		8D1E60AC2A932F4200952196 /* AuthManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		8D1E60B32A93317700952196 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
 		8D1E60B52A93342400952196 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
@@ -105,8 +111,10 @@
 				1BF768AE2A95937E0095A09C /* FirebaseDatabase in Frameworks */,
 				1BF768C42A95937E0095A09C /* FirebaseMLModelDownloader in Frameworks */,
 				1BF768A42A95937E0095A09C /* FirebaseAppCheck in Frameworks */,
+				1BE760912A96D76700C954E2 /* Realm in Frameworks */,
 				1BF768BC2A95937E0095A09C /* FirebaseFunctionsCombine-Community in Frameworks */,
 				1BF768C22A95937E0095A09C /* FirebaseInstallations in Frameworks */,
+				1BE760932A96D76700C954E2 /* RealmSwift in Frameworks */,
 				1BF768C62A95937E0095A09C /* FirebaseMessaging in Frameworks */,
 				1BF768A82A95937E0095A09C /* FirebaseAuth in Frameworks */,
 				1BF768CA2A95937E0095A09C /* FirebaseRemoteConfig in Frameworks */,
@@ -152,6 +160,15 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		1BE760962A96E28700C954E2 /* Firebase */ = {
+			isa = PBXGroup;
+			children = (
+				1BE7608D2A95F4FC00C954E2 /* FirebaseStorageHelper.swift */,
+				1BE760972A96E29B00C954E2 /* FirestoreHelper.swift */,
+			);
+			path = Firebase;
+			sourceTree = "<group>";
+		};
 		8D5F12482A93209500ACDAC4 = {
 			isa = PBXGroup;
 			children = (
@@ -171,7 +188,7 @@
 		8D5F12532A93209500ACDAC4 /* LivePixel */ = {
 			isa = PBXGroup;
 			children = (
-				1BE7608D2A95F4FC00C954E2 /* FirebaseStorageHelper.swift */,
+				1BE760962A96E28700C954E2 /* Firebase */,
 				1B47E1512A9498F5005C036F /* View */,
 				8D1E60B82A9338A300952196 /* Info.plist */,
 				8D5F12632A9323EC00ACDAC4 /* Models */,
@@ -213,6 +230,7 @@
 			isa = PBXGroup;
 			children = (
 				8D1E60B32A93317700952196 /* UIApplication+Extensions.swift */,
+				1BE760942A96DC1B00C954E2 /* Realm.Object+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -265,6 +283,8 @@
 				1BF768CB2A95937E0095A09C /* FirebaseRemoteConfigSwift */,
 				1BF768CD2A95937E0095A09C /* FirebaseStorage */,
 				1BF768CF2A95937E0095A09C /* FirebaseStorageCombine-Community */,
+				1BE760902A96D76700C954E2 /* Realm */,
+				1BE760922A96D76700C954E2 /* RealmSwift */,
 			);
 			productName = LivePixel;
 			productReference = 8D5F12512A93209500ACDAC4 /* LivePixel.app */;
@@ -299,6 +319,7 @@
 				8D1E60AE2A932FC300952196 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				1B47E1402A946DE0005C036F /* XCRemoteSwiftPackageReference "AlamofireImage" */,
 				1BF7689A2A95937E0095A09C /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				1BE7608F2A96D76700C954E2 /* XCRemoteSwiftPackageReference "realm-swift" */,
 			);
 			productRefGroup = 8D5F12522A93209500ACDAC4 /* Products */;
 			projectDirPath = "";
@@ -367,6 +388,8 @@
 				8D1E60B62A93342400952196 /* SignInView.swift in Sources */,
 				1BE7608C2A95F32800C954E2 /* PhotoPicker.swift in Sources */,
 				1B47E1502A948BC8005C036F /* Toast.swift in Sources */,
+				1BE760982A96E29B00C954E2 /* FirestoreHelper.swift in Sources */,
+				1BE760952A96DC1B00C954E2 /* Realm.Object+Extensions.swift in Sources */,
 				1B47E13D2A944529005C036F /* AuthorizationButton.swift in Sources */,
 				1B8EC3392A959B0200A723D4 /* ProfileView.swift in Sources */,
 				8D5F12672A93244B00ACDAC4 /* DoteModel.swift in Sources */,
@@ -612,6 +635,14 @@
 				minimumVersion = 4.0.0;
 			};
 		};
+		1BE7608F2A96D76700C954E2 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		1BF7689A2A95937E0095A09C /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -635,6 +666,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 1B47E1402A946DE0005C036F /* XCRemoteSwiftPackageReference "AlamofireImage" */;
 			productName = AlamofireImage;
+		};
+		1BE760902A96D76700C954E2 /* Realm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1BE7608F2A96D76700C954E2 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = Realm;
+		};
+		1BE760922A96D76700C954E2 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1BE7608F2A96D76700C954E2 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
 		};
 		1BF7689B2A95937E0095A09C /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;

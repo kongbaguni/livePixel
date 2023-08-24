@@ -16,6 +16,9 @@ struct ContentView: View {
      
         #endif
     }
+#if !targetEnvironment(simulator)
+    @State var isSignin = false
+    #endif
     var body: some View {
         NavigationView {
             NavigationStack {
@@ -24,7 +27,7 @@ struct ContentView: View {
                     .toolbar {
                         NavigationLink {
 #if !targetEnvironment(simulator)
-                            SignInView(isSignIn: AuthManager.shared.isSignined)
+                            SignInView(isSignIn: isSignin)
                             #else
                             SignInView()
                             #endif
@@ -42,6 +45,17 @@ struct ContentView: View {
             }
         }
         .navigationViewStyle(.stack)
+        .onAppear {
+#if !targetEnvironment(simulator)
+            isSignin = AuthManager.shared.isSignined
+            #endif 
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .signoutDidSucessed)) { noti in
+            isSignin = false
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .authDidSucessed)) { noti in
+            isSignin = true
+        }
     }
 }
 

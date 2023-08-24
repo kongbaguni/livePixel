@@ -30,6 +30,7 @@ struct SignInView: View {
     
     @State var isAlert:Bool = false
     @State var alertAction:(()->Void)? = nil
+    
     var profile:ProfileModel? {
         return ProfileModel.current
     }

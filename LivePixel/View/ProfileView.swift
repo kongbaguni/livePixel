@@ -30,8 +30,15 @@ struct ProfileView: View {
         Observable.collection(from: Realm.shared.objects(ProfileModel.self))
             .subscribe { [self] event in
                 switch event {
-                case .next(_):
-                    loadData()
+                case .next(let list):
+                    _ = list.map { model in
+                        if model.id == id {
+                            nickname = model.nickname
+                            introduce = model.introduce
+                            return true
+                        }
+                        return false
+                    }
                     break
                 default:
                     break
@@ -59,7 +66,13 @@ struct ProfileView: View {
                     NavigationLink {
                         ProfileEditView()
                     } label: {
-                        Image(systemName: "pencil")
+                        Image(systemName: "pencil.circle.fill")
+                            .resizable().frame(width: 50, height: 50)
+                            .padding(5)
+                            .foregroundColor(Color("normalText"))
+                            .background(Color("dim"))
+                            .cornerRadius(30)
+                            .padding(5)
                     }
                 }
             }
@@ -85,6 +98,10 @@ struct ProfileView: View {
         }
         .shadow(radius: 10)
         .padding(10)
+        .onReceive(NotificationCenter.default.publisher(for: .authDidSucessed)) { noti in
+            loadData()
+        }
+
     }
 
 }

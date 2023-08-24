@@ -20,6 +20,7 @@ struct FirestoreHelper {
                     try realm.write{
                         realm.create(ProfileModel.self, value: data, update: .all)
                     }
+                    complete(nil)
                 } catch {
                     complete(error)
                 }

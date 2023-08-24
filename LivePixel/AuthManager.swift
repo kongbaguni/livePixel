@@ -12,6 +12,7 @@ import Firebase
 import FirebaseAuth
 import GoogleSignIn
 import SwiftUI
+import RealmSwift
 
 extension Notification.Name {
     static let authDidSucessed = Notification.Name("authDidSucessed_observer")
@@ -122,6 +123,13 @@ class AuthManager : NSObject {
                     complete(false, err)
                     return
                 }
+                
+                if let id = result?.user.uid {
+                    FirestoreHelper.getProfile(id: id) { error in
+                        NotificationCenter.default.post(name: .authDidSucessed, object: nil)
+                    }
+                }
+
                 NotificationCenter.default.post(name: .authDidSucessed, object: nil)
                 complete(true, nil)
                 
@@ -161,6 +169,10 @@ class AuthManager : NSObject {
     func signout() {
         do {
             try auth.signOut()
+            let realm = Realm.shared
+            realm.beginWrite()
+            realm.deleteAll()
+            try? realm.commitWrite()
             NotificationCenter.default.post(name: .signoutDidSucessed, object: nil)
         } catch {
             print(error.localizedDescription)
@@ -273,7 +285,14 @@ extension AuthManager: ASAuthorizationControllerDelegate {
                         return
                     }
                     print("login sucess")
+                    if let id = authResult?.user.uid {
+                        FirestoreHelper.getProfile(id: id) { error in
+                            NotificationCenter.default.post(name: .authDidSucessed, object: nil)
+                        }
+                    }
+                    
                     didComplete(true, nil)
+                    
                     NotificationCenter.default.post(name: .authDidSucessed, object: nil)
                     print(authResult?.user.email ?? "없다")
                 }

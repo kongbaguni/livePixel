@@ -8,30 +8,23 @@
 import SwiftUI
 import Alamofire
 import AlamofireImage
-
+import Kingfisher
 struct NetImageView: View {
     let url:String?
     @State var placeholder:SwiftUI.Image = .init(systemName: "photo.on.rectangle.angled")
     @Binding var error:Error?
     var body: some View {
         ZStack {
-            placeholder
-                .resizable()
-                .scaledToFit()                
-                .foregroundColor(.gray)
-        }
-        .onAppear {
-            guard let url = url else {
-                return
-            }
-            AF.request(url).responseImage { response in
-                let result = response.result
-                switch result {
-                case .success(let image) :
-                    placeholder = .init(uiImage: image)
-                case .failure(let error) :
-                    self.error = error
-                }
+            if let url = url {
+                KFImage(URL(string: url))
+                    .resizable()
+                    .scaledToFit()
+                    .foregroundColor(.gray)
+            } else {
+                placeholder
+                    .resizable()
+                    .scaledToFit()
+                    .foregroundColor(.gray)
             }
         }
     }

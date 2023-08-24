@@ -12,7 +12,7 @@ struct FSImageView: View {
     let type:FirebaseStorageHelper.DataPath
     let placeHolder:Image
     @State var imgurl:String? = nil
-    @State var error:Error? = nil
+    @State var error:Error? = nil    
     var body: some View {
         ZStack {
             if let url = imgurl {
@@ -20,15 +20,6 @@ struct FSImageView: View {
             } else {
                 placeHolder.resizable().scaledToFit()
             }
-//            if let err = error {
-//                Button{
-//                    refresh()
-//                } label: {
-//                    VStack {
-//                        Image(systemName: "arrow.clockwise.circle.fill")
-//                    }
-//                }
-//            }
         }
         .onAppear {
             refresh()

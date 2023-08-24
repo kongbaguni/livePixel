@@ -16,9 +16,11 @@ struct ProfileView: View {
     var body: some View {
         VStack(alignment:.leading) {
             ZStack(alignment:.topTrailing) {
-                NetImageView(
-                    url: profile?.profileURL,
-                    placeholder: Image(systemName: "person.fill"))
+                if let url = profile?.profileURL {
+                    NetImageView(
+                        url: url,
+                        placeholder: Image(systemName: "person.fill"))
+                }
                 if profile?.isMe == true {
                     NavigationLink {
                         ProfileEditView()

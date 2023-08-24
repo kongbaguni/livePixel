@@ -32,12 +32,7 @@ struct ContentView: View {
                         } label: {
                             Group {
 #if !targetEnvironment(simulator)
-                                if let id = AuthManager.shared.userId {
-                                    FSImageView(id: id,
-                                                type: .profileImage, placeHolder: Image(systemName: "person.fill"))
-                                } else {
-                                    Image(systemName: "person.fill")
-                                }
+                                ProfileImageViewForNavigation()
 #else
                                 Image(systemName: "person.fill")
 #endif

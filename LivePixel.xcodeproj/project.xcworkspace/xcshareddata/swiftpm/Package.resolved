@@ -158,8 +158,26 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/realm/realm-swift.git",
       "state" : {
-        "branch" : "master",
-        "revision" : "752f8ae418f97c7e90c2c83ebeeb534c0357df4d"
+        "revision" : "933abaa8076966e237e66497def74df84c6adbb4",
+        "version" : "10.42.0"
+      }
+    },
+    {
+      "identity" : "rxrealm",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/RxSwiftCommunity/RxRealm.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "5431fe18e341c41b9eeb56cf68e709ba8e54d4c9"
+      }
+    },
+    {
+      "identity" : "rxswift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ReactiveX/RxSwift.git",
+      "state" : {
+        "revision" : "9dcaa4b333db437b0fbfaf453fad29069044a8b4",
+        "version" : "6.6.0"
       }
     },
     {

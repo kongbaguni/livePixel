@@ -16,7 +16,7 @@ struct FirestoreHelper {
             if let data = snapshot?.data() {
                 print(data)
                 do {
-                    let realm = try Realm()
+                    let realm = Realm.shared
                     try realm.write{
                         realm.create(ProfileModel.self, value: data, update: .all)
                     }
@@ -30,7 +30,7 @@ struct FirestoreHelper {
     }
     
     static func profileUpload(id:String,complete:@escaping(_ error:Error?)->Void) {
-        guard let model = try? Realm().object(ofType: ProfileModel.self, forPrimaryKey: id) else {
+        guard let model = Realm.shared.object(ofType: ProfileModel.self, forPrimaryKey: id) else {
             return
         }
         let value = model.dictionmaryValue

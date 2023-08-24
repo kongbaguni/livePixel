@@ -7,12 +7,13 @@
 
 import SwiftUI
 import FirebaseCore
+import RealmSwift
 
 struct ContentView: View {
-    @State var profileURL:String? = nil
     init() {
         #if !targetEnvironment(simulator)
         FirebaseApp.configure()
+     
         #endif
     }
     var body: some View {
@@ -31,8 +32,9 @@ struct ContentView: View {
                         } label: {
                             Group {
 #if !targetEnvironment(simulator)
-                                if let url = profileURL {
-                                    NetImageView(url: url, placeholder: Image(systemName: "person.fill"), error: .constant(nil))
+                                if let id = AuthManager.shared.userId {
+                                    FSImageView(id: id,
+                                                type: .profileImage, placeHolder: Image(systemName: "person.fill"))
                                 } else {
                                     Image(systemName: "person.fill")
                                 }
@@ -45,20 +47,6 @@ struct ContentView: View {
             }
         }
         .navigationViewStyle(.stack)
-        .onAppear {
-#if !targetEnvironment(simulator)
-            profileURL = AuthManager.shared.auth.currentUser?.photoURL?.absoluteString
-            print("profileURL : \(profileURL ?? "none")")
-
-#endif
-        }
-        .onReceive(NotificationCenter.default.publisher(for: .authDidSucessed)) { noti in
-            profileURL = AuthManager.shared.auth.currentUser?.photoURL?.absoluteString
-            print("profileURL : \(profileURL ?? "none")")
-        }
-        .onReceive(NotificationCenter.default.publisher(for: .signoutDidSucessed)) { noti in
-            profileURL = nil
-        }
     }
 }
 

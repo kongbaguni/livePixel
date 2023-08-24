@@ -7,3 +7,4 @@
 */
 "anomymouse signin" = "anomymouse signin";
 "anomymouse" = "anomymouse";
+"photo permission alert" = "You do not have permission to access the photo album. You need to set the access permission";

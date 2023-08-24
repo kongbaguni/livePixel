@@ -22,6 +22,7 @@ struct ProfileEditView: View {
     @State var alertMsg:Text = Text("")
     @State var isSheetPhotoPicker = false
     @State var images:[UIImage] = []
+    @State var alertConfirmAction:(()->Void)? = nil
     
     func makeInputField(title:Text,placeHolder:String,value:Binding<String>,prompt:Text?)-> some View {
         HStack {
@@ -40,7 +41,8 @@ struct ProfileEditView: View {
             HStack {
                 
                 if let img = images.first {
-                    Image(uiImage: img).resizable().scaledToFit()
+                    let newimg = img.af.imageAspectScaled(toFill: .init(width: 200, height: 200))
+                    Image(uiImage: newimg).resizable().scaledToFit()
                 } else {
                     if let id = profile?.id {
                         FSImageView(id: id, type: .profileImage, placeHolder: Image(systemName: "person.fill"))
@@ -52,6 +54,11 @@ struct ProfileEditView: View {
                         case .authorized:
                             isSheetPhotoPicker = true
                         default:
+                            alertMsg = Text("photo permission alert")
+                            alertConfirmAction = {
+                                UIApplication.shared.open(URL(string:UIApplication.openSettingsURLString)!)
+                            }
+                            isAlert = true
                             break
                         }
                     }
@@ -69,7 +76,13 @@ struct ProfileEditView: View {
         }
         .navigationTitle(Text("edit profile"))
         .alert(isPresented: $isAlert) {
-            .init(title: Text("alert"), message: alertMsg)
+            if let action = alertConfirmAction {
+                return .init(title: Text("alert"), message: alertMsg,
+                             primaryButton: .default(Text("confirm"), action: action),
+                             secondaryButton: .cancel())
+            } else {
+                return .init(title: Text("alert"), message: alertMsg)
+            }
         }
         .sheet(isPresented: $isSheetPhotoPicker) {
             PhotoPicker(images: $images)
@@ -80,36 +93,37 @@ struct ProfileEditView: View {
         nickname = profile?.nickname ?? ""
         introduce = profile?.introduce ?? ""
     }
-    func save(profileUrl:String? = nil) {
+    func save() {
         guard let id = AuthManager.shared.userId else {
             return
         }
         
         
-        
-        if let data = images.first?.af.imageAspectScaled(toFit: .init(width: 200, height: 200)).jpegData(compressionQuality: 0.7) {
-            
+        if let data = images.first?.af.imageAspectScaled(toFill: .init(width: 200, height: 200)).jpegData(compressionQuality: 0.7) {            
             FirebaseStorageHelper.shared.uploadData(data: data, contentType: .jpeg, uploadPath: .profileImage, id: id) { downloadURL, error in
                 if let err = error {
                     alertMsg = Text(err.localizedDescription)
+                    alertConfirmAction = nil
                     isAlert = true
                 }
                 else {
                     images.removeAll()
-                    save(profileUrl: downloadURL?.absoluteString)
+                    save()
                 }
             }
             return
         }
         let data = [
+            "id" : id,
             "nickname" : nickname,
             "introduce" : introduce,
-            "profileURL" : profileUrl ?? ""
         ]
+        
         if profile?.updateData(data: data) == nil {
             FirestoreHelper.profileUpload(id: id) { error in
                 if let err = error {
                     alertMsg = Text(err.localizedDescription)
+                    alertConfirmAction = nil
                     isAlert = true
                 }
                 else {

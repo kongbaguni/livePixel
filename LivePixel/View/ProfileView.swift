@@ -7,18 +7,55 @@
 
 import SwiftUI
 import RealmSwift
+import RxSwift
+import RxRealm
+
 struct ProfileView: View {
     let id:String
+
+    var isMe:Bool {
+#if !targetEnvironment(simulator)
+        return AuthManager.shared.userId == id
+#else
+        return true
+#endif
+    }
+    @State var nickname = ""
+    @State var introduce = ""
+
+    let disposebag = DisposeBag()
+    init(id: String) {
+        self.id = id
+        loadData()
+        Observable.collection(from: Realm.shared.objects(ProfileModel.self))
+            .subscribe { [self] event in
+                switch event {
+                case .next(_):
+                    loadData()
+                    break
+                default:
+                    break
+                }
+            }.disposed(by: disposebag)
+        
+    }
+    
+    func loadData() {
+        if let data = Realm.shared.object(ofType: ProfileModel.self, forPrimaryKey: id) {
+            nickname = data.nickname
+            introduce = data.introduce
+        }
+    }
+    
     var profile:ProfileModel? {
-        return try? Realm().object(ofType: ProfileModel.self, forPrimaryKey: id)
+        Realm.shared.object(ofType: ProfileModel.self, forPrimaryKey: id)
     }
         
     var body: some View {
         VStack(alignment:.leading) {
             ZStack(alignment:.topTrailing) {
                 FSImageView(id: id, type: .profileImage, placeHolder: Image(systemName: "person.fill"))
-                
-                if profile?.isMe == true {
+                if isMe == true {
                     NavigationLink {
                         ProfileEditView()
                     } label: {
@@ -26,11 +63,11 @@ struct ProfileView: View {
                     }
                 }
             }
-            Text(profile?.nickname ?? profile?.id ?? "")
+            Text(nickname)
                 .font(.headline)
                 .foregroundColor(.primary)
-            if let intro = profile?.introduce {
-                Text(intro)
+            if introduce.isEmpty == false  {
+                Text(introduce)
                     .font(.body)
                     .foregroundColor(.secondary)
             }
@@ -42,6 +79,9 @@ struct ProfileView: View {
         .overlay {
             RoundedRectangle(cornerRadius: 20)
                 .stroke(lineWidth: 2)
+        }
+        .onAppear {
+            loadData()
         }
         .shadow(radius: 10)
         .padding(10)

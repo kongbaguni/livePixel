@@ -39,6 +39,12 @@ struct SignInView: View {
 //        ProfileModel.current?.getInfo(complete: { model, error in
 //            profile = model
 //        })
+        guard let id = AuthManager.shared.userId else {
+            return
+        }
+        FirestoreHelper.getProfile(id: id) { error in
+            
+        }
         isSignIn = AuthManager.shared.auth.currentUser != nil
         isAnomymouse = AuthManager.shared.auth.currentUser?.isAnonymous ?? false
         

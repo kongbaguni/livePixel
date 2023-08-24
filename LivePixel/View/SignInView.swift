@@ -9,14 +9,12 @@ import SwiftUI
 import AlamofireImage
 
 struct SignInView: View {
-    @State var id:String = "" {
-        didSet {
-            if id.isEmpty == false {
-                FirestoreHelper.getProfile(id: id) { error in
-                    
-                }
-            }
-        }
+    var id:String? {
+#if targetEnvironment(simulator)
+        return "test"
+#else
+        return AuthManager.shared.userId
+#endif
     }
     
     @State var isSignIn:Bool = false
@@ -53,7 +51,6 @@ struct SignInView: View {
         }
         profileImageURL = AuthManager.shared.auth.currentUser?.photoURL
         
-        id = AuthManager.shared.userId ?? ""
         #endif
     }
     
@@ -141,8 +138,9 @@ struct SignInView: View {
     var body: some View {
         VStack {
             if isSignIn {
-                
-                ProfileView(id: id)
+                if let id = AuthManager.shared.userId {
+                    ProfileView(id: id)
+                }
                 
                 HStack {
                     if isAnomymouse {
@@ -205,7 +203,6 @@ struct SignInView_Previews: PreviewProvider {
     static var previews: some View {
         SignInView()
         SignInView(
-            id: "test",
             isSignIn: true,
             displayName: Text("kongbaguni@gmail.com"),
             profileImageURL: URL(string: "https://img.freepik.com/premium-photo/cute-cat-cartoon-vector-icon-illustration_780593-3020.jpg"))

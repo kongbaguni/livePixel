@@ -22,6 +22,7 @@ struct ProfileEditView: View {
     @State var alertMsg:Text = Text("")
     @State var isSheetPhotoPicker = false
     @State var images:[UIImage] = []
+    
     func makeInputField(title:Text,placeHolder:String,value:Binding<String>,prompt:Text?)-> some View {
         HStack {
             title
@@ -29,6 +30,7 @@ struct ProfileEditView: View {
                 .textFieldStyle(.roundedBorder)
         }
     }
+    
     var body: some View {
         List {
             makeInputField(title: Text("nickname"), placeHolder: profile?.id ?? "nickname" , value: $nickname, prompt: nil)
@@ -40,10 +42,8 @@ struct ProfileEditView: View {
                 if let img = images.first {
                     Image(uiImage: img).resizable().scaledToFit()
                 } else {
-                    if let url = profile?.profileURL {
-                        NetImageView(url: url, placeholder: Image(systemName: "person.fill"))
-                    } else {
-                        Text("profile image")
+                    if let id = profile?.id {
+                        FSImageView(id: id, type: .profileImage, placeHolder: Image(systemName: "person.fill"))
                     }
                 }
                 RoundedButton(title: Text("select image")) {
@@ -89,7 +89,7 @@ struct ProfileEditView: View {
         
         if let data = images.first?.af.imageAspectScaled(toFit: .init(width: 200, height: 200)).jpegData(compressionQuality: 0.7) {
             
-            FirebaseStorageHelper.shared.uploadData(data: data, contentType: .jpeg, uploadPath: "profileimages", id: id) { downloadURL, error in
+            FirebaseStorageHelper.shared.uploadData(data: data, contentType: .jpeg, uploadPath: .profileImage, id: id) { downloadURL, error in
                 if let err = error {
                     alertMsg = Text(err.localizedDescription)
                     isAlert = true

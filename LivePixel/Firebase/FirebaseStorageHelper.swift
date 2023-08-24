@@ -11,8 +11,10 @@ import SwiftUI
 import FirebaseStorage
 import FirebaseFirestore
 
-
 class FirebaseStorageHelper {
+    enum DataPath : String {
+        case profileImage = "profileimages"
+    }
     static let shared = FirebaseStorageHelper()
     
     let storageRef = Storage.storage().reference()
@@ -21,7 +23,7 @@ class FirebaseStorageHelper {
         case jpeg = "image/jpeg"
     }
     
-    func uploadImage(url:URL, contentType:ContentType, uploadPath:String, id:String, complete:@escaping(_ downloadURL:URL?, _ error:Error?)->Void) {
+    func uploadImage(url:URL, contentType:ContentType, uploadPath:DataPath, id:String, complete:@escaping(_ downloadURL:URL?, _ error:Error?)->Void) {
         guard var data = try? Data(contentsOf: url) else {
             complete(nil, nil)
             return
@@ -42,8 +44,8 @@ class FirebaseStorageHelper {
     }
 
     
-    func uploadData(data:Data, contentType:ContentType, uploadPath:String, id:String, complete:@escaping(_ downloadURL:URL?, _ error:Error?)->Void) {
-        let ref:StorageReference = storageRef.child("\(uploadPath)/\(id)")
+    func uploadData(data:Data, contentType:ContentType, uploadPath:DataPath, id:String, complete:@escaping(_ downloadURL:URL?, _ error:Error?)->Void) {
+        let ref:StorageReference = storageRef.child("\(uploadPath.rawValue)/\(id)")
         let metadata = StorageMetadata()
         metadata.contentType = contentType.rawValue
         let task = ref.putData(data, metadata: metadata)
@@ -61,15 +63,15 @@ class FirebaseStorageHelper {
         }
     }
         
-    func getDownloadURL(uploadPath:String, id:String,complete:@escaping(_ url:URL?, _ error:Error?)->Void) {
-        let ref:StorageReference = storageRef.child("\(uploadPath)/\(id)")
+    func getDownloadURL(uploadPath:DataPath, id:String, complete:@escaping(_ url:URL?, _ error:Error?)->Void) {
+        let ref:StorageReference = storageRef.child("\(uploadPath.rawValue)/\(id)")
         ref.downloadURL {  downloadURL, err in
             complete(downloadURL,err)
         }
     }
     
-    func delete(deleteURL:String, complete:@escaping(_ error:Error?)->Void) {
-        let ref = storageRef.child(deleteURL)
+    func delete(path:DataPath, id:String,complete:@escaping(_ error:Error?)->Void) {
+        let ref = storageRef.child("\(path.rawValue)/\(id)")
         ref.delete { error in
             complete(error)
         }

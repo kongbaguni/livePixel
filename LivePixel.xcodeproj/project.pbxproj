@@ -25,6 +25,7 @@
 		1BE760932A96D76700C954E2 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 1BE760922A96D76700C954E2 /* RealmSwift */; };
 		1BE760952A96DC1B00C954E2 /* Realm.Object+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE760942A96DC1B00C954E2 /* Realm.Object+Extensions.swift */; };
 		1BE760982A96E29B00C954E2 /* FirestoreHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE760972A96E29B00C954E2 /* FirestoreHelper.swift */; };
+		1BE7609C2A97132100C954E2 /* FSImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE7609B2A97132100C954E2 /* FSImageView.swift */; };
 		1BF7689C2A95937E0095A09C /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 1BF7689B2A95937E0095A09C /* FirebaseAnalytics */; };
 		1BF7689E2A95937E0095A09C /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = 1BF7689D2A95937E0095A09C /* FirebaseAnalyticsOnDeviceConversion */; };
 		1BF768A02A95937E0095A09C /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 1BF7689F2A95937E0095A09C /* FirebaseAnalyticsSwift */; };
@@ -85,6 +86,7 @@
 		1BE7608D2A95F4FC00C954E2 /* FirebaseStorageHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseStorageHelper.swift; sourceTree = "<group>"; };
 		1BE760942A96DC1B00C954E2 /* Realm.Object+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Realm.Object+Extensions.swift"; sourceTree = "<group>"; };
 		1BE760972A96E29B00C954E2 /* FirestoreHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreHelper.swift; sourceTree = "<group>"; };
+		1BE7609B2A97132100C954E2 /* FSImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FSImageView.swift; sourceTree = "<group>"; };
 		8D1E60AC2A932F4200952196 /* AuthManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		8D1E60B32A93317700952196 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
 		8D1E60B52A93342400952196 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
@@ -151,6 +153,7 @@
 				1B47E13C2A944529005C036F /* AuthorizationButton.swift */,
 				8D1E60B52A93342400952196 /* SignInView.swift */,
 				1B47E1432A946F9A005C036F /* NetImageView.swift */,
+				1BE7609B2A97132100C954E2 /* FSImageView.swift */,
 				1B47E1522A9499A5005C036F /* RoundedButton.swift */,
 				1B8EC3382A959B0200A723D4 /* ProfileView.swift */,
 				1B8EC33C2A95CAF600A723D4 /* ProfileEditView.swift */,
@@ -374,6 +377,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1B47E1552A958E5B005C036F /* ProfileModel.swift in Sources */,
+				1BE7609C2A97132100C954E2 /* FSImageView.swift in Sources */,
 				8D1E60B42A93317800952196 /* UIApplication+Extensions.swift in Sources */,
 				1B8EC33D2A95CAF600A723D4 /* ProfileEditView.swift in Sources */,
 				1B8EC33B2A95B3C700A723D4 /* CanvasView.swift in Sources */,

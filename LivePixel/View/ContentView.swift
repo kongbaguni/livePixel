@@ -32,7 +32,7 @@ struct ContentView: View {
                             Group {
 #if !targetEnvironment(simulator)
                                 if let url = profileURL {
-                                    NetImageView(url: url, placeholder: Image(systemName: "person.fill"))
+                                    NetImageView(url: url, placeholder: Image(systemName: "person.fill"), error: .constant(nil))
                                 } else {
                                     Image(systemName: "person.fill")
                                 }

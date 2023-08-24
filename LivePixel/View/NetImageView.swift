@@ -11,20 +11,14 @@ import AlamofireImage
 
 struct NetImageView: View {
     let url:String?
-    @State var errorMsg:String? = nil
     @State var placeholder:SwiftUI.Image = .init(systemName: "photo.on.rectangle.angled")
+    @Binding var error:Error?
     var body: some View {
         ZStack {
-            if let msg = errorMsg {
-                Text(msg)
-                    .foregroundColor(.primary)
-            }
             placeholder
                 .resizable()
                 .scaledToFit()                
                 .foregroundColor(.gray)
-                .blur(radius: errorMsg != nil ? 10 : 0)
-                .opacity(errorMsg != nil ? 0.3 : 1.0)
         }
         .onAppear {
             guard let url = url else {
@@ -36,7 +30,7 @@ struct NetImageView: View {
                 case .success(let image) :
                     placeholder = .init(uiImage: image)
                 case .failure(let error) :
-                    errorMsg = error.localizedDescription
+                    self.error = error
                 }
             }
         }
@@ -46,8 +40,8 @@ struct NetImageView: View {
 struct NetImageView_Previews: PreviewProvider {
     static var previews: some View {
         NetImageView(
-            url:"https://img.freepik.com/premium-photo/cute-cat-cartoon-vector-icon-illustration_780593-3020.jpg")
+            url:"https://img.freepik.com/premium-photo/cute-cat-cartoon-vector-icon-illustration_780593-3020.jpg", error:.constant(nil))
         NetImageView(
-            url:nil)
+            url:nil,error: .constant(nil))
     }
 }

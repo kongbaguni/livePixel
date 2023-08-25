@@ -66,6 +66,9 @@ class FirebaseStorageHelper {
     func getDownloadURL(uploadPath:DataPath, id:String, complete:@escaping(_ url:URL?, _ error:Error?)->Void) {
         let ref:StorageReference = storageRef.child("\(uploadPath.rawValue)/\(id)")
         ref.downloadURL {  downloadURL, err in
+            if let url = downloadURL {
+                _ = FirestorageDownloadUrlCacheModel.reg(id: id, url: url.absoluteString)
+            }
             complete(downloadURL,err)
         }
     }

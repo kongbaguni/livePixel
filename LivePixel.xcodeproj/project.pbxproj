@@ -31,6 +31,7 @@
 		1BECC92F2A974B1E008F8C27 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 1BECC92E2A974B1E008F8C27 /* Kingfisher */; };
 		1BECC9312A974E9C008F8C27 /* ProfileImageViewForNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BECC9302A974E9C008F8C27 /* ProfileImageViewForNavigation.swift */; };
 		1BECC9332A983013008F8C27 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BECC9322A983013008F8C27 /* HomeView.swift */; };
+		1BECC9352A9832FE008F8C27 /* FirestorageDownloadUrlCacheModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BECC9342A9832FE008F8C27 /* FirestorageDownloadUrlCacheModel.swift */; };
 		1BF7689C2A95937E0095A09C /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 1BF7689B2A95937E0095A09C /* FirebaseAnalytics */; };
 		1BF7689E2A95937E0095A09C /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = 1BF7689D2A95937E0095A09C /* FirebaseAnalyticsOnDeviceConversion */; };
 		1BF768A02A95937E0095A09C /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 1BF7689F2A95937E0095A09C /* FirebaseAnalyticsSwift */; };
@@ -95,6 +96,7 @@
 		1BECC91D2A972A59008F8C27 /* Realm+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Realm+Extensions.swift"; sourceTree = "<group>"; };
 		1BECC9302A974E9C008F8C27 /* ProfileImageViewForNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageViewForNavigation.swift; sourceTree = "<group>"; };
 		1BECC9322A983013008F8C27 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		1BECC9342A9832FE008F8C27 /* FirestorageDownloadUrlCacheModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestorageDownloadUrlCacheModel.swift; sourceTree = "<group>"; };
 		8D1E60AC2A932F4200952196 /* AuthManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		8D1E60B32A93317700952196 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
 		8D1E60B52A93342400952196 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
@@ -237,6 +239,7 @@
 				8D5F12642A93240100ACDAC4 /* CanvasModel.swift */,
 				8D5F12662A93244B00ACDAC4 /* DoteModel.swift */,
 				1B47E1542A958E5B005C036F /* ProfileModel.swift */,
+				1BECC9342A9832FE008F8C27 /* FirestorageDownloadUrlCacheModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -404,6 +407,7 @@
 				8D5F12572A93209500ACDAC4 /* ContentView.swift in Sources */,
 				8D1E60AD2A932F4200952196 /* AuthManager.swift in Sources */,
 				8D5F126A2A9324E200ACDAC4 /* Stack.swift in Sources */,
+				1BECC9352A9832FE008F8C27 /* FirestorageDownloadUrlCacheModel.swift in Sources */,
 				8D5F12552A93209500ACDAC4 /* LivePixelApp.swift in Sources */,
 				8D5F12652A93240100ACDAC4 /* CanvasModel.swift in Sources */,
 				1B47E1442A946F9A005C036F /* NetImageView.swift in Sources */,

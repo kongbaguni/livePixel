@@ -12,7 +12,7 @@ struct FSImageView: View {
     let type:FirebaseStorageHelper.DataPath
     let placeHolder:Image
     @State var imgurl:String? = nil
-    @State var error:Error? = nil    
+    @State var error:Error? = nil
     var body: some View {
         ZStack {
             if let url = imgurl {
@@ -29,7 +29,10 @@ struct FSImageView: View {
     func refresh() {
 #if !targetEnvironment(simulator)
         if id.isEmpty == false {
-            
+            if let cache = FirestorageDownloadUrlCacheModel.get(id: id) {
+                self.imgurl = cache.url
+                return
+            }
             FirebaseStorageHelper.shared.getDownloadURL(
                 uploadPath: type,
                 id: id) { url, error in
@@ -37,6 +40,7 @@ struct FSImageView: View {
                     guard let url = url else {
                         return
                     }
+                    
                     if self.imgurl == nil {
                         self.imgurl = url.absoluteString
                     } else {

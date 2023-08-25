@@ -98,9 +98,11 @@ struct ProfileEditView: View {
             return
         }
         
-        
-        if let data = images.first?.af.imageAspectScaled(toFill: .init(width: 200, height: 200)).jpegData(compressionQuality: 0.7) {            
+        if let data = images.first?.af.imageAspectScaled(toFill: .init(width: 200, height: 200)).jpegData(compressionQuality: 0.7) {
             FirebaseStorageHelper.shared.uploadData(data: data, contentType: .jpeg, uploadPath: .profileImage, id: id) { downloadURL, error in
+                if let url = downloadURL {
+                    _ = FirestorageDownloadUrlCacheModel.reg(id: id, url: url.absoluteString)
+                }
                 if let err = error {
                     alertMsg = Text(err.localizedDescription)
                     alertConfirmAction = nil

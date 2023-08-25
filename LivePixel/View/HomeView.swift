@@ -17,7 +17,7 @@ struct HomeView: View {
     var body: some View {
         Group {
             if isSignin {
-                List {
+                VStack {
                     NavigationLink("make new canvas") {
                         MakeNewCanvasView()
                     }

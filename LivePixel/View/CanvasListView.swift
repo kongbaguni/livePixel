@@ -45,21 +45,32 @@ struct CanvasListView: View {
         }
     }
     var body: some View {
-        Section("canvas list") {
-            ForEach(canvasList, id: \.self) { canvas in
-                if canvas.deletedNow {
-                    makeLabel(data: canvas).opacity(0.5)
-                } else {
-                    NavigationLink {
-                        CanvasView(id: canvas.id)
-                    } label: {
-                        makeLabel(data: canvas)
+        List {
+            Section("canvas list") {
+                ForEach(canvasList, id: \.self) { canvas in
+                    if canvas.deletedNow {
+                        makeLabel(data: canvas).opacity(0.5)
+                    } else {
+                        NavigationLink {
+                            CanvasView(id: canvas.id)
+                        } label: {
+                            makeLabel(data: canvas)
+                        }
                     }
                 }
             }
-        }.onAppear {
+        }
+        .onAppear {
             loadData()
         }
+        .refreshable {
+            FirestoreHelper.getCanvasList { list, error in
+                for item in list {
+                    canvasList.insert(item, at: 0)
+                }
+            }
+        }
+
     }
     
     func loadData() {

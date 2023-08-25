@@ -9,3 +9,4 @@
 "anomymouse" = "anomymouse";
 "photo permission alert" = "You do not have permission to access the photo album. You need to set the access permission";
 "empty title msg" = "You did not enter a title.";
+"deleted canvas alert msg" = "This is a deleted canvas.";

@@ -14,8 +14,9 @@ class CanvasModel : Object {
     @Persisted var title:String = ""
     @Persisted var ownerId:String = ""
     @Persisted var updateDt:Double = Date().timeIntervalSince1970
+    @Persisted var deleted:Bool = false
     
-    struct ThreadSafeModel : Hashable {
+    struct ThreadSafeModel : Codable, Hashable {
         static func == (left:ThreadSafeModel, right:ThreadSafeModel)-> Bool {
             return left.id == right.id
         }
@@ -23,15 +24,34 @@ class CanvasModel : Object {
         let title:String
         let onwerId:String
         let updateDt:Double
+        let deleted:Bool
         
         var updateDate:Date {
             return Date(timeIntervalSince1970: updateDt)
         }
+        var deletedNow:Bool {
+#if !targetEnvironment(simulator)
+            return Realm.shared.object(ofType: CanvasModel.self, forPrimaryKey: id)?.deleted == true
+#else
+            return false
+#endif
+        }
+        
+        var dicValue:[String:Any]? {
+            do {
+                let jsondata =  try JSONEncoder().encode(self)
+                let json = try JSONSerialization.jsonObject(with: jsondata) as? [String:Any]
+                return json
+            } catch {
+                return nil
+            }
+        }
+        
     }
 }
 
 extension CanvasModel {
     var threadSafeModel:ThreadSafeModel {
-        return .init(id: id, title: title, onwerId: ownerId, updateDt: updateDt)
+        return .init(id: id, title: title, onwerId: ownerId, updateDt: updateDt, deleted: deleted)
     }
 }

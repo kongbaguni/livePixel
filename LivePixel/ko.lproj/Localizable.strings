@@ -30,3 +30,4 @@
 "canvas title" = "캔버스 이름";
 "input canvas title" = "캔버스 이름을 입력하세요";
 "empty title msg" = "이름을 입력하지 않았습니다.";
+"deleted canvas alert msg" = "삭제된 켄버스입니다.";

@@ -34,15 +34,26 @@ struct CanvasListView: View {
 #endif
     }
     
+    func makeLabel(data:CanvasModel.ThreadSafeModel)-> some View {
+        HStack {
+            ProfileView(id: data.onwerId, editable: false)
+                .frame(width: 80)
+            VStack {
+                Text(data.title)
+                Text(data.updateDate.formatted(date: .long, time: .standard))
+            }
+        }
+    }
     var body: some View {
         Section("canvas list") {
             ForEach(canvasList, id: \.self) { canvas in
-                HStack {
-                    ProfileView(id: canvas.onwerId, editable: false)
-                        .frame(width: 80)
-                    VStack {
-                        Text(canvas.title)
-                        Text(canvas.updateDate.formatted(date: .long, time: .standard))
+                if canvas.deletedNow {
+                    makeLabel(data: canvas).opacity(0.5)
+                } else {
+                    NavigationLink {
+                        CanvasView(id: canvas.id)
+                    } label: {
+                        makeLabel(data: canvas)
                     }
                 }
             }
@@ -73,8 +84,8 @@ struct CanvasListView_Previews: PreviewProvider {
     static var previews: some View {
         List {
             CanvasListView(canvasList: [
-                .init(id: "aaaa", title: "김치", onwerId: "djskala",updateDt: 1010123),
-                .init(id: "aaba", title: "김치", onwerId: "djskala",updateDt: 1032800),
+                .init(id: "aaaa", title: "김치", onwerId: "djskala",updateDt: 1010123, deleted: false ),
+                .init(id: "aaba", title: "김치", onwerId: "djskala",updateDt: 1032800, deleted: true),
 
             ])
         }

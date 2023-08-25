@@ -81,7 +81,9 @@ struct FirestoreHelper {
                     data["id"] = doc.documentID
                     print(data)
                     let model = realm.create(CanvasModel.self, value: data, update: .all)
-                    result.append(model.threadSafeModel)
+                    if model.deleted == false {
+                        result.append(model.threadSafeModel)
+                    }
                 }
                 try realm.commitWrite()
                 
@@ -93,4 +95,36 @@ struct FirestoreHelper {
         }
     }
     
+//    static func editCanvas(data:CanvasModel.ThreadSafeModel, complete:@escaping(_ error:Error?)->Void) {
+//        guard let dic = data.dicValue else {
+//            return
+//        }
+//        canvasCollection.document(data.id).updateData(dic) { error in
+//            if error == nil {
+//                let realm = Realm.shared
+//                realm.beginWrite()
+//                realm.create(CanvasModel.self, value: dic, update: .all)
+//                try! realm.commitWrite()
+//            }
+//            complete(error)
+//        }
+//    }
+    
+    static func deleteCanvas(canvasId:String, complete:@escaping(_ error:Error?)->Void) {
+        var data:[String:Any] = [
+            "deleted":true,
+            "updateDt":Date().timeIntervalSince1970
+        ]
+        
+        canvasCollection.document(canvasId).updateData(data) { error in
+            if error == nil {
+                data["id"] = canvasId
+                let realm = Realm.shared
+                realm.beginWrite()
+                realm.create(CanvasModel.self, value: data, update: .modified)
+                try! realm.commitWrite()
+            }
+            complete(error)
+        }
+    }
 }

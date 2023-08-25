@@ -8,9 +8,37 @@
 import SwiftUI
 
 struct HomeView: View {
+#if targetEnvironment(simulator)
+    @State var isSignin = false
+#else
+    @State var isSignin = AuthManager.shared.isSignined
+#endif
+    
     var body: some View {
-        Text("Home")
-            .navigationTitle("Home")
+        Group {
+            if isSignin {
+                List {
+                    NavigationLink("make new canvas") {
+                        MakeNewCanvasView()
+                    }
+                    CanvasListView()
+                }
+            } else {
+                VStack {
+                    Text("Live Pixel")
+                }
+            }
+        }
+        .navigationTitle("Home")
+        .onReceive(NotificationCenter.default.publisher(for: .authDidSucessed)) { noti in
+            isSignin = true
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .signoutDidSucessed)) { noti in
+            isSignin = false
+        }
+        
+
+        
     }
 }
 

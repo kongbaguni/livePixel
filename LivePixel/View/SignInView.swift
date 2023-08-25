@@ -137,7 +137,7 @@ struct SignInView: View {
         VStack {
             if isSignIn {
                 if let id = AuthManager.shared.userId {
-                    ProfileView(id: id)
+                    ProfileView(id: id, editable: true)
                 }
                 
                 HStack {
@@ -146,7 +146,7 @@ struct SignInView: View {
                     }
                     else {
                         RoundedButton(title: Text("sign out")) {
-                                AuthManager.shared.signout()
+                            AuthManager.shared.signout()
                         }
                     }
                     

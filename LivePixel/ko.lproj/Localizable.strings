@@ -25,3 +25,8 @@
 "input introduce" = "자기소개 입력";
 "profile image" = "프로필 이미지";
 "photo permission alert" = "사진첩 접근 권한이 없습니다. 접근 권한 설정이 필요합니다.";
+"make new canvas" = "캔버스 만들기";
+"canvas list" = "캔버스 목록";
+"canvas title" = "캔버스 이름";
+"input canvas title" = "캔버스 이름을 입력하세요";
+"empty title msg" = "이름을 입력하지 않았습니다.";

@@ -12,6 +12,7 @@ import RxRealm
 
 struct ProfileView: View {
     let id:String
+    let editable:Bool
 
     var isMe:Bool {
 #if !targetEnvironment(simulator)
@@ -24,8 +25,9 @@ struct ProfileView: View {
     @State var introduce = ""
 
     let disposebag = DisposeBag()
-    init(id: String) {
+    init(id: String, editable:Bool) {
         self.id = id
+        self.editable = editable
         loadData()
         Observable.collection(from: Realm.shared.objects(ProfileModel.self))
             .subscribe { [self] event in
@@ -62,7 +64,7 @@ struct ProfileView: View {
         VStack(alignment:.leading) {
             ZStack(alignment:.topTrailing) {
                 FSImageView(id: id, type: .profileImage, placeHolder: Image(systemName: "person.fill"))
-                if isMe == true {
+                if isMe && editable{
                     NavigationLink {
                         ProfileEditView()
                     } label: {
@@ -108,6 +110,6 @@ struct ProfileView: View {
 
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        ProfileView(id:"test")
+        ProfileView(id:"test", editable: true)
     }
 }

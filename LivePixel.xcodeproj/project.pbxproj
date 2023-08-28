@@ -24,6 +24,8 @@
 		1BE760952A96DC1B00C954E2 /* Realm.Object+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE760942A96DC1B00C954E2 /* Realm.Object+Extensions.swift */; };
 		1BE760982A96E29B00C954E2 /* FirestoreHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE760972A96E29B00C954E2 /* FirestoreHelper.swift */; };
 		1BE7609C2A97132100C954E2 /* FSImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE7609B2A97132100C954E2 /* FSImageView.swift */; };
+		1BE95B6B2A9C791D0056B5DA /* CGPoint+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE95B6A2A9C791D0056B5DA /* CGPoint+Extensions.swift */; };
+		1BE95B6D2A9C902B0056B5DA /* Color+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE95B6C2A9C902B0056B5DA /* Color+Extensions.swift */; };
 		1BECC91E2A972A59008F8C27 /* Realm+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BECC91D2A972A59008F8C27 /* Realm+Extensions.swift */; };
 		1BECC9262A972ED1008F8C27 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 1BECC9252A972ED1008F8C27 /* RxCocoa */; };
 		1BECC9282A972ED1008F8C27 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 1BECC9272A972ED1008F8C27 /* RxSwift */; };
@@ -95,6 +97,8 @@
 		1BE760942A96DC1B00C954E2 /* Realm.Object+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Realm.Object+Extensions.swift"; sourceTree = "<group>"; };
 		1BE760972A96E29B00C954E2 /* FirestoreHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreHelper.swift; sourceTree = "<group>"; };
 		1BE7609B2A97132100C954E2 /* FSImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FSImageView.swift; sourceTree = "<group>"; };
+		1BE95B6A2A9C791D0056B5DA /* CGPoint+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extensions.swift"; sourceTree = "<group>"; };
+		1BE95B6C2A9C902B0056B5DA /* Color+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extensions.swift"; sourceTree = "<group>"; };
 		1BECC91D2A972A59008F8C27 /* Realm+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Realm+Extensions.swift"; sourceTree = "<group>"; };
 		1BECC9302A974E9C008F8C27 /* ProfileImageViewForNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageViewForNavigation.swift; sourceTree = "<group>"; };
 		1BECC9322A983013008F8C27 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -253,9 +257,11 @@
 		8D5F12682A93249C00ACDAC4 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				1BE95B6A2A9C791D0056B5DA /* CGPoint+Extensions.swift */,
 				8D1E60B32A93317700952196 /* UIApplication+Extensions.swift */,
 				1BE760942A96DC1B00C954E2 /* Realm.Object+Extensions.swift */,
 				1BECC91D2A972A59008F8C27 /* Realm+Extensions.swift */,
+				1BE95B6C2A9C902B0056B5DA /* Color+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -416,6 +422,7 @@
 				1BECC9352A9832FE008F8C27 /* FirestorageDownloadUrlCacheModel.swift in Sources */,
 				8D5F12552A93209500ACDAC4 /* LivePixelApp.swift in Sources */,
 				8D5F12652A93240100ACDAC4 /* CanvasModel.swift in Sources */,
+				1BE95B6B2A9C791D0056B5DA /* CGPoint+Extensions.swift in Sources */,
 				1B47E1442A946F9A005C036F /* NetImageView.swift in Sources */,
 				1B47E1532A9499A5005C036F /* RoundedButton.swift in Sources */,
 				8D1E60B62A93342400952196 /* SignInView.swift in Sources */,
@@ -427,6 +434,7 @@
 				1B47E13D2A944529005C036F /* AuthorizationButton.swift in Sources */,
 				1BECC9332A983013008F8C27 /* HomeView.swift in Sources */,
 				1B8EC3392A959B0200A723D4 /* ProfileView.swift in Sources */,
+				1BE95B6D2A9C902B0056B5DA /* Color+Extensions.swift in Sources */,
 				8D5F12672A93244B00ACDAC4 /* DoteModel.swift in Sources */,
 				1BECC9372A986096008F8C27 /* MakeNewCanvasView.swift in Sources */,
 			);

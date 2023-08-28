@@ -8,7 +8,13 @@
 import Foundation
 import FirebaseFirestore
 import RealmSwift
+import SwiftUI
 
+extension Notification.Name {
+    static let canvasDidDeleted = Notification.Name("cnavasDidDeleted_observer")
+    static let canvasDidCreated = Notification.Name("canvasDidCreated_observer")
+    static let doteDidCreated = Notification.Name("doteDidCreated_observer")
+}
 struct FirestoreHelper {
     //MARK: - profile
     fileprivate static let profileCollection:CollectionReference = Firestore.firestore().collection("profile")
@@ -51,18 +57,21 @@ struct FirestoreHelper {
     //MARK: - canvas
     fileprivate static let canvasCollection:CollectionReference = Firestore.firestore().collection("canvas")
     
-    static func makeCanvas(title:String, complete:@escaping(_ error:Error?)->Void) {
+    static func makeCanvas(title:String, width:Int, height:Int, complete:@escaping(_ error:Error?)->Void) {
         guard let ownerid = AuthManager.shared.userId else {
             return
         }
         let now = Date().timeIntervalSince1970
-        canvasCollection.addDocument(data: [
+        let ref = canvasCollection.addDocument(data: [
             "title":title,
             "ownerId":ownerid,
-            "updateDt":now
+            "updateDt":now,
+            "width":width,
+            "height":height
         ]) { error in
             complete(error)
-        }        
+        }
+        NotificationCenter.default.post(name: .canvasDidCreated, object: ref.documentID)
     }
 
     static func getCanvasList(complete:@escaping(_ list:[CanvasModel.ThreadSafeModel], _ error:Error?)->Void) {
@@ -94,22 +103,7 @@ struct FirestoreHelper {
             }
         }
     }
-    
-//    static func editCanvas(data:CanvasModel.ThreadSafeModel, complete:@escaping(_ error:Error?)->Void) {
-//        guard let dic = data.dicValue else {
-//            return
-//        }
-//        canvasCollection.document(data.id).updateData(dic) { error in
-//            if error == nil {
-//                let realm = Realm.shared
-//                realm.beginWrite()
-//                realm.create(CanvasModel.self, value: dic, update: .all)
-//                try! realm.commitWrite()
-//            }
-//            complete(error)
-//        }
-//    }
-    
+        
     static func deleteCanvas(canvasId:String, complete:@escaping(_ error:Error?)->Void) {
         var data:[String:Any] = [
             "deleted":true,
@@ -125,6 +119,35 @@ struct FirestoreHelper {
                 try! realm.commitWrite()
             }
             complete(error)
+            NotificationCenter.default.post(name: .canvasDidDeleted, object: canvasId)
         }
+    }
+    
+    
+    fileprivate static let doteCollection:CollectionReference = Firestore.firestore().collection("dotes")
+
+    static func makeDote(canvasId:String, position:(Int,Int), color:Color) {
+        let cicolor = color.ciColor
+        var data:[String:Any] = [
+            "canvasId":canvasId,
+            "x":position.0,
+            "y":position.1,
+            "red":cicolor.red,
+            "green":cicolor.green,
+            "blue":cicolor.blue,
+            "opacity":cicolor.alpha,
+            "timeIntervalSince1970":Date().timeIntervalSince1970
+        ]
+        let sub = doteCollection.document(canvasId).collection("datas")
+        let ref = sub.addDocument(data: data) { error in
+            
+        }
+        data["id"] = ref.documentID
+        let realm = Realm.shared
+        try! realm.write {
+            let data = realm.create(DoteModel.self, value: data, update: .all)
+            NotificationCenter.default.post(name: .doteDidCreated, object: data.threadSafeModel)
+        }
+        
     }
 }

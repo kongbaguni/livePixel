@@ -11,8 +11,19 @@ import RxRealm
 import RealmSwift
 
 struct CanvasListView: View {
+    enum SheetType {
+        case makeNewCanvas
+    }
+    @State var newCanvasList:[CanvasModel.ThreadSafeModel] = []
     @State var canvasList:[CanvasModel.ThreadSafeModel] = []
 
+    @State var isSheet = false
+    @State var sheetType:SheetType = .makeNewCanvas {
+        didSet {
+            isSheet = true
+        }
+    }
+    
     let disposeBag = DisposeBag()
     init(canvasList: [CanvasModel.ThreadSafeModel]) {
         self.canvasList = canvasList
@@ -46,11 +57,9 @@ struct CanvasListView: View {
     }
     var body: some View {
         List {
-            Section("canvas list") {
-                ForEach(canvasList, id: \.self) { canvas in
-                    if canvas.deletedNow {
-                        makeLabel(data: canvas).opacity(0.5)
-                    } else {
+            if newCanvasList.count > 0 {
+                Section("new") {
+                    ForEach(newCanvasList, id: \.self) { canvas in
                         NavigationLink {
                             CanvasView(id: canvas.id)
                         } label: {
@@ -59,30 +68,90 @@ struct CanvasListView: View {
                     }
                 }
             }
+            if canvasList.count > 0 {
+                Section("canvas list") {
+                    ForEach(canvasList, id: \.self) { canvas in
+                        if canvas.deletedNow == false  {
+                            NavigationLink {
+                                CanvasView(id: canvas.id)
+                            } label: {
+                                makeLabel(data: canvas)
+                            }
+                        }
+                    }
+                }
+            }
+            if newCanvasList.count == 0 && canvasList.count == 0 {
+                Text("empty list msg")
+            }
+            Button {
+                sheetType = .makeNewCanvas
+            } label: {
+                Text("make new canvas")
+            }
         }
         .onAppear {
             loadData()
         }
         .refreshable {
-            FirestoreHelper.getCanvasList { list, error in
-                for item in list {
-                    canvasList.insert(item, at: 0)
+            reload()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .canvasDidDeleted)) { noti in
+            removeDeleted()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .canvasDidCreated)) { noti in
+            reload()
+        }
+        
+        .sheet(isPresented: $isSheet) {
+            MakeNewCanvasView()
+        }
+
+    }
+    
+    func reload() {
+        FirestoreHelper.getCanvasList { list, error in
+            // 신규 켄버스 추가
+            for item in list {
+                newCanvasList.insert(item, at: 0)
+            }
+            
+            removeDeleted()
+
+        }
+    }
+    
+    func removeDeleted() {
+        for canvas in newCanvasList {
+            if canvas.deletedNow {
+                if let idx = newCanvasList.firstIndex(of: canvas) {
+                    newCanvasList.remove(at: idx)
+                }
+            }
+        }
+        for canvas in canvasList {
+            if canvas.deletedNow {
+                if let idx = canvasList.firstIndex(of: canvas) {
+                    canvasList.remove(at: idx)
                 }
             }
         }
 
     }
-    
     func loadData() {
 #if !targetEnvironment(simulator)
         if canvasList.count == 0 {
             for model in Realm.shared.objects(CanvasModel.self) {
-                canvasList.append(model.threadSafeModel)
+                if model.deleted == false {
+                    canvasList.append(model.threadSafeModel)
+                }
             }
         }
         FirestoreHelper.getCanvasList { list, error in
             for item in list {
-                canvasList.insert(item, at: 0)
+                if item.deletedNow == false {
+                    canvasList.insert(item, at: 0)
+                }
             }
         }
 #else
@@ -95,8 +164,8 @@ struct CanvasListView_Previews: PreviewProvider {
     static var previews: some View {
         List {
             CanvasListView(canvasList: [
-                .init(id: "aaaa", title: "김치", onwerId: "djskala",updateDt: 1010123, deleted: false ),
-                .init(id: "aaba", title: "김치", onwerId: "djskala",updateDt: 1032800, deleted: true),
+                .init(id: "aaaa", title: "김치", onwerId: "djskala",updateDt: 1010123, deleted: false , width : 32, height: 32),
+                .init(id: "aaba", title: "김치", onwerId: "djskala",updateDt: 1032800, deleted: true, width : 32, height: 32),
 
             ])
         }

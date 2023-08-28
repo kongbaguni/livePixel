@@ -31,3 +31,7 @@
 "input canvas title" = "캔버스 이름을 입력하세요";
 "empty title msg" = "이름을 입력하지 않았습니다.";
 "deleted canvas alert msg" = "삭제된 켄버스입니다.";
+"delete canvas" = "캔버스 삭제";
+"action" = "액션";
+
+"empty list msg" = "캔버스가 없습니다.";

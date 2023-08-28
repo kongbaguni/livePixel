@@ -7,14 +7,48 @@
 
 import Foundation
 import SwiftUI
-struct DoteModel {
-    let position:CGPoint
-    let color:Color
-    let timeStemp:Date
+import RealmSwift
+
+class DoteModel:Object {
+    @Persisted(primaryKey: true) var id:String = ""
+    @Persisted var canvasId:String = ""
+    @Persisted var x:Int = 0
+    @Persisted var y:Int = 0
+    @Persisted var red:Double = 0
+    @Persisted var green:Double = 0
+    @Persisted var blue:Double = 0
+    @Persisted var opacicy:Double = 0
+    @Persisted var timeIntervalSince1970:Double = 0
     
-    init(position: CGPoint, color: Color) {
-        self.position = position
-        self.color = color
-        self.timeStemp = Date()
+    struct ThreadSafeModel : Codable, Hashable {
+        static func == (left:DoteModel.ThreadSafeModel, right:DoteModel.ThreadSafeModel)-> Bool {
+            return left.id == right.id
+        }
+        let id:String
+        let x:Int
+        let y:Int
+        let canvasId:String
+        let red:Double
+        let green:Double
+        let blue:Double
+        let opacity:Double
+        let date:Date
+        var color:Color {
+            .init(red: red, green: green, blue: blue, opacity: opacity)
+        }
+    }
+}
+
+extension DoteModel {
+    var date:Date {
+        Date(timeIntervalSince1970: timeIntervalSince1970)
+    }
+    
+    var color:Color {
+        .init(red: red, green: green, blue: blue, opacity: opacicy)
+    }
+    
+    var threadSafeModel: ThreadSafeModel {
+        return .init(id: id, x:x, y:y,canvasId: canvasId, red: red, green: green, blue: blue, opacity: opacicy, date: Date(timeIntervalSince1970: timeIntervalSince1970))
     }
 }

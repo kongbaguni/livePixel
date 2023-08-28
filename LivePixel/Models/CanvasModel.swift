@@ -15,6 +15,8 @@ class CanvasModel : Object {
     @Persisted var ownerId:String = ""
     @Persisted var updateDt:Double = Date().timeIntervalSince1970
     @Persisted var deleted:Bool = false
+    @Persisted var width:Int = 64
+    @Persisted var height:Int = 64
     
     struct ThreadSafeModel : Codable, Hashable {
         static func == (left:ThreadSafeModel, right:ThreadSafeModel)-> Bool {
@@ -25,10 +27,13 @@ class CanvasModel : Object {
         let onwerId:String
         let updateDt:Double
         let deleted:Bool
+        let width:Int
+        let height:Int
         
         var updateDate:Date {
             return Date(timeIntervalSince1970: updateDt)
         }
+        
         var deletedNow:Bool {
 #if !targetEnvironment(simulator)
             return Realm.shared.object(ofType: CanvasModel.self, forPrimaryKey: id)?.deleted == true
@@ -52,6 +57,6 @@ class CanvasModel : Object {
 
 extension CanvasModel {
     var threadSafeModel:ThreadSafeModel {
-        return .init(id: id, title: title, onwerId: ownerId, updateDt: updateDt, deleted: deleted)
+        return .init(id: id, title: title, onwerId: ownerId,  updateDt: updateDt, deleted: deleted, width:width, height: height)
     }
 }

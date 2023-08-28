@@ -18,9 +18,6 @@ struct HomeView: View {
         Group {
             if isSignin {
                 VStack {
-                    NavigationLink("make new canvas") {
-                        MakeNewCanvasView()
-                    }
                     CanvasListView()
                 }
             } else {

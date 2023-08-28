@@ -134,7 +134,7 @@ struct SignInView: View {
         }
     }
     var body: some View {
-        VStack {
+        ScrollView {
             if isSignIn {
                 if let id = AuthManager.shared.userId {
                     ProfileView(id: id, editable: true)
@@ -159,7 +159,7 @@ struct SignInView: View {
                     }
                 }
             } else {
-                Text("signin")
+//                Text("signin")
                 VStack {
                     appleSignIn
                     googleSignIn
@@ -169,11 +169,11 @@ struct SignInView: View {
         }
         .navigationTitle(isSignIn ? Text("profile") : Text("signin"))
         .padding(10)
-        .overlay {
-            RoundedRectangle(cornerRadius: 10)
-                .stroke(lineWidth:2)
-        }
-        .padding(10)
+//        .overlay {
+//            RoundedRectangle(cornerRadius: 10)
+//                .stroke(lineWidth:2)
+//        }
+//        .padding(10)
         .onReceive(NotificationCenter.default.publisher(for: .authDidSucessed)) { noti in
             refreshSigninName()
         }

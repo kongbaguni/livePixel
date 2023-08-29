@@ -13,7 +13,7 @@ extension Realm {
         let fileURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.net.kongbaguni.share")!
             .appendingPathComponent("data.realm")
         let config = Realm.Configuration(fileURL: fileURL,
-                                         schemaVersion:6) { migration, oldSchemaVersion in
+                                         schemaVersion:7) { migration, oldSchemaVersion in
             
         }
         

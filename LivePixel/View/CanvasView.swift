@@ -22,8 +22,8 @@ struct CanvasView: View {
         return nil
 #endif
     }
-    
-    
+    @State var drawCount = 0
+    @State var doteCount = 0
     @State var isActionSheet = false
     @State var isAlert = false
     @State var alertType:AlertType? = nil {
@@ -35,6 +35,9 @@ struct CanvasView: View {
     @State var color:Color = .red
     @State var dotes:[DoteModel.ThreadSafeModel] = []
     
+    var doteData:Results<DoteModel> {
+        Realm.shared.objects(DoteModel.self).filter("canvasId = %@", id)
+    }
     var wc:Int {
         canvasData?.width ?? 32
     }
@@ -59,87 +62,107 @@ struct CanvasView: View {
     }
     
     func loadData() {
-        dotes = []
         let data = Realm.shared.objects(DoteModel.self).filter("canvasId = %@", id)
-        for item in data {
-            dotes.append(item.threadSafeModel)
+        FirestoreHelper.getDotes(canvasId: id) { list, error in
+            doteCount = doteData.count
         }
     }
-    
-    var body: some View {
-        ScrollView {
-            Canvas { context, size in
-                context.blendMode = .normal
-                let wc = canvasData?.width ?? 32
-                let hc = canvasData?.height ?? 32
-                
-                let width = size.width / CGFloat(wc)
-                let height = size.height / CGFloat(hc)
-                for i in 0..<wc {
-                    for j in 0..<hc {
-                        
-                        let x = CGFloat(i) * width
-                        let y = CGFloat(j) * height
-                        let rect = CGRect(x: x, y: y, width: width, height: height)
-                        context.stroke(.init(roundedRect: rect, cornerSize: .zero), with: .color(.blue))
-                    }
-                }
-                
-                context.blendMode = .normal
-                let data = Realm.shared.objects(DoteModel.self).filter("canvasId = %@", id)
-                
-                for dote in data {
-                    let rect = CGRect(x: CGFloat(dote.x) * width, y: CGFloat(dote.y) * height, width: width, height: height)
-                    context.fill(.init(roundedRect: rect, cornerSize: .zero), with: .color(.black))
-                
-                }
-
-                
-                let rect = CGRect(
-                    x: CGFloat(pointer.0) * width ,
-                    y: CGFloat(pointer.1) * height,
-                    width: width,
-                    height: height
-                )
-                context.blendMode = .xor
-                context.stroke(.init(roundedRect: rect, cornerSize: .zero), with: .color(.red), lineWidth: 3)
-                
-
-                
-            }
-            .frame(width: canvasSize.width, height: canvasSize.width)
-            .background(.white)
-            .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local).onChanged({ value in
-
-                func getIndex(location:CGPoint)->(Int,Int) {
-                    
-                    let x = Int(location.x / canvasSize.width * CGFloat(wc))
-                    let y = Int(location.y / canvasSize.height * CGFloat(hc))
-                    print("\(location), \(wc) \(hc)  \(x) : \(y)")
-                    return (x,y)
-                }
-                
-                pointer = getIndex(location: value.location)
-                
-                if pointer.0 < 0 {
-                    pointer.0 = 0
-                }
-                if pointer.1 < 0 {
-                    pointer.1 = 0
-                }
-                if pointer.0 >= wc {
-                    pointer.0 = wc - 1
-                }
-                if pointer.1 >= hc {
-                    pointer.1 = hc - 1
-                }
-                
-            }))
+    var canvas : some View {
+        Canvas { context, size in
+            context.draw(Text("\(drawCount)"), in: .init(x:0, y:0, width: 100, height: 50))
+            context.draw(Text("\(doteCount)"), in: .init(x: 0, y: 0, width: 100, height: 50))
+            context.blendMode = .normal
+            let wc = canvasData?.width ?? 32
+            let hc = canvasData?.height ?? 32
             
+            let width = size.width / CGFloat(wc)
+            let height = size.height / CGFloat(hc)
+            for i in 0..<wc {
+                for j in 0..<hc {
+                    
+                    let x = CGFloat(i) * width
+                    let y = CGFloat(j) * height
+                    let rect = CGRect(x: x, y: y, width: width, height: height)
+                    context.stroke(.init(roundedRect: rect, cornerSize: .zero), with: .color(.blue))
+                }
+            }
+            
+            context.blendMode = .normal
+            
+            for dote in doteData {
+                let rect = CGRect(x: CGFloat(dote.x) * width, y: CGFloat(dote.y) * height, width: width, height: height)
+                context.fill(.init(roundedRect: rect, cornerSize: .zero), with: .color(.black))
+            
+            }
+
+            
+            let rect = CGRect(
+                x: CGFloat(pointer.0) * width ,
+                y: CGFloat(pointer.1) * height,
+                width: width,
+                height: height
+            )
+            context.blendMode = .xor
+            context.stroke(.init(roundedRect: rect, cornerSize: .zero), with: .color(.red), lineWidth: 3)
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
+                drawCount += 1
+                loadData()
+            }
+            
+        }
+        .frame(width: canvasSize.width, height: canvasSize.width)
+        .background(.white)
+        .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local).onChanged({ value in
+
+            func getIndex(location:CGPoint)->(Int,Int) {
+                
+                let x = Int(location.x / canvasSize.width * CGFloat(wc))
+                let y = Int(location.y / canvasSize.height * CGFloat(hc))
+                print("\(location), \(wc) \(hc)  \(x) : \(y)")
+                return (x,y)
+            }
+            
+            pointer = getIndex(location: value.location)
+            
+            if pointer.0 < 0 {
+                pointer.0 = 0
+            }
+            if pointer.1 < 0 {
+                pointer.1 = 0
+            }
+            if pointer.0 >= wc {
+                pointer.0 = wc - 1
+            }
+            if pointer.1 >= hc {
+                pointer.1 = hc - 1
+            }
+            
+        }))
+    }
+    var pallete : some View {
+        Group {
             Button{
                 FirestoreHelper.makeDote(canvasId: id, position: pointer, color: color)
             } label: {
                 Text("make")
+            }
+        }
+    }
+    var body: some View {
+        Group {
+            if UIScreen.main.bounds.width > UIScreen.main.bounds.height {
+                HStack {
+                    canvas
+                    VStack {
+                        pallete
+                    }
+                }
+            } else {
+                ScrollView {
+                    canvas
+                    pallete
+                }
             }
         }
         .navigationTitle(Text(canvasData?.title ?? "id"))
@@ -182,6 +205,10 @@ struct CanvasView: View {
                 return .init(title: Text("error"))
             }
         }
+        .onReceive(NotificationCenter.default.publisher(for: .doteDidCreated)) { noti in
+            doteCount = doteData.count
+        }
+        
         
     }
 }

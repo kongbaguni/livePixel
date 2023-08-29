@@ -126,7 +126,31 @@ struct FirestoreHelper {
     
     fileprivate static let doteCollection:CollectionReference = Firestore.firestore().collection("dotes")
 
+    static func getDotes(canvasId:String, complete:@escaping(_ list:[DoteModel.ThreadSafeModel], _ error:Error?)->Void) {
+        let realm = Realm.shared
+        let lastDote = realm.objects(DoteModel.self).filter("canvasId = %@", canvasId)
+            .sorted(byKeyPath: "timeIntervalSince1970", ascending: true).last
+        let sub = doteCollection.document(canvasId).collection("datas")
+        sub
+            .whereField("timeIntervalSince1970", isGreaterThan: lastDote?.timeIntervalSince1970 ?? 0)
+            .getDocuments { snapShot, error in
+                realm.beginWrite()
+                var dotes:[DoteModel.ThreadSafeModel] = []
+                for doc in snapShot?.documents ?? [] {
+                    var data = doc.data()
+                    data["id"] = doc.documentID
+                    let model = realm.create(DoteModel.self, value: data, update: .all)
+                    dotes.append(model.threadSafeModel)
+                }
+                try! realm.commitWrite()
+                complete(dotes, error)
+                NotificationCenter.default.post(name: .doteDidCreated, object: [dotes])
+            }
+
+    }
     static func makeDote(canvasId:String, position:(Int,Int), color:Color) {
+        let realm = Realm.shared
+        
         let cicolor = color.ciColor
         var data:[String:Any] = [
             "canvasId":canvasId,
@@ -139,15 +163,17 @@ struct FirestoreHelper {
             "timeIntervalSince1970":Date().timeIntervalSince1970
         ]
         let sub = doteCollection.document(canvasId).collection("datas")
-        let ref = sub.addDocument(data: data) { error in
+
+        getDotes(canvasId: canvasId) { list, error in
+            let ref = sub.addDocument(data: data) { error in
+                
+            }
+            data["id"] = ref.documentID
+            try! realm.write {
+                let model = realm.create(DoteModel.self, value: data, update: .all)
             
+                NotificationCenter.default.post(name: .doteDidCreated, object: model.threadSafeModel)
+            }
         }
-        data["id"] = ref.documentID
-        let realm = Realm.shared
-        try! realm.write {
-            let data = realm.create(DoteModel.self, value: data, update: .all)
-            NotificationCenter.default.post(name: .doteDidCreated, object: data.threadSafeModel)
-        }
-        
     }
 }

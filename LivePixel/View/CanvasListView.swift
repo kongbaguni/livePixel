@@ -28,6 +28,8 @@ struct CanvasListView: View {
     init(canvasList: [CanvasModel.ThreadSafeModel]) {
         self.canvasList = canvasList
     }
+    @State var count = 0
+    
     init() {
 #if !targetEnvironment(simulator)
         Observable.collection(from: Realm.shared.objects(CanvasModel.self)).subscribe {[self]  event in
@@ -47,16 +49,24 @@ struct CanvasListView: View {
     
     func makeLabel(data:CanvasModel.ThreadSafeModel)-> some View {
         HStack {
-            ProfileView(id: data.onwerId, editable: false)
-                .frame(width: 80)
-            VStack {
-                Text(data.title)
-                Text(data.updateDate.formatted(date: .long, time: .standard))
+            Canvas { ctx, size in
+                ctx.draw(Text("\(count)"), in: .init(x: 0, y: -100, width: 30, height: 30))
+                
+                for item in Realm.shared.objects(DoteModel.self).filter("canvasId = %@", data.id) {
+                    let rect = CGRect(x: CGFloat(item.x) * 3,
+                                      y: CGFloat(item.y) * 3,
+                                      width: 3,
+                                      height: 3)
+                    ctx.fill(.init(roundedRect: rect, cornerSize: .zero), with: .color(item.color))
+                }
             }
+            .frame(width:CGFloat(data.width * 3),height:CGFloat(data.height * 3))
+            .border(Color.primary)
+            Text(data.title)
         }
     }
     var body: some View {
-        List {
+        ScrollView {
             TotalCanvasView(previewOnly: true, pointer: .constant((0,0)), size: .constant(0))
 
             if newCanvasList.count > 0 {
@@ -104,6 +114,9 @@ struct CanvasListView: View {
         }
         .onReceive(NotificationCenter.default.publisher(for: .canvasDidCreated)) { noti in
             reload()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .doteDidCreated)) { noti in
+            count += 1
         }
         
         .sheet(isPresented: $isSheet) {

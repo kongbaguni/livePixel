@@ -47,10 +47,10 @@ extension DoteModel {
     }
     
     var color:Color {
-        .init(red: red, green: green, blue: blue, opacity: opacicy)
+        .init(.sRGBLinear,red: red, green: green, blue: blue, opacity: opacicy)
     }
     
-    var threadSafeModel: ThreadSafeModel {
+    var threadSafeModel: ThreadSafeModel {        
         return .init(id: id, x:x, y:y,canvasId: canvasId, red: red, green: green, blue: blue, opacity: opacicy, date: Date(timeIntervalSince1970: timeIntervalSince1970), ownerId: ownerId)
     }
     

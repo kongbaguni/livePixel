@@ -34,10 +34,19 @@ struct CanvasView: View {
     @State var pointer:(Int,Int) = (0,0)
     @State var color:Color = .red
     @State var dotes:[DoteModel.ThreadSafeModel] = []
+    @AppStorage("isDraw") var isDraw:Bool = true
     
     var doteData:Results<DoteModel> {
         Realm.shared.objects(DoteModel.self).filter("canvasId = %@", id)
     }
+    var lastMyDote:DoteModel.ThreadSafeModel? {
+        if let id = AuthManager.shared.userId {
+            return doteData.filter("ownerId = %@", id).last?.threadSafeModel
+        }
+        return nil
+    }
+    
+    
     var wc:Int {
         canvasData?.width ?? 32
     }
@@ -58,11 +67,12 @@ struct CanvasView: View {
     }
     
     func makeDote() {
+#if !targetEnvironment(simulator)
         FirestoreHelper.makeDote(canvasId: id, position: pointer, color: color)
+#endif
     }
     
     func loadData() {
-        let data = Realm.shared.objects(DoteModel.self).filter("canvasId = %@", id)
         FirestoreHelper.getDotes(canvasId: id) { list, error in
             doteCount = doteData.count
         }
@@ -91,8 +101,9 @@ struct CanvasView: View {
             
             for dote in doteData {
                 let rect = CGRect(x: CGFloat(dote.x) * width, y: CGFloat(dote.y) * height, width: width, height: height)
-                context.fill(.init(roundedRect: rect, cornerSize: .zero), with: .color(.black))
-            
+                let color = Color( .sRGB,red: dote.red, green: dote.green, blue: dote.blue, opacity: dote.opacicy)
+                context.fill(.init(roundedRect: rect, cornerSize: .zero), with: .color(color))
+                
             }
 
             
@@ -104,11 +115,12 @@ struct CanvasView: View {
             )
             context.blendMode = .xor
             context.stroke(.init(roundedRect: rect, cornerSize: .zero), with: .color(.red), lineWidth: 3)
-            
+#if !targetEnvironment(simulator)
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
                 drawCount += 1
                 loadData()
             }
+#endif
             
         }
         .frame(width: canvasSize.width, height: canvasSize.width)
@@ -123,30 +135,59 @@ struct CanvasView: View {
                 return (x,y)
             }
             
-            pointer = getIndex(location: value.location)
-            
-            if pointer.0 < 0 {
-                pointer.0 = 0
+            var newPointer = getIndex(location: value.location)
+            var isMakeDote = false
+            if newPointer.0 < 0 {
+                newPointer.0 = 0
             }
-            if pointer.1 < 0 {
-                pointer.1 = 0
+            if newPointer.1 < 0 {
+                newPointer.1 = 0
             }
-            if pointer.0 >= wc {
-                pointer.0 = wc - 1
+            if newPointer.0 >= wc {
+                newPointer.0 = wc - 1
             }
-            if pointer.1 >= hc {
-                pointer.1 = hc - 1
+            if newPointer.1 >= hc {
+                newPointer.1 = hc - 1
+            }
+            if pointer != newPointer && isDraw {
+                isMakeDote = true
+            }
+            pointer = newPointer
+            if isMakeDote {
+                makeDote()
             }
             
         }))
+        
     }
     var pallete : some View {
         Group {
-            Button{
-                FirestoreHelper.makeDote(canvasId: id, position: pointer, color: color)
-            } label: {
-                Text("make")
+            HStack(alignment: .top) {
+                Toggle(isOn: $isDraw) {
+                    if isDraw == false {
+                        Button{
+                            #if !targetEnvironment(simulator)
+                            FirestoreHelper.makeDote(canvasId: id, position: pointer, color: color)
+                            #endif
+                        } label: {
+                            Image(systemName: "pencil.circle")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 40, height: 40)
+                                .foregroundColor(.primary)
+                        }
+                    }
+                    else {
+                        Image(systemName: "pencil.circle.fill")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 40, height: 40)
+                            .foregroundColor(.primary)
+                    }
+                }.frame(width: 100)
             }
+            ColorMixerView(color: $color)
+
         }
     }
     var body: some View {
@@ -174,11 +215,18 @@ struct CanvasView: View {
             }
         }
         .onAppear {
+#if !targetEnvironment(simulator)
             if canvasData?.deleted == true {
                 alertType = .deletedCanvas
                 NotificationCenter.default.post(name: .canvasDidDeleted, object: id)
             }
             loadData()
+            color = lastMyDote?.color ?? .black
+            if let last = lastMyDote {
+                pointer.0 = last.x
+                pointer.1 = last.y
+            }
+#endif
         }
         .actionSheet(isPresented: $isActionSheet) {
             var buttons:[ActionSheet.Button] = []
@@ -205,9 +253,11 @@ struct CanvasView: View {
                 return .init(title: Text("error"))
             }
         }
-        .onReceive(NotificationCenter.default.publisher(for: .doteDidCreated)) { noti in
+#if !targetEnvironment(simulator)
+        .onReceive(NotificationCenter.default.publisher(for: .doteDidCreated)) { noti in            
             doteCount = doteData.count
         }
+#endif
         
         
     }

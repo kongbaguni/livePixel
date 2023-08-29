@@ -26,6 +26,9 @@
 		1BE7609C2A97132100C954E2 /* FSImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE7609B2A97132100C954E2 /* FSImageView.swift */; };
 		1BE95B6B2A9C791D0056B5DA /* CGPoint+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE95B6A2A9C791D0056B5DA /* CGPoint+Extensions.swift */; };
 		1BE95B6D2A9C902B0056B5DA /* Color+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE95B6C2A9C902B0056B5DA /* Color+Extensions.swift */; };
+		1BE95B6F2A9D8D950056B5DA /* ColorMixerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE95B6E2A9D8D950056B5DA /* ColorMixerView.swift */; };
+		1BE95B712A9D9BC30056B5DA /* ColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE95B702A9D9BC30056B5DA /* ColorView.swift */; };
+		1BE95B732A9DC7F90056B5DA /* TotalCanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE95B722A9DC7F90056B5DA /* TotalCanvasView.swift */; };
 		1BECC91E2A972A59008F8C27 /* Realm+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BECC91D2A972A59008F8C27 /* Realm+Extensions.swift */; };
 		1BECC9262A972ED1008F8C27 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 1BECC9252A972ED1008F8C27 /* RxCocoa */; };
 		1BECC9282A972ED1008F8C27 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 1BECC9272A972ED1008F8C27 /* RxSwift */; };
@@ -99,6 +102,9 @@
 		1BE7609B2A97132100C954E2 /* FSImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FSImageView.swift; sourceTree = "<group>"; };
 		1BE95B6A2A9C791D0056B5DA /* CGPoint+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extensions.swift"; sourceTree = "<group>"; };
 		1BE95B6C2A9C902B0056B5DA /* Color+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extensions.swift"; sourceTree = "<group>"; };
+		1BE95B6E2A9D8D950056B5DA /* ColorMixerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorMixerView.swift; sourceTree = "<group>"; };
+		1BE95B702A9D9BC30056B5DA /* ColorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorView.swift; sourceTree = "<group>"; };
+		1BE95B722A9DC7F90056B5DA /* TotalCanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotalCanvasView.swift; sourceTree = "<group>"; };
 		1BECC91D2A972A59008F8C27 /* Realm+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Realm+Extensions.swift"; sourceTree = "<group>"; };
 		1BECC9302A974E9C008F8C27 /* ProfileImageViewForNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageViewForNavigation.swift; sourceTree = "<group>"; };
 		1BECC9322A983013008F8C27 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -170,6 +176,7 @@
 			isa = PBXGroup;
 			children = (
 				8D5F12562A93209500ACDAC4 /* ContentView.swift */,
+				1BE95B6E2A9D8D950056B5DA /* ColorMixerView.swift */,
 				1BECC9302A974E9C008F8C27 /* ProfileImageViewForNavigation.swift */,
 				1B47E13C2A944529005C036F /* AuthorizationButton.swift */,
 				8D1E60B52A93342400952196 /* SignInView.swift */,
@@ -183,6 +190,8 @@
 				1BECC9322A983013008F8C27 /* HomeView.swift */,
 				1BECC9362A986096008F8C27 /* MakeNewCanvasView.swift */,
 				1BECC93B2A986A0D008F8C27 /* CanvasListView.swift */,
+				1BE95B702A9D9BC30056B5DA /* ColorView.swift */,
+				1BE95B722A9DC7F90056B5DA /* TotalCanvasView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -419,8 +428,10 @@
 				8D5F12572A93209500ACDAC4 /* ContentView.swift in Sources */,
 				8D1E60AD2A932F4200952196 /* AuthManager.swift in Sources */,
 				8D5F126A2A9324E200ACDAC4 /* Stack.swift in Sources */,
+				1BE95B732A9DC7F90056B5DA /* TotalCanvasView.swift in Sources */,
 				1BECC9352A9832FE008F8C27 /* FirestorageDownloadUrlCacheModel.swift in Sources */,
 				8D5F12552A93209500ACDAC4 /* LivePixelApp.swift in Sources */,
+				1BE95B712A9D9BC30056B5DA /* ColorView.swift in Sources */,
 				8D5F12652A93240100ACDAC4 /* CanvasModel.swift in Sources */,
 				1BE95B6B2A9C791D0056B5DA /* CGPoint+Extensions.swift in Sources */,
 				1B47E1442A946F9A005C036F /* NetImageView.swift in Sources */,
@@ -436,6 +447,7 @@
 				1B8EC3392A959B0200A723D4 /* ProfileView.swift in Sources */,
 				1BE95B6D2A9C902B0056B5DA /* Color+Extensions.swift in Sources */,
 				8D5F12672A93244B00ACDAC4 /* DoteModel.swift in Sources */,
+				1BE95B6F2A9D8D950056B5DA /* ColorMixerView.swift in Sources */,
 				1BECC9372A986096008F8C27 /* MakeNewCanvasView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

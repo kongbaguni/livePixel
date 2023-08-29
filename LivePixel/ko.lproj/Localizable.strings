@@ -35,3 +35,5 @@
 "action" = "액션";
 
 "empty list msg" = "캔버스가 없습니다.";
+"auto draw" = "자동으로 그리기";
+"draw" = "그리기";

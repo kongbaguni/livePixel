@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import RealmSwift
 
 struct MakeNewCanvasView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
@@ -21,7 +22,8 @@ struct MakeNewCanvasView: View {
     
     
     @State var isAlert = false
-    @State var size:CGFloat = 64
+    @State var size:CGFloat = 16
+    @State var offset:(Int,Int) = (0,0)
     
     var body: some View {
         ScrollView {
@@ -31,15 +33,7 @@ struct MakeNewCanvasView: View {
                     TextField("input canvas title", text: $title)
                         .textFieldStyle(.roundedBorder)
                 }
-                
-                HStack {
-                    Text("size")
-                    Text(String(format: "%0.0f", floor(size)))
-                    Spacer()
-                    Slider(value: $size, in: 8...16)
-                        .frame(width:UIScreen.main.bounds.width - 130)
-                }
-                
+                TotalCanvasView(previewOnly : false ,pointer: $offset, size: $size)
 
             }.padding(10)
             
@@ -49,7 +43,7 @@ struct MakeNewCanvasView: View {
                     errMsg = Text("empty title msg")
                     return
                 }
-                FirestoreHelper.makeCanvas(title: trimmingTitle, width: Int(size), height: Int(size)) { error in
+                FirestoreHelper.makeCanvas(title: trimmingTitle, width: Int(size), height: Int(size), offset: offset) { error in
                     if let err = error {
                         self.errMsg = Text(err.localizedDescription)
                     }
@@ -61,6 +55,14 @@ struct MakeNewCanvasView: View {
         }
         .alert(isPresented: $isAlert) {
             .init(title: Text("alert"),message: errMsg ?? Text(""))
+        }
+        .onAppear {
+#if !targetEnvironment(simulator)
+            if let last = Realm.shared.objects(CanvasModel.self).last {
+                offset = (last.offsetX, last.offsetY)
+                size = CGFloat(last.width)
+            }
+#endif
         }
     }
 }

@@ -57,7 +57,7 @@ struct FirestoreHelper {
     //MARK: - canvas
     fileprivate static let canvasCollection:CollectionReference = Firestore.firestore().collection("canvas")
     
-    static func makeCanvas(title:String, width:Int, height:Int, complete:@escaping(_ error:Error?)->Void) {
+    static func makeCanvas(title:String, width:Int, height:Int, offset:(Int,Int),  complete:@escaping(_ error:Error?)->Void) {
         guard let ownerid = AuthManager.shared.userId else {
             return
         }
@@ -67,7 +67,9 @@ struct FirestoreHelper {
             "ownerId":ownerid,
             "updateDt":now,
             "width":width,
-            "height":height
+            "height":height,
+            "offsetX":offset.0,
+            "offsetY":offset.1,
         ]) { error in
             complete(error)
         }
@@ -149,19 +151,41 @@ struct FirestoreHelper {
 
     }
     static func makeDote(canvasId:String, position:(Int,Int), color:Color) {
+        guard let uid = AuthManager.shared.userId else {
+            return
+        }
         let realm = Realm.shared
         
         let cicolor = color.ciColor
+        
         var data:[String:Any] = [
             "canvasId":canvasId,
             "x":position.0,
             "y":position.1,
-            "red":cicolor.red,
-            "green":cicolor.green,
-            "blue":cicolor.blue,
-            "opacity":cicolor.alpha,
+            "red":Double(cicolor.red),
+            "green":Double(cicolor.green),
+            "blue":Double(cicolor.blue),
+            "opacicy":Double(cicolor.alpha),
+            "ownerId":uid,
             "timeIntervalSince1970":Date().timeIntervalSince1970
         ]
+        print("""
+              ci color --------
+              red \(cicolor.red)
+              green \(cicolor.green)
+              blue \(cicolor.blue)
+              alpha \(cicolor.alpha)
+              
+            data :
+            red \(data["red"] as? Double ?? 0)
+            green \(data["green"] as? Double ?? 0)
+            blue \(data["blue"] as? Double ?? 0)
+            alpha : \(data["opacicy"] as? Double ?? 0)
+        """)
+        print()
+        if cicolor.alpha == 0 {
+            abort()
+        }
         let sub = doteCollection.document(canvasId).collection("datas")
 
         getDotes(canvasId: canvasId) { list, error in

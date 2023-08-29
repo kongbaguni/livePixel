@@ -57,6 +57,8 @@ struct CanvasListView: View {
     }
     var body: some View {
         List {
+            TotalCanvasView(previewOnly: true, pointer: .constant((0,0)), size: .constant(0))
+
             if newCanvasList.count > 0 {
                 Section("new") {
                     ForEach(newCanvasList, id: \.self) { canvas in
@@ -84,11 +86,12 @@ struct CanvasListView: View {
             if newCanvasList.count == 0 && canvasList.count == 0 {
                 Text("empty list msg")
             }
-            Button {
-                sheetType = .makeNewCanvas
+            NavigationLink {
+                MakeNewCanvasView()
             } label: {
                 Text("make new canvas")
             }
+
         }
         .onAppear {
             loadData()
@@ -164,8 +167,8 @@ struct CanvasListView_Previews: PreviewProvider {
     static var previews: some View {
         List {
             CanvasListView(canvasList: [
-                .init(id: "aaaa", title: "김치", onwerId: "djskala",updateDt: 1010123, deleted: false , width : 32, height: 32),
-                .init(id: "aaba", title: "김치", onwerId: "djskala",updateDt: 1032800, deleted: true, width : 32, height: 32),
+                .init(id: "aaaa", title: "김치", onwerId: "djskala",updateDt: 1010123, deleted: false , width : 32, height: 32, offsetX: 0, offsetY: 0),
+                .init(id: "aaba", title: "김치", onwerId: "djskala",updateDt: 1032800, deleted: true, width : 32, height: 32, offsetX: 0, offsetY: 0),
 
             ])
         }

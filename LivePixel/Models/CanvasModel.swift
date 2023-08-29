@@ -15,8 +15,10 @@ class CanvasModel : Object {
     @Persisted var ownerId:String = ""
     @Persisted var updateDt:Double = Date().timeIntervalSince1970
     @Persisted var deleted:Bool = false
-    @Persisted var width:Int = 64
-    @Persisted var height:Int = 64
+    @Persisted var width:Int = 16
+    @Persisted var height:Int = 16
+    @Persisted var offsetX:Int = 0
+    @Persisted var offsetY:Int = 0
     
     struct ThreadSafeModel : Codable, Hashable {
         static func == (left:ThreadSafeModel, right:ThreadSafeModel)-> Bool {
@@ -29,6 +31,8 @@ class CanvasModel : Object {
         let deleted:Bool
         let width:Int
         let height:Int
+        let offsetX:Int
+        let offsetY:Int
         
         var updateDate:Date {
             return Date(timeIntervalSince1970: updateDt)
@@ -57,6 +61,6 @@ class CanvasModel : Object {
 
 extension CanvasModel {
     var threadSafeModel:ThreadSafeModel {
-        return .init(id: id, title: title, onwerId: ownerId,  updateDt: updateDt, deleted: deleted, width:width, height: height)
+        return .init(id: id, title: title, onwerId: ownerId,  updateDt: updateDt, deleted: deleted, width:width, height: height, offsetX: offsetX, offsetY: offsetY)
     }
 }

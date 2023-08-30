@@ -75,12 +75,12 @@ struct CanvasView: View {
     
     func makeDote() {
 #if !targetEnvironment(simulator)
-        FirestoreHelper.makeDote(canvasId: id, position: pointer, size: Int(pointerSize) ,color: color)
+        FirebaseFirestoreHelper.shared.makeDote(canvasId: id, position: pointer, size: Int(pointerSize) ,color: color)
 #endif
     }
     
     func loadData() {
-        FirestoreHelper.getDotes(canvasId: id) { list, error in
+        FirebaseFirestoreHelper.shared.getDotes(canvasId: id) { list, error in
             doteCount = doteData.count
         }
     }
@@ -185,8 +185,8 @@ struct CanvasView: View {
                         if isDraw == false {
                             Button{
 #if !targetEnvironment(simulator)
-                                FirestoreHelper.makeDote(canvasId: id, position: pointer, size:Int(pointerSize), color: color)
-                                FirestoreHelper.makeDote(canvasId: id, position: pointer, size:Int(pointerSize), color: color)
+                                FirebaseFirestoreHelper.shared.makeDote(canvasId: id, position: pointer, size:Int(pointerSize), color: color)
+                                FirebaseFirestoreHelper.shared.makeDote(canvasId: id, position: pointer, size:Int(pointerSize), color: color)
 #endif
                             } label: {
                                 Image(systemName: "pencil.circle")
@@ -242,6 +242,21 @@ struct CanvasView: View {
                 } label: {
                     Image(systemName: "line.3.horizontal")
                 }
+                .actionSheet(isPresented: $isActionSheet) {
+                    var buttons:[ActionSheet.Button] = []
+                    if canvasData?.ownerId == AuthManager.shared.userId {
+                        buttons.append(ActionSheet.Button.default(Text("delete canvas"), action: {
+                            FirebaseFirestoreHelper.shared.deleteCanvas(canvasId: id) { error in
+                                if error == nil {
+                                    presentationMode.wrappedValue.dismiss()
+                                }
+                            }
+                        }))
+                    }
+                    buttons.append(.cancel())
+                
+                    return .init(title: Text("action"),buttons: buttons)
+                }
             }
         }
         .onAppear {
@@ -258,21 +273,7 @@ struct CanvasView: View {
             }
 #endif
         }
-        .actionSheet(isPresented: $isActionSheet) {
-            var buttons:[ActionSheet.Button] = []
-            if canvasData?.ownerId == AuthManager.shared.userId {
-                buttons.append(ActionSheet.Button.default(Text("delete canvas"), action: {
-                    FirestoreHelper.deleteCanvas(canvasId: id) { error in
-                        if error == nil {
-                            presentationMode.wrappedValue.dismiss()
-                        }
-                    }
-                }))
-            }
-            buttons.append(.cancel())
         
-            return .init(title: Text("action"),buttons: buttons)
-        }
         .alert(isPresented: $isAlert) {
             switch alertType {
             case .deletedCanvas:

@@ -18,7 +18,7 @@ struct HomeView: View {
         Group {
             if isSignin {
                 VStack {
-                    CanvasListView()
+                    SubjectListView()
                 }
             } else {
                 VStack {

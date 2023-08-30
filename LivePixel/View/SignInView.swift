@@ -30,7 +30,7 @@ struct SignInView: View {
     
     @State var isAlert:Bool = false
     @State var alertAction:(()->Void)? = nil
-    
+    @State var isLoading:Bool = false
     var profile:ProfileModel? {
         return ProfileModel.current
     }
@@ -53,7 +53,7 @@ struct SignInView: View {
     }
     
     private var deleteAccountButton : some View {
-        RoundedButton(title: Text("delete account"), style: .deleteStyle) {
+        RoundedButton(title: Text("delete account"), isLoading:$isLoading, style: .deleteStyle) {
             if AuthManager.shared.auth.currentUser?.isAnonymous == true {
                 alertMsg = Text("delete anonymous account alert msg")
             } else {
@@ -145,7 +145,7 @@ struct SignInView: View {
                         deleteAccountButton
                     }
                     else {
-                        RoundedButton(title: Text("sign out")) {
+                        RoundedButton(title: Text("sign out"), isLoading: $isLoading) {
                             AuthManager.shared.signout()
                         }
                     }

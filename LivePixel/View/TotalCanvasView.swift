@@ -11,8 +11,12 @@ import RxSwift
 import RxRealm
 
 struct TotalCanvasView: View {
+    let subjectId:String
+    var subjectModel:SubjectModel? {
+        Realm.shared.object(ofType: SubjectModel.self, forPrimaryKey: subjectId)
+    }
     var canvass:Results<CanvasModel> {
-        Realm.shared.objects(CanvasModel.self).filter("deleted = %@", false)
+        Realm.shared.objects(CanvasModel.self).filter("deleted = %@ && subjectId = %@", false, subjectId)
     }
     let previewOnly:Bool
     @State var list:[CanvasModel.ThreadSafeModel] = []
@@ -20,23 +24,19 @@ struct TotalCanvasView: View {
     @Binding var size:CGFloat
     @State var count = 0
     var wc:Int {
-        512
+        subjectModel?.width ?? 0
     }
     var hc:Int {
-        512
+        subjectModel?.height ?? 0
     }
     
     var canvasSize:CGSize {
         let w = UIScreen.main.bounds.width
         let h = UIScreen.main.bounds.height
         if w < h {
-            if wc > hc {
-                return .init(width: w, height: w / CGFloat(hc) * CGFloat(wc))
-            }
-            
             return .init(width: w, height: w)
         }
-        return .init(width: h, height: h)
+        return .init(width: h - 300, height: h - 300)
     }
     
     func getDoteData(canvasId:String)->Results<DoteModel> {
@@ -45,9 +45,11 @@ struct TotalCanvasView: View {
     
     var canvas : some View {
         Canvas { ctx,size in
+            
             ctx.draw(Text("\(count)"), in: .init(x: 0, y: -100, width: 50, height: 10))
-            let iw = size.width / CGFloat(wc)
-            let ih = size.height / CGFloat(hc)
+            ctx.draw(Text("w : \(wc) h :\(hc)"), in: .init(x: 10, y: 10, width: 200, height: 50))
+            let iw = canvasSize.width / CGFloat(wc)
+            let ih = canvasSize.height / CGFloat(hc)
             
             for canvas in list {
                 let x = CGFloat(canvas.offsetX) * iw
@@ -63,14 +65,14 @@ struct TotalCanvasView: View {
                 for dote in getDoteData(canvasId: canvas.id) {
                     if dote.size == 0 {
                         let dx = CGFloat(dote.x) * iw + x
-                        let dy = CGFloat(dote.y) * iw + y
+                        let dy = CGFloat(dote.y) * ih + y
                         let rect = CGRect(x: dx, y: dy, width: iw, height: ih)
                         ctx.fill(.init(roundedRect: rect, cornerSize: .zero), with: .color(dote.color))
                     }
                     else {
                         for data in PathFinder.findCircle(center: .init(x: dote.x, y: dote.y), end: .init(x: dote.x + dote.size, y: dote.y)) {
                             let dx = CGFloat(data.x) * iw + x
-                            let dy = CGFloat(data.y) * iw + x
+                            let dy = CGFloat(data.y) * ih + y
                             let rect = CGRect(x: dx, y: dy, width: iw, height: ih)
                             ctx.fill(.init(roundedRect: rect, cornerSize: .zero), with: .color(dote.color))
                         }
@@ -181,10 +183,11 @@ struct TotalCanvasView: View {
 struct TotalCanvasView_Previews: PreviewProvider {
     static var previews: some View {
         TotalCanvasView(
+            subjectId:"test",
             previewOnly: true,
             list: [
-                .init(id: "a", title: "b", onwerId: "c", updateDt: 0, deleted: false, width: 32, height: 32, offsetX: 0, offsetY: 0),
-                .init(id: "a", title: "b", onwerId: "c", updateDt: 0, deleted: false, width: 16, height: 16, offsetX: 240, offsetY: 230),
+                .init(id: "a", title: "b", onwerId: "c", subjectId:"", updateDt: 0, deleted: false, width: 32, height: 32, offsetX: 0, offsetY: 0),
+                .init(id: "a", title: "b", onwerId: "c", subjectId:"", updateDt: 0, deleted: false, width: 16, height: 16, offsetX: 240, offsetY: 230),
             ],
             pointer: .constant((30,30)),
             size : .constant(64)

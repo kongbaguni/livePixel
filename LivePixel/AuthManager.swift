@@ -125,7 +125,7 @@ class AuthManager : NSObject {
                 }
                 
                 if let id = result?.user.uid {
-                    FirestoreHelper.getProfile(id: id) { error in
+                    FirebaseFirestoreHelper.shared.getProfile(id: id) { error in
                         NotificationCenter.default.post(name: .authDidSucessed, object: nil)
                     }
                 }
@@ -288,7 +288,7 @@ extension AuthManager: ASAuthorizationControllerDelegate {
                     }
                     print("login sucess")
                     if let id = authResult?.user.uid {
-                        FirestoreHelper.getProfile(id: id) { error in
+                        FirebaseFirestoreHelper.shared.getProfile(id: id) { error in
                             NotificationCenter.default.post(name: .authDidSucessed, object: nil)
                         }
                     }

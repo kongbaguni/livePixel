@@ -19,13 +19,24 @@ struct RoundedButton: View {
     }
     
     let title:Text
+    @Binding var isLoading:Bool
     var style:ButtonStyle? = nil
     let action:()->Void
     var body: some View {
-        Button(action: action) {
-            title
-                .foregroundColor(style?.textColor ?? .accentColor)
-                .font(style?.font ?? .body)
+        ZStack {
+            Button {
+                if isLoading == false {
+                    action()
+                }
+            } label: {
+                title
+                    .foregroundColor(style?.textColor ?? .accentColor)
+                    .font(style?.font ?? .body)
+            }
+            .opacity(isLoading ? 0.3 : 1.0)
+            if isLoading {
+                ActivityIndicator(isAnimating: $isLoading, style: .large)
+            }
         }
         .padding(10)
         .background(style?.backgroundColor ?? .clear)
@@ -41,10 +52,11 @@ struct RoundedButton: View {
 
 struct RoundedButton_Previews: PreviewProvider {
     static var previews: some View {
-        RoundedButton(title: Text("button")) {
+        RoundedButton(title: Text("button"), isLoading:.constant(true)) {
             
         }
-        RoundedButton(title: Text("buton"), style:.init(
+        RoundedButton(title: Text("buton"), isLoading:.constant(false),
+                      style:.init(
             borderColor: .green,
             textColor: .red,
             font: .system(size: 30,weight: .heavy),

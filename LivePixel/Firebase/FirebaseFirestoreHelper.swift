@@ -15,11 +15,13 @@ extension Notification.Name {
     static let canvasDidCreated = Notification.Name("canvasDidCreated_observer")
     static let doteDidCreated = Notification.Name("doteDidCreated_observer")
 }
-struct FirestoreHelper {
+struct FirebaseFirestoreHelper {
+    static let shared = FirebaseFirestoreHelper()
+    
     //MARK: - profile
-    fileprivate static let profileCollection:CollectionReference = Firestore.firestore().collection("profile")
-    static func getProfile(id:String, complete:@escaping(_ error:Error?)->Void) {
-        FirestoreHelper.profileCollection.document(id).getDocument { snapshot, error in
+    private let profileCollection:CollectionReference = Firestore.firestore().collection("profile")
+    func getProfile(id:String, complete:@escaping(_ error:Error?)->Void) {
+        profileCollection.document(id).getDocument { snapshot, error in
             if let data = snapshot?.data() {
                 print(data)
                 do {
@@ -37,15 +39,15 @@ struct FirestoreHelper {
         }
     }
     
-    static func profileUpload(id:String,complete:@escaping(_ error:Error?)->Void) {
+    func profileUpload(id:String,complete:@escaping(_ error:Error?)->Void) {
         guard let model = Realm.shared.object(ofType: ProfileModel.self, forPrimaryKey: id) else {
             return
         }
         let value = model.dictionmaryValue
         let id = id
-        FirestoreHelper.profileCollection.document(id).updateData(value) { errorA in
+        profileCollection.document(id).updateData(value) { errorA in
             if errorA != nil {
-                FirestoreHelper.profileCollection.document(id).setData(value) { errorB in
+                profileCollection.document(id).setData(value) { errorB in
                     complete(errorB)
                 }
                 return
@@ -53,16 +55,60 @@ struct FirestoreHelper {
             complete(errorA)
         }
     }
+    
+    //MARK: - subject
+    private let subjectCollection = Firestore.firestore().collection("subjects")
+    func makeSubject(title:String, width:Int,height:Int, complete:@escaping(_ error:Error?)->Void) {
+        guard let userid = AuthManager.shared.userId else {
+            return
+        }
+        let now = Date().timeIntervalSince1970
+
+        var data:[String:Any] = [
+            "title":title,
+            "width":width,
+            "height":height,
+            "ownerId":userid,
+            "updateTimeIntervalSince1970":Date().timeIntervalSince1970
+        ]
+        subjectCollection.addDocument(data: data) { errorA in
+            getSubjects { errorB in
+                complete(errorA ?? errorB)
+            }            
+        }
+    }
+    
+    func getSubjects(complete:@escaping(_ error:Error?)->Void) {
+        let last = Realm.shared.objects(SubjectModel.self).sorted(byKeyPath: "updateTimeIntervalSince1970", ascending: true).last?.updateTimeIntervalSince1970 ?? 0
+        
+        subjectCollection.whereField("updateTimeIntervalSince1970", isGreaterThan: last)
+            .getDocuments { snapShot, error in
+                do {
+                    let realm = Realm.shared
+                    realm.beginWrite()
+                    for doc in snapShot?.documents ?? [] {
+                        var data = doc.data()
+                        data["id"] = doc.documentID
+                        realm.create(SubjectModel.self, value: data, update: .all)
+                    }
+                    try realm.commitWrite()
+                } catch {
+                    complete(error)
+                }
+                complete(error)
+            }
+    }
+    
 
     //MARK: - canvas
-    fileprivate static let canvasCollection:CollectionReference = Firestore.firestore().collection("canvas")
-    
-    static func makeCanvas(title:String, width:Int, height:Int, offset:(Int,Int),  complete:@escaping(_ error:Error?)->Void) {
+    private let canvasCollection:CollectionReference = Firestore.firestore().collection("canvas")
+    func makeCanvas(subjectId:String, title:String, width:Int, height:Int, offset:(Int,Int),  complete:@escaping(_ error:Error?)->Void) {
         guard let ownerid = AuthManager.shared.userId else {
             return
         }
         let now = Date().timeIntervalSince1970
         let ref = canvasCollection.addDocument(data: [
+            "subjectId":subjectId,
             "title":title,
             "ownerId":ownerid,
             "updateDt":now,
@@ -76,9 +122,11 @@ struct FirestoreHelper {
         NotificationCenter.default.post(name: .canvasDidCreated, object: ref.documentID)
     }
 
-    static func getCanvasList(complete:@escaping(_ list:[CanvasModel.ThreadSafeModel], _ error:Error?)->Void) {
-        var query = canvasCollection.order(by: "updateDt", descending: true)
-        if let lastSyncDateTime = Realm.shared.objects(CanvasModel.self).sorted(byKeyPath: "updateDt").last?.updateDt {
+    func getCanvasList(subjectId:String, complete:@escaping(_ list:[CanvasModel.ThreadSafeModel], _ error:Error?)->Void) {
+        var query = canvasCollection
+            .whereField("subjectId", isEqualTo: subjectId)
+            .order(by: "updateDt", descending: true)
+        if let lastSyncDateTime = Realm.shared.objects(CanvasModel.self).filter("subjectId = %@", subjectId).sorted(byKeyPath: "updateDt").last?.updateDt {
             query = query.whereField("updateDt", isGreaterThan: lastSyncDateTime)
         }
                  
@@ -106,7 +154,7 @@ struct FirestoreHelper {
         }
     }
         
-    static func deleteCanvas(canvasId:String, complete:@escaping(_ error:Error?)->Void) {
+    func deleteCanvas(canvasId:String, complete:@escaping(_ error:Error?)->Void) {
         var data:[String:Any] = [
             "deleted":true,
             "updateDt":Date().timeIntervalSince1970
@@ -125,10 +173,10 @@ struct FirestoreHelper {
         }
     }
     
-    
-    fileprivate static let doteCollection:CollectionReference = Firestore.firestore().collection("dotes")
+// MARK: - dote
+    private let doteCollection:CollectionReference = Firestore.firestore().collection("dotes")
 
-    static func getDotes(canvasId:String, complete:@escaping(_ list:[DoteModel.ThreadSafeModel], _ error:Error?)->Void) {
+    func getDotes(canvasId:String, complete:@escaping(_ list:[DoteModel.ThreadSafeModel], _ error:Error?)->Void) {
         let realm = Realm.shared
         let lastDote = realm.objects(DoteModel.self).filter("canvasId = %@", canvasId)
             .sorted(byKeyPath: "timeIntervalSince1970", ascending: true).last
@@ -150,7 +198,7 @@ struct FirestoreHelper {
             }
 
     }
-    static func makeDote(canvasId:String, position:(Int,Int), size:Int, color:Color) {
+    func makeDote(canvasId:String, position:(Int,Int), size:Int, color:Color) {
         guard let uid = AuthManager.shared.userId else {
             return
         }

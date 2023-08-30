@@ -23,6 +23,7 @@ struct ProfileEditView: View {
     @State var isSheetPhotoPicker = false
     @State var images:[UIImage] = []
     @State var alertConfirmAction:(()->Void)? = nil
+    @State var isLoading:Bool = false
     
     func makeInputField(title:Text,placeHolder:String,value:Binding<String>,prompt:Text?)-> some View {
         HStack {
@@ -48,7 +49,7 @@ struct ProfileEditView: View {
                         FSImageView(id: id, type: .profileImage, placeHolder: Image(systemName: "person.fill"))
                     }
                 }
-                RoundedButton(title: Text("select image")) {
+                RoundedButton(title: Text("select image"), isLoading: $isLoading) {
                     PHPhotoLibrary.requestAuthorization(for: .readWrite) { status in
                         switch status {
                         case .authorized:
@@ -64,7 +65,7 @@ struct ProfileEditView: View {
                     }
                 }
             }
-            RoundedButton(title: Text("save")) {
+            RoundedButton(title: Text("save"),isLoading: $isLoading) {
                 save()
             }
         }
@@ -122,7 +123,9 @@ struct ProfileEditView: View {
         ]
         
         if profile?.updateData(data: data) == nil {
-            FirestoreHelper.profileUpload(id: id) { error in
+            isLoading = true
+            FirebaseFirestoreHelper.shared.profileUpload(id: id) { error in
+                isLoading = false 
                 if let err = error {
                     alertMsg = Text(err.localizedDescription)
                     alertConfirmAction = nil

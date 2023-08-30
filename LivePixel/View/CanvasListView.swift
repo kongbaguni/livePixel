@@ -11,6 +11,7 @@ import RxRealm
 import RealmSwift
 
 struct CanvasListView: View {
+    let subjectId:String
     enum SheetType {
         case makeNewCanvas
     }
@@ -25,14 +26,16 @@ struct CanvasListView: View {
     }
     
     let disposeBag = DisposeBag()
-    init(canvasList: [CanvasModel.ThreadSafeModel]) {
+    init(subjectId:String,canvasList: [CanvasModel.ThreadSafeModel]) {
+        self.subjectId = subjectId
         self.canvasList = canvasList
     }
     @State var count = 0
     
-    init() {
+    init(subjectId:String) {
+        self.subjectId = subjectId
 #if !targetEnvironment(simulator)
-        Observable.collection(from: Realm.shared.objects(CanvasModel.self)).subscribe {[self]  event in
+        Observable.collection(from: Realm.shared.objects(CanvasModel.self).filter("subjectId = %@", subjectId)).subscribe {[self]  event in
             switch event {
             case .next(let result):
                 let newList:[CanvasModel.ThreadSafeModel] = result.map({ model in
@@ -46,9 +49,12 @@ struct CanvasListView: View {
         }.disposed(by: self.disposeBag)
 #endif
     }
+    var subjectModel : SubjectModel? {
+        return Realm.shared.object(ofType: SubjectModel.self, forPrimaryKey: subjectId)
+    }
     
     func makeLabel(data:CanvasModel.ThreadSafeModel)-> some View {
-        HStack {
+        HStack(alignment: .top) {
             Canvas { ctx, size in
                 ctx.draw(Text("\(count)"), in: .init(x: 0, y: -100, width: 30, height: 30))
                 
@@ -69,17 +75,15 @@ struct CanvasListView: View {
                     }
                 }
             }
-            .frame(width:CGFloat(data.width * 3),height:CGFloat(data.height * 3))
+            .frame(width:CGFloat(data.width * 3), height:CGFloat(data.height * 3))
             .border(Color.primary)
-//            Text(data.title)
-        }
+
+        }.frame(height: 200)
     }
     var body: some View {
         ScrollView {
-            TotalCanvasView(previewOnly: true, pointer: .constant((0,0)), size: .constant(0))
-
-            if newCanvasList.count > 0 {
-                Section("new") {
+            LazyHGrid(rows: [.init(.flexible())]) {
+                if newCanvasList.count > 0 {
                     ForEach(newCanvasList, id: \.self) { canvas in
                         NavigationLink {
                             CanvasView(id: canvas.id)
@@ -88,9 +92,7 @@ struct CanvasListView: View {
                         }
                     }
                 }
-            }
-            if canvasList.count > 0 {
-                Section("canvas list") {
+                if canvasList.count > 0 {
                     ForEach(canvasList, id: \.self) { canvas in
                         if canvas.deletedNow == false  {
                             NavigationLink {
@@ -102,11 +104,13 @@ struct CanvasListView: View {
                     }
                 }
             }
+            TotalCanvasView(subjectId: subjectId, previewOnly: true, pointer: .constant((0,0)), size: .constant(0))
+
             if newCanvasList.count == 0 && canvasList.count == 0 {
                 Text("empty list msg")
             }
             NavigationLink {
-                MakeNewCanvasView()
+                MakeNewCanvasView(subjectId:subjectId)
             } label: {
                 Text("make new canvas")
             }
@@ -129,13 +133,14 @@ struct CanvasListView: View {
         }
         
         .sheet(isPresented: $isSheet) {
-            MakeNewCanvasView()
+            MakeNewCanvasView(subjectId:subjectId)
         }
+        .navigationTitle(Text("\(subjectModel?.title ?? subjectId)"))
 
     }
     
     func reload() {
-        FirestoreHelper.getCanvasList { list, error in
+        FirebaseFirestoreHelper.shared.getCanvasList(subjectId:subjectId) { list, error in
             // 신규 켄버스 추가
             for item in list {
                 newCanvasList.insert(item, at: 0)
@@ -166,13 +171,13 @@ struct CanvasListView: View {
     func loadData() {
 #if !targetEnvironment(simulator)
         if canvasList.count == 0 {
-            for model in Realm.shared.objects(CanvasModel.self) {
+            for model in Realm.shared.objects(CanvasModel.self).filter("subjectId = %@", subjectId) {
                 if model.deleted == false {
                     canvasList.append(model.threadSafeModel)
                 }
             }
         }
-        FirestoreHelper.getCanvasList { list, error in
+        FirebaseFirestoreHelper.shared.getCanvasList(subjectId:subjectId) { list, error in
             for item in list {
                 if item.deletedNow == false {
                     canvasList.insert(item, at: 0)
@@ -188,9 +193,19 @@ struct CanvasListView: View {
 struct CanvasListView_Previews: PreviewProvider {
     static var previews: some View {
         List {
-            CanvasListView(canvasList: [
-                .init(id: "aaaa", title: "김치", onwerId: "djskala",updateDt: 1010123, deleted: false , width : 32, height: 32, offsetX: 0, offsetY: 0),
-                .init(id: "aaba", title: "김치", onwerId: "djskala",updateDt: 1032800, deleted: true, width : 32, height: 32, offsetX: 0, offsetY: 0),
+            CanvasListView(
+                subjectId: " ",
+                canvasList: [
+                .init(id: "aaaa",
+                      title: "김치",
+                      onwerId: "djskala",
+                      subjectId: " ",
+                      updateDt: 1010123, deleted: false , width : 32, height: 32, offsetX: 0, offsetY: 0),
+                .init(id: "aaba",
+                      title: "김치",
+                      onwerId: "djskala",
+                      subjectId: " ",
+                      updateDt: 1032800, deleted: true, width : 32, height: 32, offsetX: 0, offsetY: 0),
 
             ])
         }

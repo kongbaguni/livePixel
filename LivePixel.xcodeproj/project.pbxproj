@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1B0223712A9EFD0200935F48 /* SubjectModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0223702A9EFD0200935F48 /* SubjectModel.swift */; };
+		1B0223732A9F07A200935F48 /* MakeSubjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0223722A9F07A200935F48 /* MakeSubjectView.swift */; };
+		1B0223752A9F0AD200935F48 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0223742A9F0AD200935F48 /* ActivityIndicator.swift */; };
+		1B0223772A9F0EE600935F48 /* SubjectListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0223762A9F0EE600935F48 /* SubjectListView.swift */; };
 		1B47E13D2A944529005C036F /* AuthorizationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B47E13C2A944529005C036F /* AuthorizationButton.swift */; };
 		1B47E13F2A944938005C036F /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1B47E13E2A944938005C036F /* Colors.xcassets */; };
 		1B47E1422A946DE0005C036F /* AlamofireImage in Frameworks */ = {isa = PBXBuildFile; productRef = 1B47E1412A946DE0005C036F /* AlamofireImage */; };
@@ -22,7 +26,7 @@
 		1BE7608C2A95F32800C954E2 /* PhotoPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE7608B2A95F32800C954E2 /* PhotoPicker.swift */; };
 		1BE7608E2A95F4FC00C954E2 /* FirebaseStorageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE7608D2A95F4FC00C954E2 /* FirebaseStorageHelper.swift */; };
 		1BE760952A96DC1B00C954E2 /* Realm.Object+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE760942A96DC1B00C954E2 /* Realm.Object+Extensions.swift */; };
-		1BE760982A96E29B00C954E2 /* FirestoreHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE760972A96E29B00C954E2 /* FirestoreHelper.swift */; };
+		1BE760982A96E29B00C954E2 /* FirebaseFirestoreHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE760972A96E29B00C954E2 /* FirebaseFirestoreHelper.swift */; };
 		1BE7609C2A97132100C954E2 /* FSImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE7609B2A97132100C954E2 /* FSImageView.swift */; };
 		1BE95B6B2A9C791D0056B5DA /* CGPoint+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE95B6A2A9C791D0056B5DA /* CGPoint+Extensions.swift */; };
 		1BE95B6D2A9C902B0056B5DA /* Color+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE95B6C2A9C902B0056B5DA /* Color+Extensions.swift */; };
@@ -83,6 +87,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1B0223702A9EFD0200935F48 /* SubjectModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectModel.swift; sourceTree = "<group>"; };
+		1B0223722A9F07A200935F48 /* MakeSubjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeSubjectView.swift; sourceTree = "<group>"; };
+		1B0223742A9F0AD200935F48 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
+		1B0223762A9F0EE600935F48 /* SubjectListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectListView.swift; sourceTree = "<group>"; };
 		1B47E13C2A944529005C036F /* AuthorizationButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthorizationButton.swift; sourceTree = "<group>"; };
 		1B47E13E2A944938005C036F /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		1B47E1432A946F9A005C036F /* NetImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetImageView.swift; sourceTree = "<group>"; };
@@ -99,7 +107,7 @@
 		1BE7608B2A95F32800C954E2 /* PhotoPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoPicker.swift; sourceTree = "<group>"; };
 		1BE7608D2A95F4FC00C954E2 /* FirebaseStorageHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseStorageHelper.swift; sourceTree = "<group>"; };
 		1BE760942A96DC1B00C954E2 /* Realm.Object+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Realm.Object+Extensions.swift"; sourceTree = "<group>"; };
-		1BE760972A96E29B00C954E2 /* FirestoreHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreHelper.swift; sourceTree = "<group>"; };
+		1BE760972A96E29B00C954E2 /* FirebaseFirestoreHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseFirestoreHelper.swift; sourceTree = "<group>"; };
 		1BE7609B2A97132100C954E2 /* FSImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FSImageView.swift; sourceTree = "<group>"; };
 		1BE95B6A2A9C791D0056B5DA /* CGPoint+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extensions.swift"; sourceTree = "<group>"; };
 		1BE95B6C2A9C902B0056B5DA /* Color+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extensions.swift"; sourceTree = "<group>"; };
@@ -194,6 +202,8 @@
 				1BECC93B2A986A0D008F8C27 /* CanvasListView.swift */,
 				1BE95B702A9D9BC30056B5DA /* ColorView.swift */,
 				1BE95B722A9DC7F90056B5DA /* TotalCanvasView.swift */,
+				1B0223722A9F07A200935F48 /* MakeSubjectView.swift */,
+				1B0223762A9F0EE600935F48 /* SubjectListView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -202,7 +212,7 @@
 			isa = PBXGroup;
 			children = (
 				1BE7608D2A95F4FC00C954E2 /* FirebaseStorageHelper.swift */,
-				1BE760972A96E29B00C954E2 /* FirestoreHelper.swift */,
+				1BE760972A96E29B00C954E2 /* FirebaseFirestoreHelper.swift */,
 			);
 			path = Firebase;
 			sourceTree = "<group>";
@@ -233,6 +243,7 @@
 				8D5F12622A9323C800ACDAC4 /* LivePixel.entitlements */,
 				8D5F12542A93209500ACDAC4 /* LivePixelApp.swift */,
 				1B47E14F2A948BC8005C036F /* Toast.swift */,
+				1B0223742A9F0AD200935F48 /* ActivityIndicator.swift */,
 				1BE95B742A9EC17D0056B5DA /* PathFinder.swift */,
 				8D5F12582A93209900ACDAC4 /* Assets.xcassets */,
 				1B47E13E2A944938005C036F /* Colors.xcassets */,
@@ -262,6 +273,7 @@
 				8D5F12662A93244B00ACDAC4 /* DoteModel.swift */,
 				1B47E1542A958E5B005C036F /* ProfileModel.swift */,
 				1BECC9342A9832FE008F8C27 /* FirestorageDownloadUrlCacheModel.swift */,
+				1B0223702A9EFD0200935F48 /* SubjectModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -436,14 +448,18 @@
 				8D5F12552A93209500ACDAC4 /* LivePixelApp.swift in Sources */,
 				1BE95B712A9D9BC30056B5DA /* ColorView.swift in Sources */,
 				8D5F12652A93240100ACDAC4 /* CanvasModel.swift in Sources */,
+				1B0223752A9F0AD200935F48 /* ActivityIndicator.swift in Sources */,
 				1BE95B6B2A9C791D0056B5DA /* CGPoint+Extensions.swift in Sources */,
 				1BE95B752A9EC17D0056B5DA /* PathFinder.swift in Sources */,
 				1B47E1442A946F9A005C036F /* NetImageView.swift in Sources */,
+				1B0223732A9F07A200935F48 /* MakeSubjectView.swift in Sources */,
 				1B47E1532A9499A5005C036F /* RoundedButton.swift in Sources */,
 				8D1E60B62A93342400952196 /* SignInView.swift in Sources */,
+				1B0223772A9F0EE600935F48 /* SubjectListView.swift in Sources */,
 				1BE7608C2A95F32800C954E2 /* PhotoPicker.swift in Sources */,
 				1B47E1502A948BC8005C036F /* Toast.swift in Sources */,
-				1BE760982A96E29B00C954E2 /* FirestoreHelper.swift in Sources */,
+				1BE760982A96E29B00C954E2 /* FirebaseFirestoreHelper.swift in Sources */,
+				1B0223712A9EFD0200935F48 /* SubjectModel.swift in Sources */,
 				1BECC93C2A986A0D008F8C27 /* CanvasListView.swift in Sources */,
 				1BE760952A96DC1B00C954E2 /* Realm.Object+Extensions.swift in Sources */,
 				1B47E13D2A944529005C036F /* AuthorizationButton.swift in Sources */,

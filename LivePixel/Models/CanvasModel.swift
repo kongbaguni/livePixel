@@ -13,6 +13,7 @@ class CanvasModel : Object {
     @Persisted(primaryKey: true) var id:String = ""
     @Persisted var title:String = ""
     @Persisted var ownerId:String = ""
+    @Persisted var subjectId:String = ""
     @Persisted var updateDt:Double = Date().timeIntervalSince1970
     @Persisted var deleted:Bool = false
     @Persisted var width:Int = 16
@@ -27,6 +28,7 @@ class CanvasModel : Object {
         let id:String
         let title:String
         let onwerId:String
+        let subjectId:String
         let updateDt:Double
         let deleted:Bool
         let width:Int
@@ -61,6 +63,16 @@ class CanvasModel : Object {
 
 extension CanvasModel {
     var threadSafeModel:ThreadSafeModel {
-        return .init(id: id, title: title, onwerId: ownerId,  updateDt: updateDt, deleted: deleted, width:width, height: height, offsetX: offsetX, offsetY: offsetY)
+        return .init(
+            id: id,
+            title: title,
+            onwerId: ownerId,
+            subjectId: subjectId,
+            updateDt: updateDt,
+            deleted: deleted,
+            width:width,
+            height: height,
+            offsetX: offsetX,
+            offsetY: offsetY)
     }
 }

@@ -61,10 +61,20 @@ struct TotalCanvasView: View {
                 
 #if !targetEnvironment(simulator)
                 for dote in getDoteData(canvasId: canvas.id) {
-                    let dx = CGFloat(dote.x) * iw + x
-                    let dy = CGFloat(dote.y) * iw + y
-                    let rect = CGRect(x: dx, y: dy, width: iw, height: ih)
-                    ctx.fill(.init(roundedRect: rect, cornerSize: .zero), with: .color(dote.color))
+                    if dote.size == 0 {
+                        let dx = CGFloat(dote.x) * iw + x
+                        let dy = CGFloat(dote.y) * iw + y
+                        let rect = CGRect(x: dx, y: dy, width: iw, height: ih)
+                        ctx.fill(.init(roundedRect: rect, cornerSize: .zero), with: .color(dote.color))
+                    }
+                    else {
+                        for data in PathFinder.findCircle(center: .init(x: dote.x, y: dote.y), end: .init(x: dote.x + dote.size, y: dote.y)) {
+                            let dx = CGFloat(data.x) * iw + x
+                            let dy = CGFloat(data.y) * iw + x
+                            let rect = CGRect(x: dx, y: dy, width: iw, height: ih)
+                            ctx.fill(.init(roundedRect: rect, cornerSize: .zero), with: .color(dote.color))
+                        }
+                    }
                 }
 #endif
             }

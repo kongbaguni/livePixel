@@ -32,8 +32,15 @@ struct CanvasView: View {
         }
     }
     @State var pointer:(Int,Int) = (0,0)
+    @AppStorage("pointerSize") var pointerSize:Double = 0
+    
+    var poinerViewPoints:Set<PathFinder.Point> {
+        return PathFinder.findCircle(center: .init(x: pointer.0, y: pointer.1), end: .init(x: pointer.0 + Int(pointerSize), y: pointer.1))
+    }
+    
     @State var color:Color = .red
     @State var dotes:[DoteModel.ThreadSafeModel] = []
+    
     @AppStorage("isDraw") var isDraw:Bool = true
     
     var doteData:Results<DoteModel> {
@@ -68,7 +75,7 @@ struct CanvasView: View {
     
     func makeDote() {
 #if !targetEnvironment(simulator)
-        FirestoreHelper.makeDote(canvasId: id, position: pointer, color: color)
+        FirestoreHelper.makeDote(canvasId: id, position: pointer, size: Int(pointerSize) ,color: color)
 #endif
     }
     
@@ -100,21 +107,29 @@ struct CanvasView: View {
             context.blendMode = .normal
             
             for dote in doteData {
-                let rect = CGRect(x: CGFloat(dote.x) * width, y: CGFloat(dote.y) * height, width: width, height: height)
                 let color = Color( .sRGB,red: dote.red, green: dote.green, blue: dote.blue, opacity: dote.opacicy)
-                context.fill(.init(roundedRect: rect, cornerSize: .zero), with: .color(color))
-                
+                if dote.size == 0 {
+                    let rect = CGRect(x: CGFloat(dote.x) * width, y: CGFloat(dote.y) * height, width: width, height: height)
+                    context.fill(.init(roundedRect: rect, cornerSize: .zero), with: .color(color))
+                }
+                for item in PathFinder.findCircle(center: .init(x: dote.x, y: dote.y), end: .init(x: dote.x + Int(dote.size), y: dote.y)) {
+                    let rect = CGRect(x: CGFloat(item.x) * width, y: CGFloat(item.y) * height, width: width, height: height)
+                    context.fill(.init(roundedRect: rect, cornerSize: .zero), with: .color(color))
+                }
             }
 
             
-            let rect = CGRect(
-                x: CGFloat(pointer.0) * width ,
-                y: CGFloat(pointer.1) * height,
-                width: width,
-                height: height
-            )
-            context.blendMode = .xor
-            context.stroke(.init(roundedRect: rect, cornerSize: .zero), with: .color(.red), lineWidth: 3)
+            for point in poinerViewPoints {
+                
+                let rect = CGRect(
+                    x: CGFloat(point.x) * width ,
+                    y: CGFloat(point.y) * height,
+                    width: width,
+                    height: height
+                )
+                context.blendMode = .xor
+                context.stroke(.init(roundedRect: rect, cornerSize: .zero), with: .color(.red), lineWidth: 3)
+            }
 #if !targetEnvironment(simulator)
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
                 drawCount += 1
@@ -158,34 +173,47 @@ struct CanvasView: View {
             }
             
         }))
-        
+        .onLongPressGesture {
+            makeDote()
+        }
     }
     var pallete : some View {
         Group {
-            HStack(alignment: .top) {
-                Toggle(isOn: $isDraw) {
-                    if isDraw == false {
-                        Button{
-                            #if !targetEnvironment(simulator)
-                            FirestoreHelper.makeDote(canvasId: id, position: pointer, color: color)
-                            #endif
-                        } label: {
-                            Image(systemName: "pencil.circle")
+            VStack {
+                HStack(alignment: .top) {
+                    Toggle(isOn: $isDraw) {
+                        if isDraw == false {
+                            Button{
+#if !targetEnvironment(simulator)
+                                FirestoreHelper.makeDote(canvasId: id, position: pointer, size:Int(pointerSize), color: color)
+                                FirestoreHelper.makeDote(canvasId: id, position: pointer, size:Int(pointerSize), color: color)
+#endif
+                            } label: {
+                                Image(systemName: "pencil.circle")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 40, height: 40)
+                                    .foregroundColor(.primary)
+                            }
+                        }
+                        else {
+                            Image(systemName: "pencil.circle.fill")
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 40, height: 40)
                                 .foregroundColor(.primary)
                         }
+                    }.frame(width: 100)
+                }
+                HStack{
+                    Slider(value: $pointerSize, in: 0...20) {
+                        Text("size")
+                    }.onChange(of: pointerSize){ newValue in
+                        
                     }
-                    else {
-                        Image(systemName: "pencil.circle.fill")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 40, height: 40)
-                            .foregroundColor(.primary)
-                    }
-                }.frame(width: 100)
+                }
             }
+            
             ColorMixerView(color: $color)
 
         }
@@ -208,10 +236,12 @@ struct CanvasView: View {
         }
         .navigationTitle(Text(canvasData?.title ?? "id"))
         .toolbar {
-            Button {
-                isActionSheet = true
-            } label: {
-                Image(systemName: "line.3.horizontal")
+            if canvasData?.ownerId == AuthManager.shared.userId {
+                Button {
+                    isActionSheet = true
+                } label: {
+                    Image(systemName: "line.3.horizontal")
+                }
             }
         }
         .onAppear {

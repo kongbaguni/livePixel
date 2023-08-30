@@ -20,6 +20,7 @@ class DoteModel:Object {
     @Persisted var opacicy:Double = 0
     @Persisted var timeIntervalSince1970:Double = 0
     @Persisted var ownerId:String = ""
+    @Persisted var size:Int = 1
     
     struct ThreadSafeModel : Codable, Hashable {
         static func == (left:DoteModel.ThreadSafeModel, right:DoteModel.ThreadSafeModel)-> Bool {
@@ -35,6 +36,7 @@ class DoteModel:Object {
         let opacity:Double
         let date:Date
         let ownerId:String
+        let size:Int
         var color:Color {
             .init(red: red, green: green, blue: blue, opacity: opacity)
         }
@@ -51,7 +53,7 @@ extension DoteModel {
     }
     
     var threadSafeModel: ThreadSafeModel {        
-        return .init(id: id, x:x, y:y,canvasId: canvasId, red: red, green: green, blue: blue, opacity: opacicy, date: Date(timeIntervalSince1970: timeIntervalSince1970), ownerId: ownerId)
+        return .init(id: id, x:x, y:y,canvasId: canvasId, red: red, green: green, blue: blue, opacity: opacicy, date: Date(timeIntervalSince1970: timeIntervalSince1970), ownerId: ownerId, size:size)
     }
     
     var owner:ProfileModel? {

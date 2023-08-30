@@ -162,6 +162,8 @@ class AuthManager : NSObject {
                 return
             }
             complete(true,nil)
+            NotificationCenter.default.post(name: .authDidSucessed, object: nil)
+
         }
     }
     

@@ -150,7 +150,7 @@ struct FirestoreHelper {
             }
 
     }
-    static func makeDote(canvasId:String, position:(Int,Int), color:Color) {
+    static func makeDote(canvasId:String, position:(Int,Int), size:Int, color:Color) {
         guard let uid = AuthManager.shared.userId else {
             return
         }
@@ -167,7 +167,8 @@ struct FirestoreHelper {
             "blue":Double(cicolor.blue),
             "opacicy":Double(cicolor.alpha),
             "ownerId":uid,
-            "timeIntervalSince1970":Date().timeIntervalSince1970
+            "size":size,
+            "timeIntervalSince1970":Date().timeIntervalSince1970,
         ]
         print("""
               ci color --------

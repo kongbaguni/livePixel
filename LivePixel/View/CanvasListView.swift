@@ -53,16 +53,25 @@ struct CanvasListView: View {
                 ctx.draw(Text("\(count)"), in: .init(x: 0, y: -100, width: 30, height: 30))
                 
                 for item in Realm.shared.objects(DoteModel.self).filter("canvasId = %@", data.id) {
-                    let rect = CGRect(x: CGFloat(item.x) * 3,
-                                      y: CGFloat(item.y) * 3,
-                                      width: 3,
-                                      height: 3)
-                    ctx.fill(.init(roundedRect: rect, cornerSize: .zero), with: .color(item.color))
+                    if item.size == 0 {
+                        let rect = CGRect(x: CGFloat(item.x) * 3,
+                                          y: CGFloat(item.y) * 3,
+                                          width: 3,
+                                          height: 3)
+                        ctx.fill(.init(roundedRect: rect, cornerSize: .zero), with: .color(item.color))
+                    }
+                    else {
+                        for data in PathFinder.findCircle(center: .init(x: item.x, y: item.y), end: .init(x: item.x + Int(item.size), y: item.y)) {
+                            let rect = CGRect(x: data.x * 3 , y: data.y * 3, width: 3, height: 3)
+                            
+                            ctx.fill(.init(roundedRect: rect, cornerSize: .zero), with: .color(item.color))
+                        }
+                    }
                 }
             }
             .frame(width:CGFloat(data.width * 3),height:CGFloat(data.height * 3))
             .border(Color.primary)
-            Text(data.title)
+//            Text(data.title)
         }
     }
     var body: some View {

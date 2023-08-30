@@ -11,3 +11,5 @@
 "empty title msg" = "You did not enter a title.";
 "deleted canvas alert msg" = "This is a deleted canvas.";
 "empty list msg" = "No canvas.";
+"subject empty msg" = "There is no topic.";
+

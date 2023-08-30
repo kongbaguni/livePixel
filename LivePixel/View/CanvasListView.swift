@@ -77,28 +77,35 @@ struct CanvasListView: View {
             }
             .frame(width:CGFloat(data.width * 3), height:CGFloat(data.height * 3))
             .border(Color.primary)
+            .onAppear {
+                FirebaseFirestoreHelper.shared.getDotes(canvasId: data.id) { list, error in
+                    count += 1
+                }
+            }
 
         }.frame(height: 200)
     }
     var body: some View {
         ScrollView {
-            LazyHGrid(rows: [.init(.flexible())]) {
-                if newCanvasList.count > 0 {
-                    ForEach(newCanvasList, id: \.self) { canvas in
-                        NavigationLink {
-                            CanvasView(id: canvas.id)
-                        } label: {
-                            makeLabel(data: canvas)
-                        }
-                    }
-                }
-                if canvasList.count > 0 {
-                    ForEach(canvasList, id: \.self) { canvas in
-                        if canvas.deletedNow == false  {
+            ScrollView(.horizontal) {
+                LazyHGrid(rows: [.init(.flexible())]) {
+                    if newCanvasList.count > 0 {
+                        ForEach(newCanvasList, id: \.self) { canvas in
                             NavigationLink {
                                 CanvasView(id: canvas.id)
                             } label: {
                                 makeLabel(data: canvas)
+                            }
+                        }
+                    }
+                    if canvasList.count > 0 {
+                        ForEach(canvasList, id: \.self) { canvas in
+                            if canvas.deletedNow == false  {
+                                NavigationLink {
+                                    CanvasView(id: canvas.id)
+                                } label: {
+                                    makeLabel(data: canvas)
+                                }
                             }
                         }
                     }

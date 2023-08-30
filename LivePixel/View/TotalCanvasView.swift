@@ -44,10 +44,8 @@ struct TotalCanvasView: View {
     }
     
     var canvas : some View {
-        Canvas { ctx,size in
-            
+        Canvas { ctx,size in            
             ctx.draw(Text("\(count)"), in: .init(x: 0, y: -100, width: 50, height: 10))
-            ctx.draw(Text("w : \(wc) h :\(hc)"), in: .init(x: 10, y: 10, width: 200, height: 50))
             let iw = canvasSize.width / CGFloat(wc)
             let ih = canvasSize.height / CGFloat(hc)
             

@@ -37,3 +37,7 @@
 "empty list msg" = "캔버스가 없습니다.";
 "auto draw" = "자동으로 그리기";
 "draw" = "그리기";
+"subject" = "주제";
+"make subject" = "주제 만들기";
+"subject empty msg" = "주제가 없습니다.";
+"subject list" = "주제 목록";

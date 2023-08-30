@@ -11,17 +11,28 @@ import RealmSwift
 struct SubjectListView: View {
     
     @State var subjects:[SubjectModel.ThreadSafeModel] = []
-    
+    @State var alertMsg:Text? = nil {
+        didSet {
+            if alertMsg != nil {
+                isAlert = true
+            }
+        }
+    }
+    @State var isAlert:Bool = false
     var body: some View {
         List {
-                     
-            ForEach(subjects, id:\.self) { subject in
-                NavigationLink {
-                    CanvasListView(subjectId: subject.id)
-                } label: {
-                    Text(subject.title)
+            if subjects.count == 0 {
+                Text("subject empty msg")
+            } else {
+                Section {
+                    ForEach(subjects, id:\.self) { subject in
+                        NavigationLink {
+                            CanvasListView(subjectId: subject.id)
+                        } label: {
+                            Text(subject.title)
+                        }
+                    }
                 }
-
             }
             
             NavigationLink {
@@ -32,11 +43,20 @@ struct SubjectListView: View {
         }.onAppear {
             loadData()
         }
+        .navigationTitle("subject list")
+        .alert(isPresented: $isAlert) {
+            .init(title: Text("alert"), message: alertMsg,dismissButton:.default(Text("confirm")))
+        }
     }
     
     func loadData() {
-        subjects = Realm.shared.objects(SubjectModel.self).map { model in
-            return model.threadSafeModel
+        FirebaseFirestoreHelper.shared.getSubjects { error in
+            subjects = Realm.shared.objects(SubjectModel.self).map { model in
+                return model.threadSafeModel
+            }
+            if let err = error {
+                alertMsg = Text("\(err.localizedDescription)")
+            }
         }
     }
 }

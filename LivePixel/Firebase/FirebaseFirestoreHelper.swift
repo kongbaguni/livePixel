@@ -28,7 +28,7 @@ struct FirebaseFirestoreHelper {
         requestedGetProfileInfoIds.insert(id)
         profileCollection.document(id).getDocument { snapshot, error in
             requestedGetProfileInfoIds.remove(id)
-            if let data = snapshot?.data() {
+             if let data = snapshot?.data() {
                 print(data)
                 do {
                     let realm = Realm.shared

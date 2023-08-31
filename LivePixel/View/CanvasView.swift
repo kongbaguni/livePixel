@@ -234,11 +234,6 @@ struct CanvasView: View {
                 } label: {
                     Image(systemName: "line.3.horizontal")
                 }
-                Button {
-                    isPresented = true
-                } label : {
-                    Image(systemName: "info.circle.fill")
-                }
                 .actionSheet(isPresented: $isActionSheet) {
                     var buttons:[ActionSheet.Button] = []
                     if canvasData?.ownerId == AuthManager.shared.userId {
@@ -255,6 +250,11 @@ struct CanvasView: View {
                 
                     return .init(title: Text("action"),buttons: buttons)
                 }
+            }
+            Button {
+                isPresented = true
+            } label : {
+                Image(systemName: "info.circle.fill")
             }
         }
         .onAppear {

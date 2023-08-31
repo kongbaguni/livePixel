@@ -31,16 +31,23 @@ struct CanvasInfomationView: View {
                 }), id:\.self) { dote in
                     HStack {
                         dote.color.frame(width:50, height: 50)
-                        Text("x").foregroundColor(.secondary)
-                        Text("\(dote.x)").foregroundColor(.primary)
-                        Text("y").foregroundColor(.secondary)
-                        Text("\(dote.y)").foregroundColor(.primary)
-                        Text("size").foregroundColor(.secondary)
-                        Text("\(dote.size + 1)").foregroundColor(.primary)
-                        Text("regDate").foregroundColor(.secondary)
-                        
-                        Text(dote.date.formatted(date: .long, time: .shortened))
-                            .foregroundColor(.primary)
+                        VStack {
+                            HStack {
+                                Text("x").foregroundColor(.secondary)
+                                Text("\(dote.x)").foregroundColor(.primary)
+                                Text("y").foregroundColor(.secondary)
+                                Text("\(dote.y)").foregroundColor(.primary)
+                                Text("size").foregroundColor(.secondary)
+                                Text("\(dote.size + 1)").foregroundColor(.primary)
+                            }
+                            HStack {
+                                Text("regDate").foregroundColor(.secondary)
+                                
+                                Text(dote.date.formatted(date: .long, time: .shortened))
+                                    .foregroundColor(.primary)
+                            }
+                        }
+                        ProfileView(id: dote.ownerId, editable: false)
                     }
                 }
             }

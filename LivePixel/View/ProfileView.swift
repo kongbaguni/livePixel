@@ -49,6 +49,10 @@ struct ProfileView: View {
         if let data = Realm.shared.object(ofType: ProfileModel.self, forPrimaryKey: id) {
             nickname = data.nickname
             introduce = data.introduce
+        } else {
+            FirebaseFirestoreHelper.shared.getProfile(id: id) { error in
+//                loadData()
+            }
         }
     }
     

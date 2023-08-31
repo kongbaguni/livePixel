@@ -17,11 +17,17 @@ extension Notification.Name {
 }
 struct FirebaseFirestoreHelper {
     static let shared = FirebaseFirestoreHelper()
-    
+    @State var requestedGetProfileInfoIds:Set<String> = []
     //MARK: - profile
     private let profileCollection:CollectionReference = Firestore.firestore().collection("profile")
     func getProfile(id:String, complete:@escaping(_ error:Error?)->Void) {
+        if requestedGetProfileInfoIds.firstIndex(of: id) != nil {
+            complete(nil)
+            return
+        }
+        requestedGetProfileInfoIds.insert(id)
         profileCollection.document(id).getDocument { snapshot, error in
+            requestedGetProfileInfoIds.remove(id)
             if let data = snapshot?.data() {
                 print(data)
                 do {
@@ -37,6 +43,22 @@ struct FirebaseFirestoreHelper {
             }
             complete(error)
         }
+    }
+    
+    func createProfile(id:String, nickname:String, introduce:String, complete:@escaping (_ error:Error?)->Void) {
+        let data:[String:Any] = [
+            "id":id,
+            "nickname":nickname,
+            "introduce":introduce,
+            "updateDt":Date().timeIntervalSince1970
+        ]
+        profileCollection.document(id).setData(data) { error in
+            complete(error)
+        }
+        let realm = Realm.shared
+        realm.beginWrite()
+        realm.create(ProfileModel.self, value: data, update: .all)
+        try! realm.commitWrite()        
     }
     
     func profileUpload(id:String,complete:@escaping(_ error:Error?)->Void) {

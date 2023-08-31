@@ -119,22 +119,27 @@ struct ProfileEditView: View {
             "nickname" : nickname,
             "introduce" : introduce,
         ]
-        
-        if profile?.updateData(data: data) == nil {
-            isLoading = true
-            FirebaseFirestoreHelper.shared.profileUpload(id: id) { error in
-                isLoading = false 
-                if let err = error {
-                    alertMsg = Text(err.localizedDescription)
-                    alertConfirmAction = nil
-                    isAlert = true
-                }
-                else {
-                    presentationMode.wrappedValue.dismiss()
-                }
-
+        isLoading = true
+        FirebaseFirestoreHelper.shared.createProfile(id: id, nickname: nickname, introduce: introduce) { error in
+            isLoading = false
+            if let err = error {
+                alertMsg = Text(err.localizedDescription)
+                alertConfirmAction = nil
+                isAlert = true
             }
+            else {
+                presentationMode.wrappedValue.dismiss()
+            }
+
         }
+//        if profile?.updateData(data: data) == nil {
+//            isLoading = true
+//            FirebaseFirestoreHelper.shared.profileUpload(id: id) { error in
+//                isLoading = false 
+//
+//            
+//            }
+//        }
     }
 }
 

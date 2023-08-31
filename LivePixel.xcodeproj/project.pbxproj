@@ -11,6 +11,9 @@
 		1B0223732A9F07A200935F48 /* MakeSubjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0223722A9F07A200935F48 /* MakeSubjectView.swift */; };
 		1B0223752A9F0AD200935F48 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0223742A9F0AD200935F48 /* ActivityIndicator.swift */; };
 		1B0223772A9F0EE600935F48 /* SubjectListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0223762A9F0EE600935F48 /* SubjectListView.swift */; };
+		1B0223792AA0231800935F48 /* UIDevice+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0223782AA0231800935F48 /* UIDevice+Extensions.swift */; };
+		1B02237B2AA056BA00935F48 /* RoundedLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B02237A2AA056BA00935F48 /* RoundedLabel.swift */; };
+		1B02237D2AA05ECB00935F48 /* CanvasInfomationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B02237C2AA05ECB00935F48 /* CanvasInfomationView.swift */; };
 		1B47E13D2A944529005C036F /* AuthorizationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B47E13C2A944529005C036F /* AuthorizationButton.swift */; };
 		1B47E13F2A944938005C036F /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1B47E13E2A944938005C036F /* Colors.xcassets */; };
 		1B47E1422A946DE0005C036F /* AlamofireImage in Frameworks */ = {isa = PBXBuildFile; productRef = 1B47E1412A946DE0005C036F /* AlamofireImage */; };
@@ -91,6 +94,9 @@
 		1B0223722A9F07A200935F48 /* MakeSubjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeSubjectView.swift; sourceTree = "<group>"; };
 		1B0223742A9F0AD200935F48 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
 		1B0223762A9F0EE600935F48 /* SubjectListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectListView.swift; sourceTree = "<group>"; };
+		1B0223782AA0231800935F48 /* UIDevice+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+Extensions.swift"; sourceTree = "<group>"; };
+		1B02237A2AA056BA00935F48 /* RoundedLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedLabel.swift; sourceTree = "<group>"; };
+		1B02237C2AA05ECB00935F48 /* CanvasInfomationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasInfomationView.swift; sourceTree = "<group>"; };
 		1B47E13C2A944529005C036F /* AuthorizationButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthorizationButton.swift; sourceTree = "<group>"; };
 		1B47E13E2A944938005C036F /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		1B47E1432A946F9A005C036F /* NetImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetImageView.swift; sourceTree = "<group>"; };
@@ -193,6 +199,7 @@
 				1B47E1432A946F9A005C036F /* NetImageView.swift */,
 				1BE7609B2A97132100C954E2 /* FSImageView.swift */,
 				1B47E1522A9499A5005C036F /* RoundedButton.swift */,
+				1B02237A2AA056BA00935F48 /* RoundedLabel.swift */,
 				1B8EC3382A959B0200A723D4 /* ProfileView.swift */,
 				1B8EC33C2A95CAF600A723D4 /* ProfileEditView.swift */,
 				1B8EC33A2A95B3C700A723D4 /* CanvasView.swift */,
@@ -204,6 +211,7 @@
 				1BE95B722A9DC7F90056B5DA /* TotalCanvasView.swift */,
 				1B0223722A9F07A200935F48 /* MakeSubjectView.swift */,
 				1B0223762A9F0EE600935F48 /* SubjectListView.swift */,
+				1B02237C2AA05ECB00935F48 /* CanvasInfomationView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -286,6 +294,7 @@
 				1BE760942A96DC1B00C954E2 /* Realm.Object+Extensions.swift */,
 				1BECC91D2A972A59008F8C27 /* Realm+Extensions.swift */,
 				1BE95B6C2A9C902B0056B5DA /* Color+Extensions.swift */,
+				1B0223782AA0231800935F48 /* UIDevice+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -440,6 +449,7 @@
 				1B8EC33D2A95CAF600A723D4 /* ProfileEditView.swift in Sources */,
 				1B8EC33B2A95B3C700A723D4 /* CanvasView.swift in Sources */,
 				1BE7608E2A95F4FC00C954E2 /* FirebaseStorageHelper.swift in Sources */,
+				1B02237D2AA05ECB00935F48 /* CanvasInfomationView.swift in Sources */,
 				8D5F12572A93209500ACDAC4 /* ContentView.swift in Sources */,
 				8D1E60AD2A932F4200952196 /* AuthManager.swift in Sources */,
 				8D5F126A2A9324E200ACDAC4 /* Stack.swift in Sources */,
@@ -459,12 +469,14 @@
 				1BE7608C2A95F32800C954E2 /* PhotoPicker.swift in Sources */,
 				1B47E1502A948BC8005C036F /* Toast.swift in Sources */,
 				1BE760982A96E29B00C954E2 /* FirebaseFirestoreHelper.swift in Sources */,
+				1B0223792AA0231800935F48 /* UIDevice+Extensions.swift in Sources */,
 				1B0223712A9EFD0200935F48 /* SubjectModel.swift in Sources */,
 				1BECC93C2A986A0D008F8C27 /* CanvasListView.swift in Sources */,
 				1BE760952A96DC1B00C954E2 /* Realm.Object+Extensions.swift in Sources */,
 				1B47E13D2A944529005C036F /* AuthorizationButton.swift in Sources */,
 				1BECC9332A983013008F8C27 /* HomeView.swift in Sources */,
 				1B8EC3392A959B0200A723D4 /* ProfileView.swift in Sources */,
+				1B02237B2AA056BA00935F48 /* RoundedLabel.swift in Sources */,
 				1BE95B6D2A9C902B0056B5DA /* Color+Extensions.swift in Sources */,
 				8D5F12672A93244B00ACDAC4 /* DoteModel.swift in Sources */,
 				1BE95B6F2A9D8D950056B5DA /* ColorMixerView.swift in Sources */,

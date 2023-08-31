@@ -8,11 +8,7 @@
 import SwiftUI
 
 struct ProfileImageViewForNavigation: View {
-#if !targetEnvironment(simulator)
     @State var id:String? = AuthManager.shared.userId
-#else
-    @State var id:String? = nil
-#endif
     var body: some View {
         Group {
             if let id = id {

@@ -31,12 +31,16 @@ struct TotalCanvasView: View {
     }
     
     var canvasSize:CGSize {
+        print("model : \(UIDevice.current.model)")
+        if UIDevice.current.model == "iPad" {
+            return .init(width: 500, height: 500)
+        }
         let w = UIScreen.main.bounds.width
         let h = UIScreen.main.bounds.height
         if w < h {
             return .init(width: w, height: w)
         }
-        return .init(width: h - 300, height: h - 300)
+        return .init(width: h, height: h)
     }
     
     func getDoteData(canvasId:String)->Results<DoteModel> {
@@ -44,7 +48,7 @@ struct TotalCanvasView: View {
     }
     
     var canvas : some View {
-        Canvas { ctx,size in            
+        Canvas { ctx,size in
             ctx.draw(Text("\(count)"), in: .init(x: 0, y: -100, width: 50, height: 10))
             let iw = canvasSize.width / CGFloat(wc)
             let ih = canvasSize.height / CGFloat(hc)
@@ -59,7 +63,6 @@ struct TotalCanvasView: View {
                     ctx.stroke(.init(roundedRect: rect, cornerSize: .zero), with: .color(.orange))
                 }
                 
-#if !targetEnvironment(simulator)
                 for dote in getDoteData(canvasId: canvas.id) {
                     if dote.size == 0 {
                         let dx = CGFloat(dote.x) * iw + x
@@ -76,7 +79,6 @@ struct TotalCanvasView: View {
                         }
                     }
                 }
-#endif
             }
 
             if !previewOnly {
@@ -169,12 +171,10 @@ struct TotalCanvasView: View {
         
     }
     func loadData() {
-#if !targetEnvironment(simulator)
         list = canvass.map { model in
             return model.threadSafeModel
         }
         count += 1
-#endif
     }
 }
 

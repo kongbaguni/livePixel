@@ -41,11 +41,7 @@ class CanvasModel : Object {
         }
         
         var deletedNow:Bool {
-#if !targetEnvironment(simulator)
             return Realm.shared.object(ofType: CanvasModel.self, forPrimaryKey: id)?.deleted == true
-#else
-            return false
-#endif
         }
         
         var dicValue:[String:Any]? {

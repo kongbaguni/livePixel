@@ -8,15 +8,13 @@
 import SwiftUI
 import FirebaseCore
 import RealmSwift
-
 struct ContentView: View {
     init() {
-        #if !targetEnvironment(simulator)
         FirebaseApp.configure()
-        #endif
     }
     
     @State var isSignin = false
+    
     var body: some View {
         NavigationView {
             NavigationStack {
@@ -30,13 +28,13 @@ struct ContentView: View {
                             }.frame(width: 70)
                         }
                     }
+
             }
+
         }
         .navigationViewStyle(.stack)
         .onAppear {
-#if !targetEnvironment(simulator)
             isSignin = AuthManager.shared.isSignined
-#endif
         }
         .onReceive(NotificationCenter.default.publisher(for: .signoutDidSucessed)) { noti in
             isSignin = false
@@ -44,6 +42,7 @@ struct ContentView: View {
         .onReceive(NotificationCenter.default.publisher(for: .authDidSucessed)) { noti in
             isSignin = true
         }
+        
     }
 }
 

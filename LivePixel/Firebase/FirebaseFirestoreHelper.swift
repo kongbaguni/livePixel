@@ -62,8 +62,6 @@ struct FirebaseFirestoreHelper {
         guard let userid = AuthManager.shared.userId else {
             return
         }
-        let now = Date().timeIntervalSince1970
-
         var data:[String:Any] = [
             "title":title,
             "width":width,

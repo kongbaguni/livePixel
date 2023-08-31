@@ -73,12 +73,10 @@ struct MakeNewCanvasView: View {
             .init(title: Text("alert"),message: errMsg ?? Text(""))
         }
         .onAppear {
-#if !targetEnvironment(simulator)
             if let last = Realm.shared.objects(CanvasModel.self).filter("subjectId = %@", subjectId).last {
                 offset = (last.offsetX, last.offsetY)
                 size = CGFloat(last.width)
             }
-#endif
         }
     }
 }

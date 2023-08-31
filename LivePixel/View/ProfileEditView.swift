@@ -71,9 +71,7 @@ struct ProfileEditView: View {
         }
         .padding(20)
         .onAppear {
-#if !targetEnvironment(simulator)
             load()
-#endif
         }
         .navigationTitle(Text("edit profile"))
         .alert(isPresented: $isAlert) {

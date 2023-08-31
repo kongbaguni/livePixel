@@ -20,25 +20,18 @@ class ProfileModel : Object{
 // sync Firebase
 extension ProfileModel {
     var isMe:Bool {
-#if !targetEnvironment(simulator)
         return id == AuthManager.shared.userId
-#else
-        return false
-#endif
     }
     
     static var current:ProfileModel? {
-#if !targetEnvironment(simulator)
         if let id = AuthManager.shared.userId {
             return Realm.shared.object(ofType: ProfileModel.self, forPrimaryKey: id)
         }
-#endif
         return nil
     }
         
     
     func updateData(data:[String:Any])->Error? {
-#if !targetEnvironment(simulator)
         do {
             let realm = Realm.shared
             try realm.write{
@@ -47,7 +40,6 @@ extension ProfileModel {
         } catch {
             return error
         }
-#endif 
         return nil
     }
     

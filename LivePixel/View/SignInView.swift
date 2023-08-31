@@ -10,11 +10,7 @@ import AlamofireImage
 
 struct SignInView: View {
     var id:String? {
-#if targetEnvironment(simulator)
-        return "test"
-#else
         return AuthManager.shared.userId
-#endif
     }
     
     @State var isSignIn:Bool = false
@@ -35,8 +31,6 @@ struct SignInView: View {
         return ProfileModel.current
     }
     private func refreshSigninName() {
-#if targetEnvironment(simulator)
-#else
         isSignIn = AuthManager.shared.auth.currentUser != nil
         isAnomymouse = AuthManager.shared.auth.currentUser?.isAnonymous ?? false
         
@@ -48,8 +42,6 @@ struct SignInView: View {
             displayName = Text(email)
         }
         profileImageURL = AuthManager.shared.auth.currentUser?.photoURL
-        
-        #endif
     }
     
     private var deleteAccountButton : some View {

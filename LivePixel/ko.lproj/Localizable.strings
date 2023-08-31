@@ -41,3 +41,8 @@
 "make subject" = "주제 만들기";
 "subject empty msg" = "주제가 없습니다.";
 "subject list" = "주제 목록";
+"input title" = "제목 입력";
+"title" = "제목";
+"make" = "만들기";
+"size" = "사이즈";
+"regDate" = "등록일시";

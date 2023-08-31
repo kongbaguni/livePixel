@@ -27,7 +27,6 @@ struct FSImageView: View {
     }
     
     func refresh() {
-#if !targetEnvironment(simulator)
         if id.isEmpty == false {
             if let cache = FirestorageDownloadUrlCacheModel.get(id: id) {
                 self.imgurl = cache.url
@@ -51,7 +50,6 @@ struct FSImageView: View {
                     }
             }
         }
-#endif
     }
 }
 

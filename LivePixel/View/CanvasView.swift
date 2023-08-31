@@ -16,11 +16,7 @@ struct CanvasView: View {
     
     let id:String
     var canvasData:CanvasModel? {
-#if !targetEnvironment(simulator)
         return Realm.shared.object(ofType: CanvasModel.self, forPrimaryKey: id)
-#else
-        return nil
-#endif
     }
     @State var drawCount = 0
     @State var doteCount = 0
@@ -42,7 +38,7 @@ struct CanvasView: View {
     @State var dotes:[DoteModel.ThreadSafeModel] = []
     
     @AppStorage("isDraw") var isDraw:Bool = true
-    
+    @State var isPresented:Bool = false
     var doteData:Results<DoteModel> {
         Realm.shared.objects(DoteModel.self).filter("canvasId = %@", id)
     }
@@ -74,9 +70,7 @@ struct CanvasView: View {
     }
     
     func makeDote() {
-#if !targetEnvironment(simulator)
         FirebaseFirestoreHelper.shared.makeDote(canvasId: id, position: pointer, size: Int(pointerSize) ,color: color)
-#endif
     }
     
     func loadData() {
@@ -130,12 +124,10 @@ struct CanvasView: View {
                 context.blendMode = .xor
                 context.stroke(.init(roundedRect: rect, cornerSize: .zero), with: .color(.red), lineWidth: 3)
             }
-#if !targetEnvironment(simulator)
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
                 drawCount += 1
                 loadData()
             }
-#endif
             
         }
         .frame(width: canvasSize.width, height: canvasSize.width)
@@ -184,10 +176,9 @@ struct CanvasView: View {
                     Toggle(isOn: $isDraw) {
                         if isDraw == false {
                             Button{
-#if !targetEnvironment(simulator)
+
                                 FirebaseFirestoreHelper.shared.makeDote(canvasId: id, position: pointer, size:Int(pointerSize), color: color)
                                 FirebaseFirestoreHelper.shared.makeDote(canvasId: id, position: pointer, size:Int(pointerSize), color: color)
-#endif
                             } label: {
                                 Image(systemName: "pencil.circle")
                                     .resizable()
@@ -234,6 +225,9 @@ struct CanvasView: View {
                 }
             }
         }
+        .navigationDestination(isPresented: $isPresented) {
+            CanvasInfomationView(id: id)
+        }
         .navigationTitle(Text(canvasData?.title ?? "id"))
         .toolbar {
             if canvasData?.ownerId == AuthManager.shared.userId {
@@ -241,6 +235,11 @@ struct CanvasView: View {
                     isActionSheet = true
                 } label: {
                     Image(systemName: "line.3.horizontal")
+                }
+                Button {
+                    isPresented = true
+                } label : {
+                    Image(systemName: "info.circle.fill")
                 }
                 .actionSheet(isPresented: $isActionSheet) {
                     var buttons:[ActionSheet.Button] = []
@@ -253,6 +252,7 @@ struct CanvasView: View {
                             }
                         }))
                     }
+                    
                     buttons.append(.cancel())
                 
                     return .init(title: Text("action"),buttons: buttons)
@@ -260,7 +260,6 @@ struct CanvasView: View {
             }
         }
         .onAppear {
-#if !targetEnvironment(simulator)
             if canvasData?.deleted == true {
                 alertType = .deletedCanvas
                 NotificationCenter.default.post(name: .canvasDidDeleted, object: id)
@@ -271,7 +270,6 @@ struct CanvasView: View {
                 pointer.0 = last.x
                 pointer.1 = last.y
             }
-#endif
         }
         
         .alert(isPresented: $isAlert) {
@@ -280,15 +278,15 @@ struct CanvasView: View {
                 return .init(title: Text("alert"), message: Text("deleted canvas alert msg"), dismissButton: .default(Text("confirm"), action: {
                     presentationMode.wrappedValue.dismiss()
                 }))
+                
             default:
                 return .init(title: Text("error"))
             }
         }
-#if !targetEnvironment(simulator)
-        .onReceive(NotificationCenter.default.publisher(for: .doteDidCreated)) { noti in            
+        .onReceive(NotificationCenter.default.publisher(for: .doteDidCreated)) { noti in
             doteCount = doteData.count
         }
-#endif
+        
         
         
     }

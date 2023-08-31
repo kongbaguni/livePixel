@@ -27,12 +27,10 @@ struct MakeSubjectView: View {
             }
             RoundedButton(title: Text("make"), isLoading: $isLoading) {
                 isLoading = true
-#if !targetEnvironment(simulator)
                 FirebaseFirestoreHelper.shared.makeSubject(title: title, width: Int(size), height: Int(size)) { error in
                     isLoading = false
                     presentationMode.wrappedValue.dismiss()
                 }
-#endif
             }
         }
         .navigationTitle("make subject")

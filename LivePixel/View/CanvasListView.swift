@@ -15,8 +15,7 @@ struct CanvasListView: View {
     enum SheetType {
         case makeNewCanvas
     }
-    @State var newCanvasList:[CanvasModel.ThreadSafeModel] = []
-    @State var canvasList:[CanvasModel.ThreadSafeModel] = []
+    @State var canvasSet:Set<CanvasModel.ThreadSafeModel> = []
 
     @State var isSheet = false
     @State var sheetType:SheetType = .makeNewCanvas {
@@ -28,26 +27,24 @@ struct CanvasListView: View {
     let disposeBag = DisposeBag()
     init(subjectId:String,canvasList: [CanvasModel.ThreadSafeModel]) {
         self.subjectId = subjectId
-        self.canvasList = canvasList
+        self.canvasSet = Set(canvasList)
     }
     @State var count = 0
     
     init(subjectId:String) {
         self.subjectId = subjectId
-#if !targetEnvironment(simulator)
         Observable.collection(from: Realm.shared.objects(CanvasModel.self).filter("subjectId = %@", subjectId)).subscribe {[self]  event in
             switch event {
             case .next(let result):
                 let newList:[CanvasModel.ThreadSafeModel] = result.map({ model in
                     return model.threadSafeModel
                 })
-                self.canvasList = newList
+                self.canvasSet = Set(newList)
                 break
             default:
                 break
             }
         }.disposed(by: self.disposeBag)
-#endif
     }
     var subjectModel : SubjectModel? {
         return Realm.shared.object(ofType: SubjectModel.self, forPrimaryKey: subjectId)
@@ -85,43 +82,76 @@ struct CanvasListView: View {
 
         }.frame(height: 200)
     }
-    var body: some View {
-        ScrollView {
-            ScrollView(.horizontal) {
-                LazyHGrid(rows: [.init(.flexible())]) {
-                    if newCanvasList.count > 0 {
-                        ForEach(newCanvasList, id: \.self) { canvas in
-                            NavigationLink {
-                                CanvasView(id: canvas.id)
-                            } label: {
-                                makeLabel(data: canvas)
-                            }
-                        }
-                    }
-                    if canvasList.count > 0 {
-                        ForEach(canvasList, id: \.self) { canvas in
-                            if canvas.deletedNow == false  {
-                                NavigationLink {
-                                    CanvasView(id: canvas.id)
-                                } label: {
-                                    makeLabel(data: canvas)
-                                }
-                            }
+    var canvasListView : some View {
+        var data : some View {
+            Group {
+                if canvasSet.count > 0 {
+                    ForEach(canvasSet.sorted(by: { a, b in
+                        a.updateDt > b.updateDt
+                    }), id: \.self) { canvas in
+                        NavigationLink {
+                            CanvasView(id: canvas.id)
+                        } label: {
+                            makeLabel(data: canvas)
                         }
                     }
                 }
             }
-            TotalCanvasView(subjectId: subjectId, previewOnly: true, pointer: .constant((0,0)), size: .constant(0))
-
-            if newCanvasList.count == 0 && canvasList.count == 0 {
+        }
+        
+        return ScrollView(UIDevice.current.isiPad ? .vertical : .horizontal) {
+            if UIDevice.current.isiPad {
+                LazyVGrid(columns: [.init(.flexible()),.init(.flexible()),.init(.flexible())]) {
+                    data
+                }
+            }
+            else {
+                LazyHGrid(rows: [.init(.flexible())]) {
+                    data
+                }
+            }
+        }
+    }
+    var totalCanvasView: some View {
+        TotalCanvasView(subjectId: subjectId, previewOnly: true, pointer: .constant((0,0)), size: .constant(0))
+    }
+    var makeNewCanvasBtn : some View {
+        NavigationLink {
+            MakeNewCanvasView(subjectId:subjectId)
+        } label: {
+            RoundedLabel(title: Text("make new canvas"), style: .defaultStyle)
+        }
+    }
+    var emptyListView : some View {
+        Group {
+            if canvasSet.count == 0 {
                 Text("empty list msg")
             }
-            NavigationLink {
-                MakeNewCanvasView(subjectId:subjectId)
-            } label: {
-                Text("make new canvas")
+        }
+    }
+    
+    var body: some View {
+        Group {
+            if UIDevice.current.isiPad {
+                HStack {
+                    VStack {
+                        totalCanvasView
+                        makeNewCanvasBtn
+                        Spacer()
+                    }
+                    emptyListView
+                    canvasListView
+                }
+                
+            } else {
+                ScrollView {
+                    canvasListView
+                    totalCanvasView
+                    
+                    emptyListView
+                    makeNewCanvasBtn
+                }
             }
-
         }
         .onAppear {
             loadData()
@@ -150,7 +180,7 @@ struct CanvasListView: View {
         FirebaseFirestoreHelper.shared.getCanvasList(subjectId:subjectId) { list, error in
             // 신규 켄버스 추가
             for item in list {
-                newCanvasList.insert(item, at: 0)
+                canvasSet.insert(item)
             }
             
             removeDeleted()
@@ -159,41 +189,28 @@ struct CanvasListView: View {
     }
     
     func removeDeleted() {
-        for canvas in newCanvasList {
+        for canvas in canvasSet {
             if canvas.deletedNow {
-                if let idx = newCanvasList.firstIndex(of: canvas) {
-                    newCanvasList.remove(at: idx)
-                }
+                canvasSet.remove(canvas)
             }
         }
-        for canvas in canvasList {
-            if canvas.deletedNow {
-                if let idx = canvasList.firstIndex(of: canvas) {
-                    canvasList.remove(at: idx)
-                }
-            }
-        }
-
     }
+    
     func loadData() {
-#if !targetEnvironment(simulator)
-        if canvasList.count == 0 {
+        if canvasSet.count == 0 {
             for model in Realm.shared.objects(CanvasModel.self).filter("subjectId = %@", subjectId) {
                 if model.deleted == false {
-                    canvasList.append(model.threadSafeModel)
+                    canvasSet.insert(model.threadSafeModel)
                 }
             }
         }
         FirebaseFirestoreHelper.shared.getCanvasList(subjectId:subjectId) { list, error in
             for item in list {
                 if item.deletedNow == false {
-                    canvasList.insert(item, at: 0)
+                    canvasSet.insert(item)
                 }
             }
         }
-#else
-        print(canvasList.count)
-#endif
     }
 }
 

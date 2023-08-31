@@ -15,11 +15,7 @@ struct ProfileView: View {
     let editable:Bool
 
     var isMe:Bool {
-#if !targetEnvironment(simulator)
         return AuthManager.shared.userId == id
-#else
-        return true
-#endif
     }
     @State var nickname = ""
     @State var introduce = ""

@@ -8,11 +8,7 @@
 import SwiftUI
 
 struct HomeView: View {
-#if targetEnvironment(simulator)
-    @State var isSignin = false
-#else
     @State var isSignin = AuthManager.shared.isSignined
-#endif
     
     var body: some View {
         Group {

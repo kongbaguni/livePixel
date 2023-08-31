@@ -176,8 +176,6 @@ struct CanvasView: View {
                     Toggle(isOn: $isDraw) {
                         if isDraw == false {
                             Button{
-
-                                FirebaseFirestoreHelper.shared.makeDote(canvasId: id, position: pointer, size:Int(pointerSize), color: color)
                                 FirebaseFirestoreHelper.shared.makeDote(canvasId: id, position: pointer, size:Int(pointerSize), color: color)
                             } label: {
                                 Image(systemName: "pencil.circle")

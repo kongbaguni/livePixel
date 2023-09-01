@@ -23,8 +23,9 @@ class CanvasModel : Object {
     
     struct ThreadSafeModel : Codable, Hashable {
         static func == (left:ThreadSafeModel, right:ThreadSafeModel)-> Bool {
-            return left.id == right.id
+            return left.uuid == right.uuid
         }
+        var uuid = UUID().uuidString
         let id:String
         let title:String
         let onwerId:String

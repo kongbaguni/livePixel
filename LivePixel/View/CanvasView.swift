@@ -34,9 +34,11 @@ struct CanvasView: View {
         return PathFinder.findPoints(drawType: drawType, center: pointer, size: Int(pointerSize))
     }
     
-    @State var color:Color = .red
+    @State var color:Color = .blue
+    
+    
     @State var dotes:[DoteModel.ThreadSafeModel] = []
-    @State var drawType:DoteModel.DrawType = .circle
+    @AppStorage("drawType") var drawType:DoteModel.DrawType = .circle
     @AppStorage("isDraw") var isDraw:Bool = true
     @State var isPresented:Bool = false
     var doteData:Results<DoteModel> {
@@ -265,7 +267,10 @@ struct CanvasView: View {
                 NotificationCenter.default.post(name: .canvasDidDeleted, object: id)
             }
             loadData()
-            color = lastMyDote?.color ?? .black
+            DispatchQueue.main.async {
+                color = lastMyDote?.color ?? .black
+            }
+            
             if let last = lastMyDote {
                 pointer.0 = last.x
                 pointer.1 = last.y

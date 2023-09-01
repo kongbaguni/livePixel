@@ -39,12 +39,16 @@ struct CanvasInfomationView: View {
                                 Text("\(dote.y)").foregroundColor(.primary)
                                 Text("size").foregroundColor(.secondary)
                                 Text("\(dote.size + 1)").foregroundColor(.primary)
+                                Text("brush").foregroundColor(.secondary)
+                                Text("\(dote.drawType)").foregroundColor(.primary)
+                                Spacer()
                             }
                             HStack {
                                 Text("regDate").foregroundColor(.secondary)
                                 
                                 Text(dote.date.formatted(date: .long, time: .shortened))
                                     .foregroundColor(.primary)
+                                Spacer()
                             }
                         }
                         Spacer()

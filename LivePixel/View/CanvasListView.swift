@@ -65,6 +65,7 @@ struct CanvasListView: View {
                     }
                     else {
                         let model = item.threadSafeModel
+                        ctx.blendMode = model.blendMode
                         for data in PathFinder.findPoints(drawType: model.drawTypeValue, center: (item.x, item.y), size: item.size) {
                             let rect = CGRect(x: data.x * 3 , y: data.y * 3, width: 3, height: 3)
                             

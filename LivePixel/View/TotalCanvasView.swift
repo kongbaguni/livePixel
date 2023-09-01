@@ -71,7 +71,9 @@ struct TotalCanvasView: View {
                         ctx.fill(.init(roundedRect: rect, cornerSize: .zero), with: .color(dote.color))
                     }
                     else {
-                        let model = dote.threadSafeModel                                            
+                        let model = dote.threadSafeModel
+                        
+                        ctx.blendMode = model.blendMode
                         for data in PathFinder.findPoints(drawType: model.drawTypeValue, center: (dote.x, dote.y), size: model.size) {
                             let dx = CGFloat(data.x) * iw + x
                             let dy = CGFloat(data.y) * ih + y

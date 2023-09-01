@@ -22,6 +22,7 @@ class DoteModel:Object {
     @Persisted var ownerId:String = ""
     @Persisted var size:Int = 1
     @Persisted var drawType:String = "circle"
+    @Persisted var blendModeRawValue:Int32 = 0
     enum DrawType : String, CaseIterable {
         case circle = "circle"
         case horizontalLine = "horizontalLine"
@@ -45,12 +46,20 @@ class DoteModel:Object {
         let ownerId:String
         let size:Int
         let drawType:String
+        let blendModeRawValue:Int32
         var color:Color {
             .init(red: red, green: green, blue: blue, opacity: opacity)
         }
         var drawTypeValue:DrawType {
             .init(rawValue: drawType) ?? .circle
         }
+        var blendMode:GraphicsContext.BlendMode {
+            .init(rawValue: blendModeRawValue)
+        }
+        var blendModeTextValue:Text {
+            Text("")
+        }
+        
     }
 }
 
@@ -64,10 +73,18 @@ extension DoteModel {
     }
     
     var threadSafeModel: ThreadSafeModel {        
-        return .init(id: id, x:x, y:y,canvasId: canvasId, red: red, green: green, blue: blue, opacity: opacicy, date: Date(timeIntervalSince1970: timeIntervalSince1970), ownerId: ownerId, size:size, drawType: drawType)
+        return .init(id: id, x:x, y:y,canvasId: canvasId, red: red, green: green, blue: blue, opacity: opacicy, date: Date(timeIntervalSince1970: timeIntervalSince1970), ownerId: ownerId, size:size, drawType: drawType, blendModeRawValue: blendModeRawValue)
     }
     
     var owner:ProfileModel? {
         return Realm.shared.object(ofType: ProfileModel.self, forPrimaryKey: ownerId)
+    }
+    
+    var drawTypeValue:DrawType {
+        .init(rawValue: drawType) ?? .circle
+    }
+    
+    var blendMode:GraphicsContext.BlendMode {
+        .init(rawValue: blendModeRawValue)
     }
 }

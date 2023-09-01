@@ -64,6 +64,7 @@ struct ProfileView: View {
         VStack(alignment:.leading) {
             ZStack(alignment:.topTrailing) {
                 FSImageView(id: id, type: .profileImage, placeHolder: Image(systemName: "person.fill"))
+                    .frame(maxWidth: 300)
                 if isMe && editable{
                     NavigationLink {
                         ProfileEditView()

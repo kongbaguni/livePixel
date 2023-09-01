@@ -28,6 +28,7 @@ struct CanvasView: View {
         }
     }
     @State var pointer:(Int,Int) = (0,0)
+    @State var blendMode:GraphicsContext.BlendMode = .normal
     @AppStorage("pointerSize") var pointerSize:Double = 0
     
     var poinerViewPoints:Set<PathFinder.Point> {
@@ -72,7 +73,7 @@ struct CanvasView: View {
     }
     
     func makeDote() {
-        FirebaseFirestoreHelper.shared.makeDote(canvasId: id, position: pointer, size: Int(pointerSize) ,color: color, type: drawType)
+        FirebaseFirestoreHelper.shared.makeDote(canvasId: id, position: pointer, size: Int(pointerSize) ,color: color, type: drawType, blendMode: blendMode)
     }
     
     func loadData() {
@@ -84,6 +85,7 @@ struct CanvasView: View {
         Canvas { context, size in
             context.draw(Text("\(drawCount)"), in: .init(x:0, y:0, width: 100, height: 50))
             context.draw(Text("\(doteCount)"), in: .init(x: 0, y: 0, width: 100, height: 50))
+            
             context.blendMode = .normal
             let wc = canvasData?.width ?? 32
             let hc = canvasData?.height ?? 32
@@ -110,6 +112,7 @@ struct CanvasView: View {
                 }
                 
                 let model = dote.threadSafeModel
+                context.blendMode = model.blendMode
                 for item in PathFinder.findPoints(drawType: model.drawTypeValue, center: (model.x, model.y), size: model.size) {
                     let rect = CGRect(x: CGFloat(item.x) * width, y: CGFloat(item.y) * height, width: width, height: height)
                     context.fill(.init(roundedRect: rect, cornerSize: .zero), with: .color(color))
@@ -124,8 +127,11 @@ struct CanvasView: View {
                     width: width,
                     height: height
                 )
+                let path:Path = .init(roundedRect: rect, cornerSize: .zero)
+                context.blendMode = blendMode
+                context.fill(path, with: .color(color))
                 context.blendMode = .xor
-                context.stroke(.init(roundedRect: rect, cornerSize: .zero), with: .color(.red), lineWidth: 3)
+                context.stroke(path, with: .color(.red), lineWidth: 3)
             }
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
                 drawCount += 1
@@ -175,12 +181,13 @@ struct CanvasView: View {
     var pallete : some View {
         Group {
             VStack {
+                BlendmodeSelectView(blendMode: $blendMode)
                 DrawTypeSelector(type: $drawType)
                 HStack(alignment: .top) {
                     Toggle(isOn: $isDraw) {
                         if isDraw == false {
                             Button{
-                                FirebaseFirestoreHelper.shared.makeDote(canvasId: id, position: pointer, size:Int(pointerSize), color: color,type: drawType)
+                                FirebaseFirestoreHelper.shared.makeDote(canvasId: id, position: pointer, size:Int(pointerSize), color: color,type: drawType, blendMode: blendMode)
                             } label: {
                                 Image(systemName: "pencil.circle")
                                     .resizable()

@@ -218,7 +218,7 @@ struct FirebaseFirestoreHelper {
             }
 
     }
-    func makeDote(canvasId:String, position:(Int,Int), size:Int, color:Color, type:DoteModel.DrawType) {
+    func makeDote(canvasId:String, position:(Int,Int), size:Int, color:Color, type:DoteModel.DrawType, blendMode:GraphicsContext.BlendMode) {
         guard let uid = AuthManager.shared.userId else {
             return
         }
@@ -237,7 +237,8 @@ struct FirebaseFirestoreHelper {
             "ownerId":uid,
             "size":size,
             "timeIntervalSince1970":Date().timeIntervalSince1970,
-            "drawType":type.rawValue
+            "drawType":type.rawValue,
+            "blendModeRawValue":blendMode.rawValue
         ]
         print("""
               ci color --------

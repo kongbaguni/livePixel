@@ -15,6 +15,7 @@
 		1B02237B2AA056BA00935F48 /* RoundedLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B02237A2AA056BA00935F48 /* RoundedLabel.swift */; };
 		1B02237D2AA05ECB00935F48 /* CanvasInfomationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B02237C2AA05ECB00935F48 /* CanvasInfomationView.swift */; };
 		1B02237F2AA170FB00935F48 /* DrawTypeSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B02237E2AA170FB00935F48 /* DrawTypeSelector.swift */; };
+		1B0223812AA1A8FD00935F48 /* BlendmodeSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0223802AA1A8FD00935F48 /* BlendmodeSelectView.swift */; };
 		1B47E13D2A944529005C036F /* AuthorizationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B47E13C2A944529005C036F /* AuthorizationButton.swift */; };
 		1B47E13F2A944938005C036F /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1B47E13E2A944938005C036F /* Colors.xcassets */; };
 		1B47E1422A946DE0005C036F /* AlamofireImage in Frameworks */ = {isa = PBXBuildFile; productRef = 1B47E1412A946DE0005C036F /* AlamofireImage */; };
@@ -99,6 +100,7 @@
 		1B02237A2AA056BA00935F48 /* RoundedLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedLabel.swift; sourceTree = "<group>"; };
 		1B02237C2AA05ECB00935F48 /* CanvasInfomationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasInfomationView.swift; sourceTree = "<group>"; };
 		1B02237E2AA170FB00935F48 /* DrawTypeSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawTypeSelector.swift; sourceTree = "<group>"; };
+		1B0223802AA1A8FD00935F48 /* BlendmodeSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlendmodeSelectView.swift; sourceTree = "<group>"; };
 		1B47E13C2A944529005C036F /* AuthorizationButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthorizationButton.swift; sourceTree = "<group>"; };
 		1B47E13E2A944938005C036F /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		1B47E1432A946F9A005C036F /* NetImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetImageView.swift; sourceTree = "<group>"; };
@@ -194,6 +196,7 @@
 			isa = PBXGroup;
 			children = (
 				8D5F12562A93209500ACDAC4 /* ContentView.swift */,
+				1B0223802AA1A8FD00935F48 /* BlendmodeSelectView.swift */,
 				1B02237E2AA170FB00935F48 /* DrawTypeSelector.swift */,
 				1BE95B6E2A9D8D950056B5DA /* ColorMixerView.swift */,
 				1BECC9302A974E9C008F8C27 /* ProfileImageViewForNavigation.swift */,
@@ -473,6 +476,7 @@
 				1B47E1502A948BC8005C036F /* Toast.swift in Sources */,
 				1BE760982A96E29B00C954E2 /* FirebaseFirestoreHelper.swift in Sources */,
 				1B0223792AA0231800935F48 /* UIDevice+Extensions.swift in Sources */,
+				1B0223812AA1A8FD00935F48 /* BlendmodeSelectView.swift in Sources */,
 				1B0223712A9EFD0200935F48 /* SubjectModel.swift in Sources */,
 				1BECC93C2A986A0D008F8C27 /* CanvasListView.swift in Sources */,
 				1BE760952A96DC1B00C954E2 /* Realm.Object+Extensions.swift in Sources */,

@@ -33,19 +33,16 @@ struct CanvasInfomationView: View {
                         dote.color.frame(width:50, height: 50)
                         VStack {
                             HStack {
-                                Text("x").foregroundColor(.secondary)
-                                Text("\(dote.x)").foregroundColor(.primary)
-                                Text("y").foregroundColor(.secondary)
-                                Text("\(dote.y)").foregroundColor(.primary)
-                                Text("size").foregroundColor(.secondary)
-                                Text("\(dote.size + 1)").foregroundColor(.primary)
-                                Text("brush").foregroundColor(.secondary)
-                                Text("\(dote.drawType)").foregroundColor(.primary)
-                                Spacer()
+                                    Text("""
+x \(dote.x) y \(dote.y)
+size \(dote.size + 1)
+brushType \(dote.drawType)
+blendMode \(dote.blendMode.stringValue)
+""")
+                                    Spacer()
                             }
                             HStack {
                                 Text("regDate").foregroundColor(.secondary)
-                                
                                 Text(dote.date.formatted(date: .long, time: .shortened))
                                     .foregroundColor(.primary)
                                 Spacer()
@@ -76,7 +73,7 @@ struct CanvasInfomationView: View {
 struct CanvasInfomationView_Previews: PreviewProvider {
     static var previews: some View {
         CanvasInfomationView(id: "test", title:"test", dotes: Set([
-            .init(id: "", x: 0, y: 0, canvasId: "", red: 0, green: 1, blue: 0, opacity: 1, date: Date(), ownerId: "asd", size: 0, drawType: "circle")
+            .init(id: "", x: 0, y: 0, canvasId: "", red: 0, green: 1, blue: 0, opacity: 1, date: Date(), ownerId: "asd", size: 0, drawType: "circle", blendModeRawValue: GraphicsContext.BlendMode.normal.rawValue)
             
         ]))
     }

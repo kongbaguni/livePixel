@@ -170,6 +170,12 @@ struct TotalCanvasView: View {
                 }.disposed(by: disposeBag)
             loadData()
         }
+        .onReceive(NotificationCenter.default.publisher(for: .canvasDidEdited)) { noti in
+            list = []
+            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
+                loadData()
+            }            
+        }
         
         
     }

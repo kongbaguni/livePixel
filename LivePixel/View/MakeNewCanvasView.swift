@@ -50,8 +50,8 @@ struct MakeNewCanvasView: View {
                 isLoading = true
                 let trimmingTitle = title.trimmingCharacters(in: CharacterSet(charactersIn: " "))
                 if trimmingTitle.isEmpty {
-                    errMsg = Text("empty title msg")
-                    return
+//                    errMsg = Text("empty title msg")
+//                    return
                 }
                 FirebaseFirestoreHelper.shared.makeCanvas(
                     subjectId:subjectId,

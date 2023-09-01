@@ -170,7 +170,10 @@ struct CanvasListView: View {
         .onReceive(NotificationCenter.default.publisher(for: .doteDidCreated)) { noti in
             count += 1
         }
-        
+        .onReceive(NotificationCenter.default.publisher(for: .canvasDidEdited)) { noti in
+            canvasSet.removeAll()
+            loadData()
+        }
         .sheet(isPresented: $isSheet) {
             MakeNewCanvasView(subjectId:subjectId)
         }

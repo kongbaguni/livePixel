@@ -13,3 +13,4 @@
 "empty list msg" = "No canvas.";
 "subject empty msg" = "There is no topic.";
 "regDate" = "registration date";
+"delete canvas alert msg" = "Delete the canvas.";

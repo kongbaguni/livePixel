@@ -9,6 +9,7 @@ import SwiftUI
 import RealmSwift
 struct CanvasView: View {
     enum AlertType {
+        case deleteCanvas
         case deletedCanvas
     }
     
@@ -42,6 +43,11 @@ struct CanvasView: View {
     @AppStorage("drawType") var drawType:DoteModel.DrawType = .circle
     @AppStorage("isDraw") var isDraw:Bool = true
     @State var isPresented:Bool = false
+    enum PresentViewType {
+        case canvasInfomation
+        case canvasEdit
+    }
+    @State var presenteViewType:PresentViewType? = nil
     var doteData:Results<DoteModel> {
         Realm.shared.objects(DoteModel.self).filter("canvasId = %@", id)
     }
@@ -235,38 +241,39 @@ struct CanvasView: View {
             }
         }
         .navigationDestination(isPresented: $isPresented) {
-            CanvasInfomationView(id: id)
+            switch presenteViewType {
+            case .canvasEdit:
+                EdItCanvasInfoView(id: id)
+            default:
+                CanvasInfomationView(id: id)
+            }
         }
         .navigationTitle(Text(canvasData?.title ?? "id"))
         .toolbar {
-            if canvasData?.ownerId == AuthManager.shared.userId {
-                Button {
-                    isActionSheet = true
-                } label: {
-                    Image(systemName: "line.3.horizontal")
-                }
-                .actionSheet(isPresented: $isActionSheet) {
-                    var buttons:[ActionSheet.Button] = []
-                    if canvasData?.ownerId == AuthManager.shared.userId {
-                        buttons.append(ActionSheet.Button.default(Text("delete canvas"), action: {
-                            FirebaseFirestoreHelper.shared.deleteCanvas(canvasId: id) { error in
-                                if error == nil {
-                                    presentationMode.wrappedValue.dismiss()
-                                }
-                            }
-                        }))
-                    }
-                    
-                    buttons.append(.cancel())
-                
-                    return .init(title: Text("action"),buttons: buttons)
-                }
-            }
             Button {
                 isPresented = true
+                presenteViewType = .canvasInfomation
             } label : {
                 Image(systemName: "info.circle.fill")
             }
+            
+            if canvasData?.ownerId == AuthManager.shared.userId {
+                Button {
+                    isPresented = true
+                    presenteViewType = .canvasEdit
+                } label : {
+                    Image(systemName: "pencil")
+                }
+
+                Button {
+                    isAlert = true
+                    alertType = .deleteCanvas
+                } label: {
+                    Image(systemName: "trash")
+                }
+                                                
+            }
+
         }
         .onAppear {
             if canvasData?.deleted == true {
@@ -290,6 +297,16 @@ struct CanvasView: View {
                 return .init(title: Text("alert"), message: Text("deleted canvas alert msg"), dismissButton: .default(Text("confirm"), action: {
                     presentationMode.wrappedValue.dismiss()
                 }))
+            case .deleteCanvas:
+                return .init(title: Text("alert"),
+                             message: Text("delete canvas alert msg"),
+                             primaryButton: .default(Text("confirm"), action : {
+                    FirebaseFirestoreHelper.shared.deleteCanvas(canvasId: id) { error in
+                        if error == nil {
+                            presentationMode.wrappedValue.dismiss()
+                        }
+                    }
+                }), secondaryButton: .cancel())
                 
             default:
                 return .init(title: Text("error"))

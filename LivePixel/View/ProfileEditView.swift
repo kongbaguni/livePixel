@@ -40,15 +40,16 @@ struct ProfileEditView: View {
             makeInputField(title: Text("introduce"), placeHolder: "input introduce", value: $introduce, prompt: Text("input introduce"))
             
             HStack {
-                
-                if let img = images.first {
-                    let newimg = img.af.imageAspectScaled(toFill: .init(width: 200, height: 200))
-                    Image(uiImage: newimg).resizable().scaledToFit()
-                } else {
-                    if let id = profile?.id {
-                        FSImageView(id: id, type: .profileImage, placeHolder: Image(systemName: "person.fill"))
+                Group {
+                    if let img = images.first {
+                        let newimg = img.af.imageAspectScaled(toFill: .init(width: 200, height: 200))
+                        Image(uiImage: newimg).resizable().scaledToFit()
+                    } else {
+                        if let id = profile?.id {
+                            FSImageView(id: id, type: .profileImage, placeHolder: Image(systemName: "person.fill"))
+                        }
                     }
-                }
+                }.frame(maxWidth: 300)
                 RoundedButton(title: Text("select image"), isLoading: $isLoading) {
                     PHPhotoLibrary.requestAuthorization(for: .readWrite) { status in
                         switch status {
@@ -135,9 +136,9 @@ struct ProfileEditView: View {
 //        if profile?.updateData(data: data) == nil {
 //            isLoading = true
 //            FirebaseFirestoreHelper.shared.profileUpload(id: id) { error in
-//                isLoading = false 
+//                isLoading = false
 //
-//            
+//
 //            }
 //        }
     }

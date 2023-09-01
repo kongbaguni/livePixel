@@ -16,6 +16,7 @@
 		1B02237D2AA05ECB00935F48 /* CanvasInfomationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B02237C2AA05ECB00935F48 /* CanvasInfomationView.swift */; };
 		1B02237F2AA170FB00935F48 /* DrawTypeSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B02237E2AA170FB00935F48 /* DrawTypeSelector.swift */; };
 		1B0223812AA1A8FD00935F48 /* BlendmodeSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0223802AA1A8FD00935F48 /* BlendmodeSelectView.swift */; };
+		1B0223832AA1CBD600935F48 /* EdItCanvasInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0223822AA1CBD600935F48 /* EdItCanvasInfoView.swift */; };
 		1B47E13D2A944529005C036F /* AuthorizationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B47E13C2A944529005C036F /* AuthorizationButton.swift */; };
 		1B47E13F2A944938005C036F /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1B47E13E2A944938005C036F /* Colors.xcassets */; };
 		1B47E1422A946DE0005C036F /* AlamofireImage in Frameworks */ = {isa = PBXBuildFile; productRef = 1B47E1412A946DE0005C036F /* AlamofireImage */; };
@@ -101,6 +102,7 @@
 		1B02237C2AA05ECB00935F48 /* CanvasInfomationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasInfomationView.swift; sourceTree = "<group>"; };
 		1B02237E2AA170FB00935F48 /* DrawTypeSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawTypeSelector.swift; sourceTree = "<group>"; };
 		1B0223802AA1A8FD00935F48 /* BlendmodeSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlendmodeSelectView.swift; sourceTree = "<group>"; };
+		1B0223822AA1CBD600935F48 /* EdItCanvasInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdItCanvasInfoView.swift; sourceTree = "<group>"; };
 		1B47E13C2A944529005C036F /* AuthorizationButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthorizationButton.swift; sourceTree = "<group>"; };
 		1B47E13E2A944938005C036F /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		1B47E1432A946F9A005C036F /* NetImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetImageView.swift; sourceTree = "<group>"; };
@@ -216,6 +218,7 @@
 				1BE95B702A9D9BC30056B5DA /* ColorView.swift */,
 				1BE95B722A9DC7F90056B5DA /* TotalCanvasView.swift */,
 				1B0223722A9F07A200935F48 /* MakeSubjectView.swift */,
+				1B0223822AA1CBD600935F48 /* EdItCanvasInfoView.swift */,
 				1B0223762A9F0EE600935F48 /* SubjectListView.swift */,
 				1B02237C2AA05ECB00935F48 /* CanvasInfomationView.swift */,
 			);
@@ -484,6 +487,7 @@
 				1BECC9332A983013008F8C27 /* HomeView.swift in Sources */,
 				1B8EC3392A959B0200A723D4 /* ProfileView.swift in Sources */,
 				1B02237B2AA056BA00935F48 /* RoundedLabel.swift in Sources */,
+				1B0223832AA1CBD600935F48 /* EdItCanvasInfoView.swift in Sources */,
 				1B02237F2AA170FB00935F48 /* DrawTypeSelector.swift in Sources */,
 				1BE95B6D2A9C902B0056B5DA /* Color+Extensions.swift in Sources */,
 				8D5F12672A93244B00ACDAC4 /* DoteModel.swift in Sources */,

@@ -13,6 +13,7 @@ import SwiftUI
 extension Notification.Name {
     static let canvasDidDeleted = Notification.Name("cnavasDidDeleted_observer")
     static let canvasDidCreated = Notification.Name("canvasDidCreated_observer")
+    static let canvasDidEdited = Notification.Name("canvasDidEdited_observer")
     static let doteDidCreated = Notification.Name("doteDidCreated_observer")
 }
 struct FirebaseFirestoreHelper {
@@ -84,7 +85,7 @@ struct FirebaseFirestoreHelper {
         guard let userid = AuthManager.shared.userId else {
             return
         }
-        var data:[String:Any] = [
+        let data:[String:Any] = [
             "title":title,
             "width":width,
             "height":height,
@@ -140,6 +141,28 @@ struct FirebaseFirestoreHelper {
             complete(error)
         }
         NotificationCenter.default.post(name: .canvasDidCreated, object: ref.documentID)
+    }
+    
+    func editCanvas(canvasId:String, subjectId:String, title:String, width:Int, height:Int, offset:(Int,Int),  complete:@escaping(_ error:Error?)->Void) {
+        guard let ownerid = AuthManager.shared.userId else {
+            return
+        }
+        let data:[String:Any] = [
+            "subjectId":subjectId,
+            "title":title,
+            "ownerId":ownerid,
+            "updateDt":Date().timeIntervalSince1970,
+            "width":width,
+            "height":height,
+            "offsetX":offset.0,
+            "offsetY":offset.1,
+        ]
+        canvasCollection.document(canvasId).setData(data) { errorA in
+            getCanvasList(subjectId: subjectId) { list, errorB in
+                complete(errorA ?? errorB)
+                NotificationCenter.default.post(name: .canvasDidEdited, object: canvasId)
+            }            
+        }
     }
 
     func getCanvasList(subjectId:String, complete:@escaping(_ list:[CanvasModel.ThreadSafeModel], _ error:Error?)->Void) {

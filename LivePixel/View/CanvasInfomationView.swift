@@ -25,7 +25,7 @@ struct CanvasInfomationView: View {
     
     var body: some View {
         List {
-            Section(title) {
+            Section("log") {
                 ForEach(dotes.sorted(by: { a, b in
                     return a.date > b.date
                 }), id:\.self) { dote in
@@ -47,7 +47,8 @@ struct CanvasInfomationView: View {
                                     .foregroundColor(.primary)
                             }
                         }
-                        ProfileView(id: dote.ownerId, editable: false)
+                        Spacer()
+                        ProfileView(id: dote.ownerId, editable: false).frame(width:150)
                     }
                 }
             }
@@ -71,7 +72,7 @@ struct CanvasInfomationView: View {
 struct CanvasInfomationView_Previews: PreviewProvider {
     static var previews: some View {
         CanvasInfomationView(id: "test", title:"test", dotes: Set([
-            .init(id: "", x: 0, y: 0, canvasId: "", red: 0, green: 1, blue: 0, opacity: 1, date: Date(), ownerId: "asd", size: 0)
+            .init(id: "", x: 0, y: 0, canvasId: "", red: 0, green: 1, blue: 0, opacity: 1, date: Date(), ownerId: "asd", size: 0, drawType: "circle")
             
         ]))
     }

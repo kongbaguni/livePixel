@@ -31,12 +31,12 @@ struct CanvasView: View {
     @AppStorage("pointerSize") var pointerSize:Double = 0
     
     var poinerViewPoints:Set<PathFinder.Point> {
-        return PathFinder.findCircle(center: .init(x: pointer.0, y: pointer.1), end: .init(x: pointer.0 + Int(pointerSize), y: pointer.1))
+        return PathFinder.findPoints(drawType: drawType, center: pointer, size: Int(pointerSize))
     }
     
     @State var color:Color = .red
     @State var dotes:[DoteModel.ThreadSafeModel] = []
-    
+    @State var drawType:DoteModel.DrawType = .circle
     @AppStorage("isDraw") var isDraw:Bool = true
     @State var isPresented:Bool = false
     var doteData:Results<DoteModel> {
@@ -70,7 +70,7 @@ struct CanvasView: View {
     }
     
     func makeDote() {
-        FirebaseFirestoreHelper.shared.makeDote(canvasId: id, position: pointer, size: Int(pointerSize) ,color: color)
+        FirebaseFirestoreHelper.shared.makeDote(canvasId: id, position: pointer, size: Int(pointerSize) ,color: color, type: drawType)
     }
     
     func loadData() {
@@ -106,15 +106,16 @@ struct CanvasView: View {
                     let rect = CGRect(x: CGFloat(dote.x) * width, y: CGFloat(dote.y) * height, width: width, height: height)
                     context.fill(.init(roundedRect: rect, cornerSize: .zero), with: .color(color))
                 }
-                for item in PathFinder.findCircle(center: .init(x: dote.x, y: dote.y), end: .init(x: dote.x + Int(dote.size), y: dote.y)) {
+                
+                let model = dote.threadSafeModel
+                for item in PathFinder.findPoints(drawType: model.drawTypeValue, center: (model.x, model.y), size: model.size) {
                     let rect = CGRect(x: CGFloat(item.x) * width, y: CGFloat(item.y) * height, width: width, height: height)
                     context.fill(.init(roundedRect: rect, cornerSize: .zero), with: .color(color))
                 }
             }
 
-            
+           
             for point in poinerViewPoints {
-                
                 let rect = CGRect(
                     x: CGFloat(point.x) * width ,
                     y: CGFloat(point.y) * height,
@@ -172,11 +173,12 @@ struct CanvasView: View {
     var pallete : some View {
         Group {
             VStack {
+                DrawTypeSelector(type: $drawType)
                 HStack(alignment: .top) {
                     Toggle(isOn: $isDraw) {
                         if isDraw == false {
                             Button{
-                                FirebaseFirestoreHelper.shared.makeDote(canvasId: id, position: pointer, size:Int(pointerSize), color: color)
+                                FirebaseFirestoreHelper.shared.makeDote(canvasId: id, position: pointer, size:Int(pointerSize), color: color,type: drawType)
                             } label: {
                                 Image(systemName: "pencil.circle")
                                     .resizable()

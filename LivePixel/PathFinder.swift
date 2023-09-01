@@ -182,4 +182,29 @@ struct PathFinder {
         }
         return result
     }
+    
+    
+    static func findPoints(drawType:DoteModel.DrawType, center:(Int,Int), size:Int)->Set<Point> {
+        switch drawType {
+        case .circle:
+            return PathFinder.findCircle(
+                center: .init(x: center.0, y: center.1),
+                end: .init(x: center.0 + size, y: center.1)
+            )
+        case .horizontalLine:
+            return PathFinder.findLine(
+                startPosition: .init(x:center.0 - size,y: center.1),
+                endPosition: .init(x: center.0 + size, y: center.1)
+            )
+        case .verticalLine:
+            return PathFinder.findLine(
+                startPosition: .init(x: center.0, y: center.1 - size),
+                endPosition: .init(x: center.0, y: center.1 + size)
+            )
+        case .square:
+            return PathFinder.findSquare(
+                a: .init(x: center.0 - size, y: center.1 - size),
+                b: .init(x: center.0 + size, y: center.1 + size))
+        }
+    }
 }

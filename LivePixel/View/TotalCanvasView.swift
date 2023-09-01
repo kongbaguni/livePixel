@@ -71,7 +71,8 @@ struct TotalCanvasView: View {
                         ctx.fill(.init(roundedRect: rect, cornerSize: .zero), with: .color(dote.color))
                     }
                     else {
-                        for data in PathFinder.findCircle(center: .init(x: dote.x, y: dote.y), end: .init(x: dote.x + dote.size, y: dote.y)) {
+                        let model = dote.threadSafeModel                                            
+                        for data in PathFinder.findPoints(drawType: model.drawTypeValue, center: (dote.x, dote.y), size: model.size) {
                             let dx = CGFloat(data.x) * iw + x
                             let dy = CGFloat(data.y) * ih + y
                             let rect = CGRect(x: dx, y: dy, width: iw, height: ih)

@@ -64,7 +64,8 @@ struct CanvasListView: View {
                         ctx.fill(.init(roundedRect: rect, cornerSize: .zero), with: .color(item.color))
                     }
                     else {
-                        for data in PathFinder.findCircle(center: .init(x: item.x, y: item.y), end: .init(x: item.x + Int(item.size), y: item.y)) {
+                        let model = item.threadSafeModel
+                        for data in PathFinder.findPoints(drawType: model.drawTypeValue, center: (item.x, item.y), size: item.size) {
                             let rect = CGRect(x: data.x * 3 , y: data.y * 3, width: 3, height: 3)
                             
                             ctx.fill(.init(roundedRect: rect, cornerSize: .zero), with: .color(item.color))

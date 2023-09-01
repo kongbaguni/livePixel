@@ -21,6 +21,13 @@ class DoteModel:Object {
     @Persisted var timeIntervalSince1970:Double = 0
     @Persisted var ownerId:String = ""
     @Persisted var size:Int = 1
+    @Persisted var drawType:String = "circle"
+    enum DrawType : String, CaseIterable {
+        case circle = "circle"
+        case horizontalLine = "horizontalLine"
+        case verticalLine = "verticalLine"
+        case square = "square"
+    }
     
     struct ThreadSafeModel : Codable, Hashable {
         static func == (left:DoteModel.ThreadSafeModel, right:DoteModel.ThreadSafeModel)-> Bool {
@@ -37,8 +44,12 @@ class DoteModel:Object {
         let date:Date
         let ownerId:String
         let size:Int
+        let drawType:String
         var color:Color {
             .init(red: red, green: green, blue: blue, opacity: opacity)
+        }
+        var drawTypeValue:DrawType {
+            .init(rawValue: drawType) ?? .circle
         }
     }
 }
@@ -53,7 +64,7 @@ extension DoteModel {
     }
     
     var threadSafeModel: ThreadSafeModel {        
-        return .init(id: id, x:x, y:y,canvasId: canvasId, red: red, green: green, blue: blue, opacity: opacicy, date: Date(timeIntervalSince1970: timeIntervalSince1970), ownerId: ownerId, size:size)
+        return .init(id: id, x:x, y:y,canvasId: canvasId, red: red, green: green, blue: blue, opacity: opacicy, date: Date(timeIntervalSince1970: timeIntervalSince1970), ownerId: ownerId, size:size, drawType: drawType)
     }
     
     var owner:ProfileModel? {

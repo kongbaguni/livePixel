@@ -7,6 +7,8 @@
 
 import SwiftUI
 import RealmSwift
+import RxSwift
+import RxRealm
 
 struct SubjectListView: View {
     
@@ -19,6 +21,8 @@ struct SubjectListView: View {
         }
     }
     @State var isAlert:Bool = false
+    let disposeBag = DisposeBag()
+    
     var body: some View {
         List {
             if subjects.count == 0 {
@@ -41,7 +45,26 @@ struct SubjectListView: View {
                 Text("make subject")
             }
         }.onAppear {
-            loadData()
+            requestServerData()
+            Observable.collection(from: Realm.shared.objects(SubjectModel.self))
+                .subscribe { [self] event in
+                    DispatchQueue.main.async {
+                        switch event {
+                        case .next(let result) :
+                            self.subjects = result.map { model in
+                                print(model.title)
+                                return model.threadSafeModel
+                            }
+                        case .error(let error) :
+                            print(error.localizedDescription)
+                        case .completed:
+                            break
+                        }
+
+                    }
+                }
+                .disposed(by: disposeBag)
+
         }
         .navigationTitle("subject list")
         .alert(isPresented: $isAlert) {
@@ -49,16 +72,14 @@ struct SubjectListView: View {
         }
     }
     
-    func loadData() {
+    func requestServerData() {
         FirebaseFirestoreHelper.shared.getSubjects { error in
-            subjects = Realm.shared.objects(SubjectModel.self).map { model in
-                return model.threadSafeModel
-            }
             if let err = error {
                 alertMsg = Text("\(err.localizedDescription)")
             }
         }
     }
+    
 }
 
 struct SubjectListView_Previews: PreviewProvider {

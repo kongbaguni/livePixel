@@ -11,7 +11,6 @@ import RealmSwift
 
 class CanvasModel : Object {
     @Persisted(primaryKey: true) var id:String = ""
-    @Persisted var title:String = ""
     @Persisted var ownerId:String = ""
     @Persisted var subjectId:String = ""
     @Persisted var updateDt:Double = Date().timeIntervalSince1970
@@ -23,11 +22,10 @@ class CanvasModel : Object {
     
     struct ThreadSafeModel : Codable, Hashable {
         static func == (left:ThreadSafeModel, right:ThreadSafeModel)-> Bool {
-            return left.uuid == right.uuid
+            left.uuid == right.uuid
         }
         var uuid = UUID().uuidString
         let id:String
-        let title:String
         let onwerId:String
         let subjectId:String
         let updateDt:Double
@@ -38,11 +36,11 @@ class CanvasModel : Object {
         let offsetY:Int
         
         var updateDate:Date {
-            return Date(timeIntervalSince1970: updateDt)
+            Date(timeIntervalSince1970: updateDt)
         }
         
         var deletedNow:Bool {
-            return Realm.shared.object(ofType: CanvasModel.self, forPrimaryKey: id)?.deleted == true
+            Realm.shared.object(ofType: CanvasModel.self, forPrimaryKey: id)?.deleted == true
         }
         
         var dicValue:[String:Any]? {
@@ -55,6 +53,10 @@ class CanvasModel : Object {
             }
         }
         
+        var subject:SubjectModel? {
+            Realm.shared.object(ofType: SubjectModel.self, forPrimaryKey: subjectId)
+        }
+        
     }
 }
 
@@ -62,7 +64,6 @@ extension CanvasModel {
     var threadSafeModel:ThreadSafeModel {
         return .init(
             id: id,
-            title: title,
             onwerId: ownerId,
             subjectId: subjectId,
             updateDt: updateDt,

@@ -15,7 +15,6 @@ struct MakeNewCanvasView: View {
         return Realm.shared.object(ofType: SubjectModel.self, forPrimaryKey: subjectId)
     }
     
-    @State var title:String = ""
     @State var errMsg:Text? = nil {
         didSet {
             if errMsg != nil {
@@ -37,25 +36,14 @@ struct MakeNewCanvasView: View {
                     Text("subject")
                     Text("\(subjectModel?.title ?? subjectId)")
                 }
-                HStack {
-                    Text("canvas title")
-                    TextField("input canvas title", text: $title)
-                        .textFieldStyle(.roundedBorder)
-                }
                 TotalCanvasView(subjectId:subjectId, previewOnly : false ,pointer: $offset, size: $size)
 
             }.padding(10)
             
             RoundedButton(title: Text("confirm"), isLoading: $isLoading) {
                 isLoading = true
-                let trimmingTitle = title.trimmingCharacters(in: CharacterSet(charactersIn: " "))
-                if trimmingTitle.isEmpty {
-//                    errMsg = Text("empty title msg")
-//                    return
-                }
                 FirebaseFirestoreHelper.shared.makeCanvas(
                     subjectId:subjectId,
-                    title: trimmingTitle,
                     width: Int(size),
                     height: Int(size),
                     offset: offset) { error in

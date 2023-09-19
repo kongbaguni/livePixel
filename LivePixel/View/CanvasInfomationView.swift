@@ -62,7 +62,6 @@ blendMode \(dote.blendMode.stringValue)
     }
     
     func loadData() {
-        title = Realm.shared.object(ofType: CanvasModel.self, forPrimaryKey: id)?.title ?? ""
         for item in Realm.shared.objects(DoteModel.self).filter("canvasId = %@", id) {
             dotes.insert(item.threadSafeModel)
         }

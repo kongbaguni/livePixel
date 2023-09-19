@@ -7,8 +7,7 @@
 
 import SwiftUI
 import RealmSwift
-import RxSwift
-import RxRealm
+import RealmSwift
 
 struct TotalCanvasView: View {
     let subjectId:String
@@ -50,6 +49,9 @@ struct TotalCanvasView: View {
     var canvas : some View {
         Canvas { ctx,size in
             ctx.draw(Text("\(count)"), in: .init(x: 0, y: -100, width: 50, height: 10))
+            if let color = subjectModel?.bgColor {
+                ctx.fill(.init(roundedRect: .init(origin: .zero, size: size), cornerSize: .zero), with: .color(color))
+            }
             let iw = canvasSize.width / CGFloat(wc)
             let ih = canvasSize.height / CGFloat(hc)
             
@@ -139,7 +141,7 @@ struct TotalCanvasView: View {
             }
         }.padding(10)
     }
-    let disposeBag = DisposeBag()
+
     var body: some View {
         VStack {
             if previewOnly {
@@ -159,15 +161,6 @@ struct TotalCanvasView: View {
             }
         }
         .onAppear {
-            Observable.collection(from: Realm.shared.objects(DoteModel.self))
-                .subscribe { event in
-                    switch event {
-                    case .next(_):
-                        loadData()
-                    default:
-                        break
-                    }
-                }.disposed(by: disposeBag)
             loadData()
         }
         .onReceive(NotificationCenter.default.publisher(for: .canvasDidEdited)) { noti in
@@ -193,8 +186,8 @@ struct TotalCanvasView_Previews: PreviewProvider {
             subjectId:"test",
             previewOnly: true,
             list: [
-                .init(id: "a", title: "b", onwerId: "c", subjectId:"", updateDt: 0, deleted: false, width: 32, height: 32, offsetX: 0, offsetY: 0),
-                .init(id: "a", title: "b", onwerId: "c", subjectId:"", updateDt: 0, deleted: false, width: 16, height: 16, offsetX: 240, offsetY: 230),
+                .init(id: "a", onwerId: "c", subjectId:"", updateDt: 0, deleted: false, width: 32, height: 32, offsetX: 0, offsetY: 0),
+                .init(id: "a", onwerId: "c", subjectId:"", updateDt: 0, deleted: false, width: 16, height: 16, offsetX: 240, offsetY: 230),
             ],
             pointer: .constant((30,30)),
             size : .constant(64)

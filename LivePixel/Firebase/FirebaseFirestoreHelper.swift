@@ -81,16 +81,22 @@ struct FirebaseFirestoreHelper {
     
     //MARK: - subject
     private let subjectCollection = Firestore.firestore().collection("subjects")
-    func makeSubject(title:String, width:Int,height:Int, complete:@escaping(_ error:Error?)->Void) {
+    func makeSubject(title:String, width:Int,height:Int,backgroundColor:Color, complete:@escaping(_ error:Error?)->Void) {
         guard let userid = AuthManager.shared.userId else {
             return
         }
+        let ciColor = backgroundColor.ciColor
+
         let data:[String:Any] = [
             "title":title,
             "width":width,
             "height":height,
             "ownerId":userid,
-            "updateTimeIntervalSince1970":Date().timeIntervalSince1970
+            "updateTimeIntervalSince1970":Date().timeIntervalSince1970,
+            "bgcolorRed":ciColor.red,
+            "bgcolorGreen":ciColor.green,
+            "bgcolorBlue":ciColor.blue,
+            "bgcolorAlpha":ciColor.alpha
         ]
         subjectCollection.addDocument(data: data) { errorA in
             getSubjects { errorB in
@@ -123,14 +129,13 @@ struct FirebaseFirestoreHelper {
 
     //MARK: - canvas
     private let canvasCollection:CollectionReference = Firestore.firestore().collection("canvas")
-    func makeCanvas(subjectId:String, title:String, width:Int, height:Int, offset:(Int,Int),  complete:@escaping(_ error:Error?)->Void) {
+    func makeCanvas(subjectId:String, width:Int, height:Int, offset:(Int,Int),  complete:@escaping(_ error:Error?)->Void) {
         guard let ownerid = AuthManager.shared.userId else {
             return
         }
         let now = Date().timeIntervalSince1970
         let ref = canvasCollection.addDocument(data: [
             "subjectId":subjectId,
-            "title":title,
             "ownerId":ownerid,
             "updateDt":now,
             "width":width,

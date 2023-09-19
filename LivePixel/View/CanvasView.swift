@@ -17,8 +17,9 @@ struct CanvasView: View {
     
     let id:String
     var canvasData:CanvasModel? {
-        return Realm.shared.object(ofType: CanvasModel.self, forPrimaryKey: id)
+        Realm.shared.object(ofType: CanvasModel.self, forPrimaryKey: id)
     }
+    
     @State var drawCount = 0
     @State var doteCount = 0
     @State var isActionSheet = false
@@ -145,8 +146,9 @@ struct CanvasView: View {
             }
             
         }
+        
         .frame(width: canvasSize.width, height: canvasSize.width)
-        .background(.white)
+        .background(canvasData?.threadSafeModel.subject?.threadSafeModel.bgColor ?? .white)
         .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local).onChanged({ value in
 
             func getIndex(location:CGPoint)->(Int,Int) {
@@ -248,7 +250,7 @@ struct CanvasView: View {
                 CanvasInfomationView(id: id)
             }
         }
-        .navigationTitle(Text(canvasData?.title ?? "id"))
+        .navigationTitle(Text(canvasData?.id ?? "id"))
         .toolbar {
             Button {
                 isPresented = true

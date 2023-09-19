@@ -51,7 +51,6 @@ struct EdItCanvasInfoView: View {
                 }
             }
         }.onAppear {
-            title = model?.title ?? ""
             offset = (model?.offsetX ?? 0, model?.offsetY ?? 0)
             size = CGFloat(model?.width ?? 0)
         }

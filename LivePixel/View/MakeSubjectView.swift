@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import RealmSwift
 
 struct MakeSubjectView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
@@ -13,6 +14,7 @@ struct MakeSubjectView: View {
     @State var title:String = ""
     @State var size:CGFloat = 1024
     @State var isLoading = false
+    @State var color:Color = Realm.shared.objects(SubjectModel.self).last?.threadSafeModel.bgColor ?? .clear
     var body: some View {
         List {
             HStack {
@@ -25,9 +27,12 @@ struct MakeSubjectView: View {
                 Text("\(Int(size))")
                 Slider(value: $size, in: 128...2048)
             }
+            ColorPicker(selection: $color) {
+                Text("background color")
+            }
             RoundedButton(title: Text("make"), isLoading: $isLoading) {
                 isLoading = true
-                FirebaseFirestoreHelper.shared.makeSubject(title: title, width: Int(size), height: Int(size)) { error in
+                FirebaseFirestoreHelper.shared.makeSubject(title: title, width: Int(size), height: Int(size), backgroundColor: color) { error in
                     isLoading = false
                     presentationMode.wrappedValue.dismiss()
                 }

@@ -6,8 +6,6 @@
 //
 
 import SwiftUI
-import RxSwift
-import RxRealm
 import RealmSwift
 
 struct CanvasListView: View {
@@ -24,7 +22,6 @@ struct CanvasListView: View {
         }
     }
     
-    let disposeBag = DisposeBag()
     init(subjectId:String,canvasList: [CanvasModel.ThreadSafeModel]) {
         self.subjectId = subjectId
         self.canvasSet = Set(canvasList)
@@ -33,18 +30,6 @@ struct CanvasListView: View {
     
     init(subjectId:String) {
         self.subjectId = subjectId
-        Observable.collection(from: Realm.shared.objects(CanvasModel.self).filter("subjectId = %@", subjectId)).subscribe {[self]  event in
-            switch event {
-            case .next(let result):
-                let newList:[CanvasModel.ThreadSafeModel] = result.map({ model in
-                    return model.threadSafeModel
-                })
-                self.canvasSet = Set(newList)
-                break
-            default:
-                break
-            }
-        }.disposed(by: self.disposeBag)
     }
     var subjectModel : SubjectModel? {
         return Realm.shared.object(ofType: SubjectModel.self, forPrimaryKey: subjectId)
@@ -226,12 +211,10 @@ struct CanvasListView_Previews: PreviewProvider {
                 subjectId: " ",
                 canvasList: [
                 .init(id: "aaaa",
-                      title: "김치",
                       onwerId: "djskala",
                       subjectId: " ",
                       updateDt: 1010123, deleted: false , width : 32, height: 32, offsetX: 0, offsetY: 0),
                 .init(id: "aaba",
-                      title: "김치",
                       onwerId: "djskala",
                       subjectId: " ",
                       updateDt: 1032800, deleted: true, width : 32, height: 32, offsetX: 0, offsetY: 0),

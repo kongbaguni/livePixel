@@ -7,8 +7,7 @@
 
 import SwiftUI
 import RealmSwift
-import RxSwift
-import RxRealm
+import RealmSwift
 
 struct ProfileView: View {
     let id:String
@@ -20,29 +19,10 @@ struct ProfileView: View {
     @State var nickname = ""
     @State var introduce = ""
 
-    let disposebag = DisposeBag()
     init(id: String, editable:Bool) {
         self.id = id
         self.editable = editable
-        loadData()
-        Observable.collection(from: Realm.shared.objects(ProfileModel.self))
-            .subscribe { [self] event in
-                switch event {
-                case .next(let list):
-                    _ = list.map { model in
-                        if model.id == id {
-                            nickname = model.nickname
-                            introduce = model.introduce
-                            return true
-                        }
-                        return false
-                    }
-                    break
-                default:
-                    break
-                }
-            }.disposed(by: disposebag)
-        
+        loadData()        
     }
     
     func loadData() {

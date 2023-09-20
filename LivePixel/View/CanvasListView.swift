@@ -38,6 +38,10 @@ struct CanvasListView: View {
     func makeLabel(data:CanvasModel.ThreadSafeModel)-> some View {
         HStack(alignment: .top) {
             Canvas { ctx, size in
+                
+                if let color = subjectModel?.bgColor {
+                    ctx.fill(.init(roundedRect: .init(origin: .zero, size: size), cornerSize: .zero), with: .color(color))
+                }
                 ctx.draw(Text("\(count)"), in: .init(x: 0, y: -100, width: 30, height: 30))
                 
                 for item in Realm.shared.objects(DoteModel.self).filter("canvasId = %@", data.id) {

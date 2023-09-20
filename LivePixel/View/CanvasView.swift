@@ -19,6 +19,9 @@ struct CanvasView: View {
     var canvasData:CanvasModel? {
         Realm.shared.object(ofType: CanvasModel.self, forPrimaryKey: id)
     }
+    var subjectModel:SubjectModel? {
+        canvasData?.subjectModel
+    }
     
     @State var drawCount = 0
     @State var doteCount = 0
@@ -93,6 +96,9 @@ struct CanvasView: View {
             context.draw(Text("\(drawCount)"), in: .init(x:0, y:0, width: 100, height: 50))
             context.draw(Text("\(doteCount)"), in: .init(x: 0, y: 0, width: 100, height: 50))
             
+            if let color = subjectModel?.bgColor {
+                context.fill(.init(roundedRect: .init(origin: .zero, size: size), cornerSize: .zero), with: .color(color))
+            }
             context.blendMode = .normal
             let wc = canvasData?.width ?? 32
             let hc = canvasData?.height ?? 32
@@ -148,7 +154,7 @@ struct CanvasView: View {
         }
         
         .frame(width: canvasSize.width, height: canvasSize.width)
-        .background(canvasData?.threadSafeModel.subject?.threadSafeModel.bgColor ?? .white)
+        
         .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local).onChanged({ value in
 
             func getIndex(location:CGPoint)->(Int,Int) {

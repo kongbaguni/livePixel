@@ -53,8 +53,8 @@ class CanvasModel : Object {
             }
         }
         
-        var subject:SubjectModel? {
-            Realm.shared.object(ofType: SubjectModel.self, forPrimaryKey: subjectId)
+        var subject:SubjectModel.ThreadSafeModel? {
+            Realm.shared.object(ofType: SubjectModel.self, forPrimaryKey: subjectId)?.threadSafeModel
         }
         
     }
@@ -72,5 +72,9 @@ extension CanvasModel {
             height: height,
             offsetX: offsetX,
             offsetY: offsetY)
+    }
+    
+    var subjectModel:SubjectModel? {
+        Realm.shared.object(ofType: SubjectModel.self, forPrimaryKey: subjectId)
     }
 }

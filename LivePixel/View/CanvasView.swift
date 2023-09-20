@@ -52,12 +52,14 @@ struct CanvasView: View {
         case canvasEdit
     }
     @State var presenteViewType:PresentViewType? = nil
-    var doteData:Results<DoteModel> {
-        Realm.shared.objects(DoteModel.self).filter("canvasId = %@", id)
+    
+    var doteData:ReversedCollection<Slice<Results<DoteModel>>> {
+        DoteModel.limitedResult(canvasId: id, limit: 100)
     }
+    
     var lastMyDote:DoteModel.ThreadSafeModel? {
         if let id = AuthManager.shared.userId {
-            return doteData.filter("ownerId = %@", id).last?.threadSafeModel
+            return Realm.shared.objects(DoteModel.self).filter("ownerId = %@", id).last?.threadSafeModel
         }
         return nil
     }
@@ -91,31 +93,21 @@ struct CanvasView: View {
             doteCount = doteData.count
         }
     }
+    
     var canvas : some View {
         Canvas { context, size in
             context.draw(Text("\(drawCount)"), in: .init(x:0, y:0, width: 100, height: 50))
             context.draw(Text("\(doteCount)"), in: .init(x: 0, y: 0, width: 100, height: 50))
             
+            context.blendMode = .normal
             if let color = subjectModel?.bgColor {
                 context.fill(.init(roundedRect: .init(origin: .zero, size: size), cornerSize: .zero), with: .color(color))
             }
-            context.blendMode = .normal
             let wc = canvasData?.width ?? 32
             let hc = canvasData?.height ?? 32
             
             let width = size.width / CGFloat(wc)
             let height = size.height / CGFloat(hc)
-            for i in 0..<wc {
-                for j in 0..<hc {
-                    
-                    let x = CGFloat(i) * width
-                    let y = CGFloat(j) * height
-                    let rect = CGRect(x: x, y: y, width: width, height: height)
-                    context.stroke(.init(roundedRect: rect, cornerSize: .zero), with: .color(.blue))
-                }
-            }
-            
-            context.blendMode = .normal
             
             for dote in doteData {
                 let color = Color( .sRGB,red: dote.red, green: dote.green, blue: dote.blue, opacity: dote.opacicy)
@@ -129,6 +121,17 @@ struct CanvasView: View {
                 for item in PathFinder.findPoints(drawType: model.drawTypeValue, center: (model.x, model.y), size: model.size) {
                     let rect = CGRect(x: CGFloat(item.x) * width, y: CGFloat(item.y) * height, width: width, height: height)
                     context.fill(.init(roundedRect: rect, cornerSize: .zero), with: .color(color))
+                }
+            }
+
+            context.blendMode = .normal
+            for i in 0..<wc {
+                for j in 0..<hc {
+                    
+                    let x = CGFloat(i) * width
+                    let y = CGFloat(j) * height
+                    let rect = CGRect(x: x, y: y, width: width, height: height)
+                    context.stroke(.init(roundedRect: rect, cornerSize: .zero), with: .color(.blue))
                 }
             }
 
@@ -258,6 +261,7 @@ struct CanvasView: View {
         }
         .navigationTitle(Text(canvasData?.id ?? "id"))
         .toolbar {
+            
             Button {
                 isPresented = true
                 presenteViewType = .canvasInfomation

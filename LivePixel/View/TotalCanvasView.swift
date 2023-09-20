@@ -42,8 +42,8 @@ struct TotalCanvasView: View {
         return .init(width: h, height: h)
     }
     
-    func getDoteData(canvasId:String)->Results<DoteModel> {
-        return Realm.shared.objects(DoteModel.self).filter("canvasId = %@", canvasId)
+    func getDoteData(canvasId:String)->ReversedCollection<Slice<Results<DoteModel>>> {
+        return DoteModel.limitedResult(canvasId: canvasId, limit: 100)
     }
     
     var canvas : some View {

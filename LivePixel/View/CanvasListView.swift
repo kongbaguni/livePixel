@@ -44,7 +44,7 @@ struct CanvasListView: View {
                 }
                 ctx.draw(Text("\(count)"), in: .init(x: 0, y: -100, width: 30, height: 30))
                 
-                for item in Realm.shared.objects(DoteModel.self).filter("canvasId = %@", data.id) {
+                for item in DoteModel.limitedResult(canvasId: data.id, limit: 100) {
                     if item.size == 0 {
                         let rect = CGRect(x: CGFloat(item.x) * 3,
                                           y: CGFloat(item.y) * 3,

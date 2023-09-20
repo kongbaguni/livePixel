@@ -87,4 +87,12 @@ extension DoteModel {
     var blendMode:GraphicsContext.BlendMode {
         .init(rawValue: blendModeRawValue)
     }
+    
+    static func limitedResult(canvasId:String, limit:Int)->ReversedCollection<Slice<Results<DoteModel>>> {
+        let result = Realm.shared.objects(DoteModel.self).filter("canvasId = %@", canvasId)
+            .sorted(byKeyPath: "timeIntervalSince1970", ascending: false)
+            .prefix(limit)
+            .reversed()
+        return result
+    }
 }

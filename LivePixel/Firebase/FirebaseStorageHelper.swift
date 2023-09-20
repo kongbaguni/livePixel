@@ -14,6 +14,7 @@ import FirebaseFirestore
 class FirebaseStorageHelper {
     enum DataPath : String {
         case profileImage = "profileimages"
+        case canvasPreview = "canvasPreview"
     }
     static let shared = FirebaseStorageHelper()
     

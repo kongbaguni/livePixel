@@ -12,7 +12,7 @@ struct MakeSubjectView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
 
     @State var title:String = ""
-    @State var size:CGFloat = 1024
+    @State var size:CGFloat = 256
     @State var isLoading = false
     @State var color:Color = Realm.shared.objects(SubjectModel.self).last?.threadSafeModel.bgColor ?? .clear
     var body: some View {
@@ -25,7 +25,7 @@ struct MakeSubjectView: View {
             HStack {
                 Text("size")
                 Text("\(Int(size))")
-                Slider(value: $size, in: 128...2048)
+                Slider(value: $size, in: 64...256)
             }
             ColorPicker(selection: $color) {
                 Text("background color")
